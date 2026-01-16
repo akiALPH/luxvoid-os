@@ -8,11 +8,17 @@
     <style>
         :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; }
         body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; width: 100vw; overflow-x: hidden; }
-        #pulseCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
-        .bg-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100vh; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(80px) brightness(0.5); z-index: -2; }
+        #pulseCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none; }
+        .bg-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100vh; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(80px) brightness(0.5); z-index: -2; pointer-events: none; }
         .supply-hero { width: 100%; padding: 40px 0; text-align: center; border-bottom: 1px solid rgba(184, 115, 51, 0.3); background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); }
         .supply-val { font-size: 3.5rem; letter-spacing: 12px; color: var(--void-cyan); text-shadow: 0 0 30px var(--void-cyan); margin: 0; }
-        .container { width: 90%; max-width: 420px; padding: 20px 0 100px 0; z-index: 10; display: flex; flex-direction: column; gap: 15px; }
+        
+        /* MATCHING ALIGNMENT WITH INDEX.HTML */
+        .container { 
+            width: 85%; max-width: 380px; /* Fluid Responsive Width */
+            padding: 20px 0 100px 0; z-index: 10; display: flex; flex-direction: column; gap: 15px; 
+        }
+        
         .section { background: linear-gradient(165deg, rgba(30,30,30,0.95), rgba(5,5,5,0.98)); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 25px; padding: 25px; backdrop-filter: blur(45px); box-shadow: 0 20px 50px #000; }
         h2 { font-size: 0.8rem; letter-spacing: 3px; color: var(--void-cyan); border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 10px; margin: 0 0 15px 0; text-transform: uppercase; }
         .bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.5); border-radius: 3px; overflow: hidden; margin-top: 5px; }
@@ -20,12 +26,15 @@
         .tier-bar { display: flex; justify-content: space-between; gap: 8px; }
         .tier-box { flex: 1; padding: 12px 5px; border-radius: 10px; background: rgba(0,0,0,0.4); text-align: center; font-size: 0.55rem; color: #444; border: 1px solid rgba(255,255,255,0.05); }
         .tier-active { border-color: var(--void-green); color: var(--void-green); font-weight: bold; }
-        input[type="number"] { width: 100%; background: #000; border: 1px solid var(--void-cyan); padding: 15px; border-radius: 12px; color: var(--void-cyan); font-family: monospace; font-size: 1.2rem; text-align: center; outline: none; }
+        input[type="number"] { width: 100%; background: #000; border: 1px solid var(--void-cyan); padding: 15px; border-radius: 12px; color: var(--void-cyan); font-family: monospace; font-size: 1.2rem; text-align: center; outline: none; box-sizing: border-box; }
         .btn-action { flex: 1; padding: 15px 0; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; text-transform: uppercase; transition: 0.3s; }
         .btn-stake { background: rgba(0, 255, 157, 0.1); color: var(--void-green); border-color: var(--void-green); }
-        .btn-back { display: block; width: 100%; padding: 20px; text-align: center; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 40px; color: #fff; text-decoration: none; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px; }
-        #archive-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%; background: #080808; z-index: 500; border-top: 1px solid var(--void-cyan); padding: 40px 30px; box-sizing: border-box; overflow-y: auto; transition: 0.6s; border-radius: 40px 40px 0 0; }
+        .btn-back { display: block; width: 100%; padding: 20px; text-align: center; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 40px; color: #fff; text-decoration: none; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px; box-sizing: border-box; }
+        
+        #archive-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%; background: #080808; z-index: 500; border-top: 1px solid var(--void-cyan); padding: 40px 30px; box-sizing: border-box; overflow-y: auto; transition: 0.6s; border-radius: 40px 40px 0 0; text-align: left; }
         #archive-drawer.open { bottom: 0; }
+        .chapter-title { color: var(--void-cyan); font-size: 1rem; letter-spacing: 4px; margin: 30px 0 10px 0; border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 5px; }
+        .chapter-text { color: #888; font-size: 0.75rem; line-height: 1.6; }
         footer { position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 50; }
         .footer-link { color: #444; font-size: 0.6rem; letter-spacing: 3px; cursor: pointer; margin: 0 15px; }
     </style>
@@ -40,8 +49,17 @@
         <div class="section"><h2>Industrial_Pulse</h2><input type="number" id="voidInput" value="10" oninput="calculate()"><div style="display:flex; justify-content:space-between; margin-top:15px; font-size:0.7rem;"><span id="annual">ANNUAL: +0.60</span><span id="total">3_YEAR: +1.80</span></div><div style="display:flex; gap:10px; margin-top:15px;"><button class="btn-action btn-stake" onclick="alert('INITIATING...')">STAKE</button><button class="btn-action" style="background:#111; color:#444;" onclick="alert('LOCKED')">WITHDRAW</button></div></div>
         <a href="index.html" class="btn-back">RETURN_TO_VAULT</a>
     </div>
-    <div id="archive-drawer"><span style="float:right; cursor:pointer;" onclick="toggleArchive()">[ CLOSE ]</span><div style="margin-top:20px; color:var(--void-cyan);">SOVEREIGN ARCHIVE ACTIVE. READ CHAPTERS IN VAULT.</div></div>
+    
+    <div id="archive-drawer">
+        <span style="float:right; cursor:pointer;" onclick="toggleArchive()">[ CLOSE ]</span>
+        <div class="chapter-title">PRIVACY_PROTOCOL</div><p class="chapter-text">Zero-Knowledge interface. Sovereignty anchored to the Elemental Core.</p>
+        <div class="chapter-title">CHAPTER I: THE MANIFESTO</div><p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware.</p>
+        <div class="chapter-title">CHAPTER II: TOKENOMICS</div><p class="chapter-text">88,888 $VOID hard cap. Digital shadows of 1oz elemental cores.</p>
+        <div class="chapter-title">CHAPTER III: THE SCARCITY DECREE</div><p class="chapter-text">1,095-day maturity. Early exits trigger burn penalties.</p>
+        <div class="chapter-title">CHAPTER IV: REVENUE SHARE & ROADMAP</div><p class="chapter-text">Liquidity Warlords earn a share of the 15% Transaction Tax. // 2026: Genesis. 2027-29: Squeeze. 2030: Copper Zenith.</p>
+    </div>
     <footer><span class="footer-link" onclick="toggleArchive()">[ ARCHIVE ]</span></footer>
+    
     <script>
         function toggleArchive() { document.getElementById('archive-drawer').classList.toggle('open'); }
         function initCore() { 
@@ -51,7 +69,8 @@
         }
         function calculate() { let v = document.getElementById('voidInput').value; document.getElementById('annual').innerText = "ANNUAL: +" + (v*0.06).toFixed(2); document.getElementById('total').innerText = "3_YEAR: +" + (v*0.18).toFixed(2); }
         function startGraph() {
-            const c = document.getElementById('pulseCanvas'); const ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight;
+            const c = document.getElementById('pulseCanvas'); const ctx = c.getContext('2d'); 
+            const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; }; window.addEventListener('resize', resize); resize();
             let t = 0; function d() { ctx.clearRect(0,0,c.width,c.height); ctx.beginPath(); ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 1.5; for(let x=0; x<c.width; x++) { let y = c.height/2 + Math.sin(x*0.01+t)*50; if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); t+=0.05; requestAnimationFrame(d); } d();
         }
     </script>
