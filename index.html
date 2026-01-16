@@ -10,70 +10,62 @@
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.92);
+            --glass-panel: rgba(10, 10, 10, 0.9);
             --copper-accent: #b87333;
         }
 
-        /* STABLE LAYOUT ENGINE */
-        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; position: fixed; inset: 0; }
 
         /* TICKER */
-        .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
+        .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 10px 0; z-index: 100; }
         .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
-        .ticker-item { display: inline-block; padding: 0 50px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
+        .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.7rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO ABSTRACT BACKGROUND */
+        /* MACRO BACKGROUND */
         .bg-logo { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 250%; height: 250%; 
             background-image: url('assets/logo.JPG'); 
             background-position: center; background-size: cover; 
-            filter: blur(45px) brightness(0.65) contrast(1.1); 
+            filter: blur(40px) brightness(0.6); 
             z-index: -1; animation: deep-pulse 20s infinite alternate; pointer-events: none; 
         }
-        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
+        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
 
-        /* CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 45px 40px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
-        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
-        h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
-        .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px; }
+        /* RESPONSIVE CONTAINER */
+        .gate-container { background: var(--glass-panel); backdrop-filter: blur(35px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 35px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 50px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
+        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
+        h1 { font-size: 2.4rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--void-cyan); text-transform: uppercase; }
+        .tagline { color: #555; font-size: 0.6rem; letter-spacing: 4px; margin-bottom: 30px; }
 
         /* BUTTONS */
-        .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
+        .btn { display: block; width: 100%; padding: 16px 0; margin: 10px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 15px; }
-        .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
+        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.15), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.75rem; margin-top: 15px; }
+        .btn-forfeit { background: transparent; color: #444; font-size: 0.55rem; border: none; letter-spacing: 2px; }
 
         /* DASHBOARD DATA */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 6px; }
-        .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 2px; }
-        .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
-        .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
+        .stat-label { color: #555; font-size: 0.55rem; letter-spacing: 1px; }
+        .stat-value { color: #fff; font-family: monospace; font-size: 0.75rem; }
+        .highlight { color: var(--void-green); }
 
-        /* GAUGES */
-        .gauge-wrap { margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 15px; }
-        .gauge-label { font-size: 0.55rem; color: #666; letter-spacing: 1px; margin-bottom: 5px; display: block; }
-        .gauge-bg { width: 100%; height: 6px; background: #222; border-radius: 10px; overflow: hidden; position: relative; }
-        .gauge-fill { width: 34%; height: 100%; background: var(--void-cyan); box-shadow: 0 0 10px var(--void-cyan); }
-        .maturity-fill { width: 5%; background: var(--void-green); box-shadow: 0 0 10px var(--void-green); }
-
-        /* FORGE FEED */
-        .forge-feed { height: 45px; overflow: hidden; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
-        .feed-item { font-size: 0.55rem; color: var(--void-cyan); opacity: 0.5; font-family: monospace; margin-bottom: 4px; animation: slideUp 6s infinite linear; }
+        /* FORGE LEDGER */
+        .forge-ledger { height: 45px; overflow: hidden; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+        .forge-item { font-size: 0.5rem; color: var(--void-cyan); opacity: 0.5; font-family: monospace; margin-bottom: 3px; animation: slideUp 5s infinite linear; }
         @keyframes slideUp { 0% { transform: translateY(100%); } 100% { transform: translateY(-300%); } }
 
-        /* MODAL & CARD */
-        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
-        .card-scene { width: 320px; height: 190px; perspective: 1000px; }
-        .card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        /* HOLOGRAPHIC MODAL */
+        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
+        .card-scene { width: 300px; height: 180px; perspective: 1000px; }
+        .card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper-accent); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #000 100%); overflow: hidden; }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; border: 1px solid var(--copper-accent); padding: 20px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #000 100%); overflow: hidden; }
         .card-back { transform: rotateY(180deg); background: #080808; }
-        .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
+        .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.15) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); transition: transform 0.1s; }
     </style>
 </head>
 <body onload="initSystem()">
@@ -81,8 +73,8 @@
     <div class="ticker-wrap">
         <div class="ticker-move">
             <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
-            <span class="ticker-item">SCARCITY_PROTOCOL: T-MINUS 1,460 DAYS</span>
-            <span class="ticker-item">PROOF_OF_PRODUCTION: 88,888 $VOID MAX SUPPLY</span>
+            <span class="ticker-item">SCARCITY: 88,888 $VOID MAX // BURN_ACTIVE</span>
+            <span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span>
         </div>
     </div>
 
@@ -97,50 +89,44 @@
     </div>
 
     <div class="gate-container" id="vault" style="display:none;">
-        <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
+        <h1 style="font-size: 1.1rem; text-align: left; letter-spacing: 4px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
             <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value" id="rank-display">SENTINEL_ELITE</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
-            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
-            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value" id="pulse-countdown">29D : 23H : 59M</span></div>
+            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H</span></div>
+            
+            <div class="forge-ledger">
+                <div class="forge-item">> INITIALIZING_SYNC...</div>
+                <div class="forge-item">> VERIFYING_INDUSTRIAL_ROOTS...</div>
+                <div class="forge-item">> $VOID_REWARDS_UNLOCKED</div>
+            </div>
         </div>
-
-        <div class="gauge-wrap">
-            <span class="gauge-label">MATURITY_LOCK: 1,095_DAYS</span>
-            <div class="gauge-bg"><div class="gauge-bg maturity-fill"></div></div>
-        </div>
-        
-        <div class="forge-feed">
-            <div class="feed-item">> GLOBAL_NETWORK_SYNC_OK</div>
-            <div class="feed-item">> SENTINEL_NODES_ACTIVE: 888</div>
-            <div class="feed-item">> INDUSTRIAL_SOVEREIGNTY_SECURED</div>
-        </div>
-
         <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
         <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
     <div id="id-modal">
         <div class="card-scene">
-            <div class="card-inner" id="card-inner" onclick="flipCard()" onmousemove="handleGlint(event)">
+            <div class="card-inner" id="card-inner" onclick="flipCard()" ontouchmove="handleTouchGlint(event)" onmousemove="handleGlint(event)">
                 <div class="card-face card-front">
                     <div class="glint" id="glint"></div>
-                    <div style="color:var(--copper-accent); font-weight:700; letter-spacing:5px; font-size: 1.1rem; margin-bottom:30px;">LUXVOID</div>
-                    <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
-                    <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
-                    <div style="position:absolute; bottom:25px; left:25px; font-size:0.5rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+                    <div style="color:var(--copper-accent); font-weight:700; letter-spacing:4px; font-size: 1rem; margin-bottom:25px;">LUXVOID</div>
+                    <div style="color:#555; font-size:0.5rem; letter-spacing:1px; margin-bottom:3px;">SOVEREIGN_HOLDER</div>
+                    <div style="font-size:1.2rem; letter-spacing:5px; color:#fff;" id="card-id-display">#888</div>
+                    <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
                 </div>
                 <div class="card-face card-back">
-                    <div style="color:var(--copper-accent); font-size:0.7rem; letter-spacing:2px; margin-bottom:15px;">PRODUCTION_LEDGER</div>
-                    <div style="font-size:0.6rem; color:#888;">SERIAL_NO: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
-                    <div style="font-size:0.6rem; color:#888; margin-top:10px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
-                    <div style="position:absolute; bottom:25px; left:25px; font-size:0.5rem; color:var(--void-cyan);">PROOF_OF_PRODUCTION_AUTHENTICATED</div>
+                    <div style="color:var(--copper-accent); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
+                    <div style="font-size:0.5rem; color:#888;">SERIAL: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
+                    <div style="font-size:0.5rem; color:#888; margin-top:5px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
+                    <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">AUTHENTICATED_INDUSTRIAL_ASSET</div>
                 </div>
             </div>
         </div>
-        <p style="margin-top:30px; color:#444; font-size:0.7rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
+        <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
@@ -153,13 +139,19 @@
             document.getElementById('rank-display').innerText = (parseInt(unitID) <= 88) ? "GENESIS_PRIME" : "SENTINEL_ELITE";
             if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
             updateLivePrice();
-            startPulseCountdown();
         }
 
         function handleGlint(e) {
             const glint = document.getElementById('glint');
             const rect = e.currentTarget.getBoundingClientRect();
-            glint.style.transform = `translateX(${((e.clientX - rect.left) / rect.width) * 200 - 100}%)`;
+            glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`;
+        }
+
+        function handleTouchGlint(e) {
+            const glint = document.getElementById('glint');
+            const rect = e.currentTarget.getBoundingClientRect();
+            const touch = e.touches[0];
+            glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`;
         }
 
         function updateLivePrice() {
@@ -169,15 +161,11 @@
             }, 3000);
         }
 
-        function startPulseCountdown() {
-            setInterval(() => {
-                document.getElementById('pulse-countdown').innerText = "29D : 23H : " + Math.floor(Math.random() * 60) + "M";
-            }, 60000);
-        }
-
         function startScan() {
-            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE...";
+            const tag = document.getElementById('tagline-text');
+            tag.innerText = "SYNCING_WITH_MONOLITH...";
             document.getElementById('claim-btn').innerText = "SCANNING...";
+            setTimeout(() => { tag.innerText = "VERIFYING_INDUSTRIAL_ROOTS..."; }, 1200);
             setTimeout(() => { ascend(); }, 2500);
         }
 
