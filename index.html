@@ -14,17 +14,17 @@
             --copper-accent: #b87333;
         }
 
-        /* FIXED ANCHOR - PREVENTS ALL SHIFTING */
+        /* FIXED ANCHOR ENGINE */
         html, body { height: 100dvh; width: 100vw; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; position: fixed; inset: 0; }
 
-        /* SCARCITY TICKER */
+        /* TICKER */
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
         .ticker-move { display: inline-block; animation: ticker 30s linear infinite; }
         .ticker-item { display: inline-block; padding: 0 45px; font-size: 0.7rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO ABSTRACT BACKGROUND (250% SCALE) */
+        /* MACRO ABSTRACT BACKGROUND */
         .bg-logo { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 250%; height: 250%; 
@@ -35,29 +35,33 @@
         }
         @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
 
+        /* 3D CORE OBJECT */
+        .core-3d-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; z-index: 1; perspective: 1000px; opacity: 0.4; pointer-events: none; display: none; }
+        .core-cube { width: 100px; height: 100px; position: absolute; top: 100px; left: 100px; transform-style: preserve-3d; animation: rotateCore 15s infinite linear; }
+        .face { position: absolute; width: 100px; height: 100px; border: 1px solid var(--void-cyan); background: rgba(0, 240, 255, 0.05); }
+        .f1 { transform: rotateY(0deg) translateZ(50px); } .f2 { transform: rotateY(90deg) translateZ(50px); }
+        .f3 { transform: rotateY(180deg) translateZ(50px); } .f4 { transform: rotateY(-90deg) translateZ(50px); }
+        .f5 { transform: rotateX(90deg) translateZ(50px); } .f6 { transform: rotateX(-90deg) translateZ(50px); }
+        @keyframes rotateCore { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
+
         /* CONTAINER */
         .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
-        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
+        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
         h1 { font-size: 2.4rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
         .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 30px; }
 
         /* BUTTONS */
-        .btn { display: block; width: 100%; padding: 16px 0; margin: 10px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
+        .btn { display: block; width: 100%; padding: 18px 0; margin: 10px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
         .btn-gov { background: rgba(184, 115, 51, 0.1); color: var(--copper-accent); border-color: var(--copper-accent); font-size: 0.8rem; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
-        /* VAULT DASHBOARD */
+        /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 2px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
-
-        /* GOVERNANCE PREVIEW */
-        .gov-box { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px; margin-top: 15px; border: 1px solid rgba(184, 115, 51, 0.1); }
-        .gov-tag { font-size: 0.5rem; color: var(--copper-accent); letter-spacing: 1px; margin-bottom: 5px; }
-        .gov-title { font-size: 0.75rem; color: #eee; margin-bottom: 10px; }
 
         /* ID MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
@@ -69,17 +73,25 @@
         .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.15) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); transition: transform 0.1s; }
     </style>
 </head>
-<body onload="initSystem()">
+<body onload="initSystem()" onmousemove="rotateRelic(event)" ontouchmove="rotateRelicTouch(event)">
 
     <div class="ticker-wrap">
         <div class="ticker-move">
             <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
             <span class="ticker-item">MONOLITH_SUPPLY: <span id="supply-ticker">88,888</span> $VOID REMAINING</span>
-            <span class="ticker-item">SCARCITY_PROTOCOL: T-MINUS 1,460 DAYS</span>
+            <span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span>
         </div>
     </div>
 
     <div class="bg-logo" id="logo-bg"></div>
+
+    <div class="core-3d-wrap" id="core-3d">
+        <div class="core-cube" id="cube">
+            <div class="face f1"></div><div class="face f2"></div>
+            <div class="face f3"></div><div class="face f4"></div>
+            <div class="face f5"></div><div class="face f6"></div>
+        </div>
+    </div>
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
@@ -97,9 +109,9 @@
             <div class="stat-row"><span class="stat-label">VOTING_WEIGHT:</span> <span class="stat-value">1_UNIT</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             
-            <div class="gov-box">
-                <div class="gov-tag">FORGE_PROPOSAL_#04</div>
-                <div class="gov-title">DEPLOY_INDUSTRIAL_COPPER_BATCH_ALPHA</div>
+            <div style="background: rgba(255,255,255,0.03); border-radius:15px; padding:15px; margin-top:15px; border:1px solid rgba(184, 115, 51, 0.1);">
+                <div style="font-size: 0.5rem; color: var(--copper-accent); letter-spacing: 1px; margin-bottom: 5px;">FORGE_PROPOSAL_#04</div>
+                <div style="font-size: 0.75rem; color: #eee; margin-bottom: 10px;">DEPLOY_INDUSTRIAL_COPPER_BATCH_ALPHA</div>
                 <button class="btn btn-gov" onclick="alert('VOTE_RECORDED_ON_NETWORK')">SUBMIT_VOTE</button>
             </div>
         </div>
@@ -109,7 +121,7 @@
 
     <div id="id-modal">
         <div class="card-scene">
-            <div class="card-inner" id="card-inner" onclick="flipCard()" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)">
+            <div class="card-inner" id="card-inner" onclick="flipCard()" onmousemove="handleGlint(event)">
                 <div class="card-face card-front">
                     <div class="glint" id="glint"></div>
                     <div style="color:var(--copper-accent); font-weight:700; letter-spacing:5px; font-size: 1.1rem; margin-bottom:30px;">LUXVOID</div>
@@ -142,6 +154,21 @@
             simulateSupplyBurn();
         }
 
+        function rotateRelic(e) {
+            const cube = document.getElementById('cube');
+            let x = (window.innerWidth / 2 - e.pageX) / 10;
+            let y = (window.innerHeight / 2 - e.pageY) / 10;
+            cube.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        }
+
+        function rotateRelicTouch(e) {
+            const cube = document.getElementById('cube');
+            const touch = e.touches[0];
+            let x = (window.innerWidth / 2 - touch.pageX) / 10;
+            let y = (window.innerHeight / 2 - touch.pageY) / 10;
+            cube.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        }
+
         function simulateSupplyBurn() {
             setInterval(() => {
                 currentSupply -= Math.floor(Math.random() * 2);
@@ -155,13 +182,6 @@
             glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`;
         }
 
-        function handleTouchGlint(e) {
-            const glint = document.getElementById('glint');
-            const rect = e.currentTarget.getBoundingClientRect();
-            const touch = e.touches[0];
-            glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`;
-        }
-
         function updateLivePrice() {
             setInterval(() => {
                 let current = parseFloat(document.getElementById('cu-price').innerText);
@@ -170,13 +190,22 @@
         }
 
         function startScan() {
-            document.getElementById('tagline-text').innerText = "SYNCING_GOVERNANCE_PROTOCOL...";
+            document.getElementById('tagline-text').innerText = "CALIBRATING_RELIC_CORE...";
             document.getElementById('claim-btn').innerText = "SCANNING...";
             setTimeout(() => { ascend(); }, 2500);
         }
 
-        function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); showVault(); }
-        function showVault() { document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; }
+        function ascend() { 
+            localStorage.setItem('luxvoid_ascended', 'true'); 
+            showVault(); 
+        }
+
+        function showVault() { 
+            document.getElementById('gate').style.display = 'none'; 
+            document.getElementById('vault').style.display = 'block'; 
+            document.getElementById('core-3d').style.display = 'block';
+        }
+
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
         function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
