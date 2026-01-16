@@ -36,15 +36,15 @@
         @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
 
         /* CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
+        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
         h1 { font-size: 2.4rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
         .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 30px; }
 
         /* BUTTONS */
-        .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
+        .btn { display: block; width: 100%; padding: 16px 0; margin: 10px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.15), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 15px; }
+        .btn-gov { background: rgba(184, 115, 51, 0.1); color: var(--copper-accent); border-color: var(--copper-accent); font-size: 0.8rem; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
         /* VAULT DASHBOARD */
@@ -54,10 +54,10 @@
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* SENTINEL NETWORK MAP */
-        .network-map { height: 80px; background: rgba(255,255,255,0.03); border-radius: 15px; margin-top: 15px; position: relative; overflow: hidden; border: 1px solid rgba(0,240,255,0.05); }
-        .map-ping { position: absolute; width: 4px; height: 4px; background: var(--void-cyan); border-radius: 50%; box-shadow: 0 0 8px var(--void-cyan); animation: ping 2s infinite; }
-        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
+        /* GOVERNANCE PREVIEW */
+        .gov-box { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px; margin-top: 15px; border: 1px solid rgba(184, 115, 51, 0.1); }
+        .gov-tag { font-size: 0.5rem; color: var(--copper-accent); letter-spacing: 1px; margin-bottom: 5px; }
+        .gov-title { font-size: 0.75rem; color: #eee; margin-bottom: 10px; }
 
         /* ID MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
@@ -94,18 +94,16 @@
         <div class="scan-line"></div>
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
-            <div class="stat-row"><span class="stat-label">MONOLITH_SUPPLY:</span> <span class="stat-value highlight" id="supply-display">88,888</span></div>
+            <div class="stat-row"><span class="stat-label">VOTING_WEIGHT:</span> <span class="stat-value">1_UNIT</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
-            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H</span></div>
             
-            <div class="stat-label" style="margin-top:15px;">GLOBAL_SENTINEL_NETWORK: ONLINE</div>
-            <div class="network-map" id="network-map">
-                <div class="map-ping" style="top:20%; left:30%;"></div>
-                <div class="map-ping" style="top:50%; left:70%;"></div>
-                <div class="map-ping" style="top:40%; left:50%;"></div>
+            <div class="gov-box">
+                <div class="gov-tag">FORGE_PROPOSAL_#04</div>
+                <div class="gov-title">DEPLOY_INDUSTRIAL_COPPER_BATCH_ALPHA</div>
+                <button class="btn btn-gov" onclick="alert('VOTE_RECORDED_ON_NETWORK')">SUBMIT_VOTE</button>
             </div>
         </div>
-        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
+        <button class="btn btn-ascend" style="margin-top:20px; font-size:0.8rem;" onclick="openCard()">VIEW_ELITE_ID</button>
         <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
@@ -148,7 +146,6 @@
             setInterval(() => {
                 currentSupply -= Math.floor(Math.random() * 2);
                 document.getElementById('supply-ticker').innerText = currentSupply.toLocaleString();
-                document.getElementById('supply-display').innerText = currentSupply.toLocaleString();
             }, 5000);
         }
 
@@ -173,7 +170,7 @@
         }
 
         function startScan() {
-            document.getElementById('tagline-text').innerText = "SYNCING_GLOBAL_NETWORK...";
+            document.getElementById('tagline-text').innerText = "SYNCING_GOVERNANCE_PROTOCOL...";
             document.getElementById('claim-btn').innerText = "SCANNING...";
             setTimeout(() => { ascend(); }, 2500);
         }
