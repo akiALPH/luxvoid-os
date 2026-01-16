@@ -11,6 +11,8 @@
             --void-green: #00ff9d; 
             --deep-bg: #050505;
             --glass-panel: rgba(10, 10, 10, 0.85);
+            --titanium: linear-gradient(135deg, #2c3e50, #4ca1af);
+            --copper-accent: #b87333;
         }
 
         body {
@@ -38,38 +40,37 @@
             padding: 12px 0;
             z-index: 100;
         }
-
         .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
         .ticker-item { display: inline-block; padding: 0 50px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* THE RELIC LOGO (FIXED SCALING) */
+        /* LOGO ENGINE - REVERTED TO "MACRO ABSTRACT" */
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px; /* FIXED SIZE TO PREVENT STRETCHING */
-            height: 300px;
+            width: 150%;  /* Massive Size */
+            height: 150%; /* Massive Size */
             background-image: url('assets/logo.JPG');
             background-position: center;
-            background-size: contain;
-            background-repeat: no-repeat;
-            filter: blur(8px) brightness(0.6); 
+            background-size: cover; /* Fills the whole screen */
+            filter: blur(25px) brightness(0.5); /* The "White/Blurry" Look */
             z-index: -1;
-            transition: all 0.8s ease;
+            animation: deep-pulse 15s infinite alternate;
         }
 
         .scanning {
-            animation: scan-rotate 1.5s infinite linear !important;
-            filter: blur(0px) brightness(1) drop-shadow(0 0 30px var(--void-cyan)) !important;
+            /* When scanning, we sharpen it slightly */
+            filter: blur(10px) brightness(0.8) !important;
+            transition: all 0.5s ease;
         }
 
-        @keyframes scan-rotate { 
-            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.1); } 
-            100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.1); } 
+        @keyframes deep-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
         }
 
-        /* ROUNDED LUXURY CONTAINER */
+        /* CONTAINER STYLING */
         .gate-container {
             background: var(--glass-panel);
             backdrop-filter: blur(30px);
@@ -99,20 +100,60 @@
             border-radius: 50px;
             transition: all 0.4s ease;
         }
-
         .btn-ascend { background: rgba(0, 240, 255, 0.1); color: var(--void-cyan); border-color: var(--void-cyan); }
         .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
-
-        .btn-coa { background: rgba(0, 255, 157, 0.05); color: var(--void-green); border-color: var(--void-green); margin-top: 20px; font-size: 0.8rem; }
-
+        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), rgba(0,0,0,0)); color: var(--void-green); border-color: var(--void-green); margin-top: 20px; font-size: 0.8rem; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 2px; }
 
-        /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
         .stat-label { color: #666; font-size: 0.65rem; }
         .stat-value { color: #eee; font-family: monospace; font-size: 0.85rem; }
         .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
+
+        /* THE ELITE ID CARD MODAL */
+        #id-card-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .elite-card {
+            width: 320px; height: 200px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 2px solid var(--copper-accent);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(184, 115, 51, 0.4);
+            padding: 20px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+        }
+
+        /* HOLOGRAPHIC SHINE */
+        .elite-card::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 4s infinite;
+        }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .card-title { font-size: 1.2rem; letter-spacing: 3px; color: var(--copper-accent); text-transform: uppercase; font-weight: bold; }
+        .card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #ffd700, #b8860b); border-radius: 5px; opacity: 0.8; }
+        
+        .card-details { font-size: 0.8rem; letter-spacing: 2px; color: #888; margin-bottom: 5px; }
+        .card-id { font-size: 1.2rem; letter-spacing: 4px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .card-footer { position: absolute; bottom: 20px; left: 20px; font-size: 0.6rem; color: var(--void-cyan); }
+
+        @keyframes shine { 0% { transform: translateX(-100%) translateY(-100%); } 100% { transform: translateX(100%) translateY(100%); } }
 
     </style>
 </head>
@@ -146,9 +187,21 @@
             <div class="stat-row"><span class="stat-label">CORE_STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
         </div>
         
-        <button class="btn btn-coa" onclick="viewCOA()">VIEW_DIGITAL_COA</button>
-
+        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
         <button class="btn btn-forfeit" style="margin-top:25px;" onclick="resetSentinel()">RESET_SESSION</button>
+    </div>
+
+    <div id="id-card-modal" onclick="closeCard()">
+        <div class="elite-card">
+            <div class="card-header">
+                <div class="card-title">LUXVOID</div>
+                <div class="card-chip"></div>
+            </div>
+            <div class="card-details">SENTINEL_ID</div>
+            <div class="card-id">888-PRIME-001</div>
+            <div class="card-footer">ACCESS_GRANT: UNRESTRICTED // 1.00 OZ CU</div>
+        </div>
+        <div style="margin-top: 20px; color: #666; font-size: 0.8rem;">TAP ANYWHERE TO CLOSE</div>
     </div>
 
     <script>
@@ -170,10 +223,7 @@
             document.getElementById('tagline-text').innerText = "VERIFYING_ELEMENTAL_CORE...";
             document.getElementById('tagline-text').style.color = "var(--void-cyan)";
             document.getElementById('claim-btn').innerText = "SCANNING...";
-
-            setTimeout(() => {
-                ascend();
-            }, 3000);
+            setTimeout(() => { ascend(); }, 3000);
         }
 
         function ascend() {
@@ -186,12 +236,14 @@
             document.getElementById('vault').style.display = 'block';
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('logo-bg').classList.remove('scanning');
-            // Fade the logo back for the dashboard
-            document.getElementById('logo-bg').style.opacity = "0.3";
         }
 
-        function viewCOA() {
-            alert("LUXVOID ELITE SERIES // PROTOCOLS_ENGAGED\n\n- PHYSICAL_ASSET: 1oz 99.9% Pure Copper\n- SECURITY_HASH: [AUTHENTICATED]\n- GUARDIAN_ID: 888-SENTINEL-PRIME\n\nYOUR CORE IS SECURED.");
+        function openCard() {
+            document.getElementById('id-card-modal').style.display = 'flex';
+        }
+
+        function closeCard() {
+            document.getElementById('id-card-modal').style.display = 'none';
         }
 
         function resetSentinel() {
