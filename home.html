@@ -9,7 +9,10 @@
         :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        /* PRE-LOADER CURTAIN */
+        /* PARTICLES */
+        #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.5; pointer-events: none; }
+
+        /* PRE-LOADER */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center;
@@ -18,36 +21,33 @@
         .loader-text { color: var(--void-cyan); font-size: 0.8rem; letter-spacing: 5px; animation: pulse 1s infinite alternate; }
         @keyframes pulse { 0% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        /* HERO SECTION - THE INTERACTIVE STAGE */
+        /* HERO STAGE */
         .hero { 
             height: 100vh; width: 100%; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; position: relative; 
-            text-align: center; perspective: 2000px; /* Creates the 3D space */
-            overflow: hidden;
+            text-align: center; perspective: 2000px; overflow: hidden;
         }
 
-        /* THE INTERACTIVE COIN CONTAINER */
+        /* COIN (120vmin to fill screen) */
         .coin-wrapper {
             position: absolute; top: 50%; left: 50%;
-            width: 80vmin; height: 80vmin; /* Responsive square */
+            width: 120vmin; height: 120vmin; 
             transform: translate(-50%, -50%);
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out; /* Smooth movement */
+            transition: transform 0.1s ease-out;
             z-index: -1;
-            pointer-events: none; /* Let clicks pass through to buttons */
+            pointer-events: none;
         }
 
         .coin-image {
             width: 100%; height: 100%;
             object-fit: contain;
-            /* ENSURE THIS FILE EXISTS IN YOUR ASSETS FOLDER */
             background: url('assets/hero-poster.png') center/contain no-repeat;
             filter: brightness(0.7) contrast(1.1);
             box-shadow: 0 30px 100px rgba(0,0,0,0.8);
             border-radius: 50%;
         }
 
-        /* DYNAMIC GLARE EFFECT */
         .glare-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 50%;
@@ -59,90 +59,68 @@
         
         .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, #050505 95%); z-index: 0; pointer-events: none; }
 
-        .hero-content { position: relative; z-index: 10; padding: 20px; opacity: 0; transform: translateY(30px); transition: all 1.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .hero-content { position: relative; z-index: 10; padding: 20px; opacity: 0; transform: translateY(30px); transition: all 1.5s cubic-bezier(0.165, 0.84, 0.44, 1); display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .hero-visible { opacity: 1; transform: translateY(0); }
 
-        h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); letter-spacing: clamp(10px, 4vw, 25px); margin: 0; text-shadow: 0 0 35px var(--void-cyan); text-transform: uppercase; }
-        .subtitle { font-size: 0.75rem; letter-spacing: 5px; color: var(--copper); margin-top: 20px; text-transform: uppercase; border: 1px solid var(--copper); padding: 12px 25px; display: inline-block; border-radius: 40px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); }
+        /* --- THE GLASS PROTOCOL UPGRADES --- */
 
-        .btn-enter { margin-top: 50px; padding: 18px 45px; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; letter-spacing: 5px; color: var(--void-cyan); background: transparent; border: 1px solid var(--void-cyan); border-radius: 60px; cursor: pointer; transition: 0.4s; text-decoration: none; display: inline-block; }
-        .btn-enter:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
+        /* 1. NEON GLASS HEADER */
+        h1 { 
+            font-size: clamp(3rem, 10vw, 5.5rem); 
+            letter-spacing: clamp(8px, 3vw, 20px); 
+            margin: 0; 
+            text-transform: uppercase;
+            color: #fff;
+            /* The Glow Effect */
+            text-shadow: 
+                0 0 10px rgba(0, 240, 255, 0.5),
+                0 0 20px rgba(0, 240, 255, 0.3),
+                0 0 40px rgba(0, 240, 255, 0.2);
+        }
 
-        footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #333; font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase; z-index: 20; }
+        /* 2. FROSTED GLASS SUBTITLE (Non-Functional Label) */
+        .subtitle { 
+            font-size: 0.7rem; 
+            letter-spacing: 5px; 
+            color: #ccc; 
+            text-transform: uppercase; 
+            /* Transparent Glass Background */
+            border: 1px solid rgba(184, 115, 51, 0.3); /* Copper Tint */
+            padding: 10px 30px; 
+            border-radius: 40px; 
+            background: rgba(0, 0, 0, 0.2); /* Very Low Opacity */
+            backdrop-filter: blur(12px); /* heavy blur */
+            pointer-events: none; /* Confirms it's just a label */
+        }
+
+        /* 3. FROSTED GLASS BUTTON (Functional) */
+        .btn-enter { 
+            padding: 18px 50px; 
+            font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; letter-spacing: 5px; 
+            color: var(--void-cyan); 
+            text-decoration: none; 
+            border-radius: 60px; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            /* Matching Glass Theme */
+            background: rgba(0, 240, 255, 0.05); 
+            border: 1px solid rgba(0, 240, 255, 0.4); 
+            backdrop-filter: blur(12px);
+            margin-top: 20px;
+        }
+        
+        .btn-enter:hover { 
+            background: rgba(0, 240, 255, 0.2); 
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4); 
+            color: #fff;
+        }
+
+        footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #555; font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase; z-index: 20; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div id="loader"><div class="loader-text">INITIALIZING_MONOLITH...</div></div>
+    <canvas id="particle-canvas"></canvas>
 
-    <section class="hero" id="hero-stage">
-        <div class="coin-wrapper" id="coin-tilt">
-            <div class="coin-image"></div>
-            <div class="glare-overlay" id="coin-glare"></div>
-        </div>
-        <div class="hero-overlay"></div>
-        
-        <div class="hero-content" id="hero-content">
-            <h1>LUXVOID</h1>
-            <div class="subtitle">INDUSTRIAL_REVOLUTION // HARD_ASSET_VAULT</div>
-            <br>
-            <a href="index.html" class="btn-enter">ACCESS_SOVEREIGN_OS</a>
-        </div>
-
-        <footer>LUXVOID // MONAD_ALPH // SOVEREIGN_ASSET_PROTECTION</footer>
-    </section>
-
-    <script>
-        // 1. REVEAL LOGIC
-        function reveal() {
-            const loader = document.getElementById('loader');
-            const content = document.getElementById('hero-content');
-            loader.style.opacity = '0';
-            setTimeout(() => { 
-                loader.style.display = 'none'; 
-                content.classList.add('hero-visible');
-            }, 1000);
-        }
-        window.addEventListener('load', reveal);
-        setTimeout(reveal, 3000); // Safety timer
-
-        // 2. INTERACTIVE GYRO/PARALLAX ENGINE
-        const stage = document.getElementById('hero-stage');
-        const coin = document.getElementById('coin-tilt');
-        const glare = document.getElementById('coin-glare');
-
-        stage.addEventListener('mousemove', (e) => {
-            const { offsetWidth: width, offsetHeight: height } = stage;
-            const { clientX: x, clientY: y } = e;
-
-            // Calculate rotation based on mouse position relative to center
-            const xWalk = Math.round((x / width * 40) - 20); // Max 20deg tilt
-            const yWalk = Math.round((y / height * 40) - 20);
-
-            // Apply Tilt to Coin
-            coin.style.transform = `translate(-50%, -50%) rotateY(${xWalk}deg) rotateX(${-yWalk}deg)`;
-
-            // Apply opposite movement to glare for realism
-            glare.style.opacity = '1';
-            glare.style.transform = `translate(${-xWalk * 2}px, ${-yWalk * 2}px)`;
-        });
-
-        // Reset on mouse leave
-        stage.addEventListener('mouseleave', () => {
-            coin.style.transform = `translate(-50%, -50%) rotateY(0deg) rotateX(0deg)`;
-            glare.style.opacity = '0';
-        });
-
-        // Optional: Basic Mobile Touch Support (Simulates drag tilt)
-        stage.addEventListener('touchmove', (e) => {
-            const { offsetWidth: width, offsetHeight: height } = stage;
-            const { clientX: x, clientY: y } = e.touches[0];
-            const xWalk = Math.round((x / width * 40) - 20);
-            const yWalk = Math.round((y / height * 40) - 20);
-            coin.style.transform = `translate(-50%, -50%) rotateY(${xWalk}deg) rotateX(${-yWalk}deg)`;
-            glare.style.opacity = '1';
-        });
-    </script>
-
-</body>
-</html>
+    <section class="hero
