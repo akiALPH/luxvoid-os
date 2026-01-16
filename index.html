@@ -10,13 +10,13 @@
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.92);
+            --glass-panel: rgba(10, 10, 10, 0.9);
             --copper-accent: #b87333;
         }
 
-        /* FIXED LAYOUT ENGINE - Prevents any shifting */
+        /* FIXED LAYOUT - NO SHIFTING */
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; }
-        body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+        body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; position: fixed; inset: 0; }
 
         /* TICKER */
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
@@ -24,9 +24,16 @@
         .ticker-item { display: inline-block; padding: 0 50px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO BACKGROUND */
-        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 160%; height: 160%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(35px) brightness(0.45); z-index: -1; animation: deep-pulse 20s infinite alternate; pointer-events: none; }
-        @keyframes deep-pulse { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); } }
+        /* MACRO ABSTRACT BACKGROUND */
+        .bg-logo { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 250%; height: 250%; 
+            background-image: url('assets/logo.JPG'); 
+            background-position: center; background-size: cover; 
+            filter: blur(45px) brightness(0.65) contrast(1.1); 
+            z-index: -1; animation: deep-pulse 20s infinite alternate; pointer-events: none; 
+        }
+        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
 
         /* CONTAINER */
         .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 50px 40px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
@@ -37,26 +44,24 @@
         /* BUTTONS */
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; }
+        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
-        /* DASHBOARD */
+        /* DASHBOARD DATA (RESTORED) */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 2px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* HOLOGRAPHIC CARD */
+        /* HOLOGRAPHIC MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
         .card-scene { width: 320px; height: 190px; perspective: 1000px; }
         .card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper-accent); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #000 100%); overflow: hidden; }
         .card-back { transform: rotateY(180deg); background: #080808; }
-        
-        /* THE GLINT */
-        .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transition: transform 0.1s linear; transform: translateX(-100%); }
+        .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
 <body onload="initSystem()">
@@ -82,8 +87,9 @@
     <div class="gate-container" id="vault" style="display:none;">
         <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
-        <div id="dashboard">
+        <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
+            <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value" id="rank-display">SENTINEL_ELITE</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H</span></div>
@@ -98,7 +104,7 @@
             <div class="card-inner" id="card-inner" onclick="flipCard()" onmousemove="handleGlint(event)">
                 <div class="card-face card-front">
                     <div class="glint" id="glint"></div>
-                    <div style="color:var(--copper-accent); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                    <div style="color:var(--copper-accent); font-weight:700; letter-spacing:5px; font-size: 1.1rem; margin-bottom:30px;">LUXVOID</div>
                     <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
                     <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
                     <div style="position:absolute; bottom:25px; left:25px; font-size:0.5rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
@@ -121,17 +127,16 @@
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
             document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
+            document.getElementById('rank-display').innerText = (parseInt(unitID) <= 88) ? "GENESIS_PRIME" : "SENTINEL_ELITE";
             if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
             updateLivePrice();
         }
 
         function handleGlint(e) {
-            const card = e.currentTarget;
             const glint = document.getElementById('glint');
-            const rect = card.getBoundingClientRect();
+            const rect = e.currentTarget.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            const percentX = (x / rect.width) * 100;
-            glint.style.transform = `translateX(${percentX * 2 - 100}%)`;
+            glint.style.transform = `translateX(${(x / rect.width) * 200 - 100}%)`;
         }
 
         function updateLivePrice() {
