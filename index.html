@@ -26,121 +26,121 @@
             align-items: center;
         }
 
-        /* THE LOGO BACKGROUND ENGINE - UPDATED TO .JPG */
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 120%; 
             height: 120%;
-            /* WE MATCH THE CAPITALIZATION HERE */
             background-image: url('assets/logo.JPG');
             background-position: center;
             background-size: cover;
-            filter: blur(30px) brightness(0.4);
+            filter: blur(40px) brightness(0.3);
             z-index: -1;
-            animation: deep-pulse 8s infinite alternate;
+            animation: deep-pulse 10s infinite alternate;
         }
 
         .gate-container {
             background: var(--glass-panel);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 4px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 50px 40px;
+            border-radius: 2px;
             text-align: center;
-            max-width: 320px;
-            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
-            position: relative;
+            max-width: 350px;
+            box-shadow: 0 0 80px rgba(0, 240, 255, 0.05);
         }
 
         .scan-line {
             width: 100%;
-            height: 2px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, var(--void-cyan), transparent);
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            letter-spacing: 6px;
-            margin: 0;
-            text-shadow: 0 0 20px var(--void-cyan);
-            text-transform: uppercase;
-        }
-
-        p {
-            color: #aaa;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-        }
+        h1 { font-size: 2.8rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
+        p { color: #888; font-size: 0.8rem; letter-spacing: 4px; margin-bottom: 40px; }
 
         .btn {
-            display: block;
-            width: 100%;
-            padding: 15px 0;
-            margin: 10px 0;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
+            display: block; width: 100%; padding: 18px 0; margin: 15px 0;
+            font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .btn-ascend {
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--void-cyan);
-            border-color: var(--void-cyan);
-        }
+        .btn-ascend { background: rgba(0, 240, 255, 0.05); color: var(--void-cyan); border-color: var(--void-cyan); }
+        .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
 
-        .btn-ascend:hover {
-            background: var(--void-cyan);
-            color: #000;
-            box-shadow: 0 0 30px var(--void-cyan);
-        }
+        .btn-oblivion { background: transparent; color: #444; font-size: 0.7rem; border: none; letter-spacing: 2px; }
+        .btn-oblivion:hover { color: #ff3333; }
 
-        .btn-oblivion {
-            background: transparent;
-            color: #666;
-            font-size: 0.9rem;
-            border: none;
-        }
-
-        .btn-oblivion:hover {
-            color: #ff3333;
-            text-shadow: 0 0 10px #ff3333;
-        }
+        /* THE DASHBOARD LAYER (HIDDEN INITIALLY) */
+        #dashboard { display: none; text-align: left; width: 100%; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .stat-label { color: #666; font-size: 0.7rem; }
+        .stat-value { color: var(--void-green); font-family: monospace; }
 
         @keyframes deep-pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+            0% { opacity: 0.4; scale: 1; }
+            100% { opacity: 0.7; scale: 1.05; }
         }
     </style>
 </head>
-<body>
+<body onload="checkSentinelStatus()">
 
     <div class="bg-logo"></div>
 
-    <div class="gate-container">
+    <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
         <div class="scan-line"></div>
-        <p>IDENTIFY YOURSELF</p>
+        <p>RECOGNITION REQUIRED</p>
 
-        <button class="btn btn-ascend" onclick="ascendProtocol()">INITIALIZE LINK</button>
-        <button class="btn btn-oblivion" onclick="oblivionProtocol()">REJECT SIGNAL</button>
+        <button class="btn btn-ascend" onclick="ascend()">INITIALIZE LINK</button>
+        <button class="btn btn-oblivion" onclick="oblivion()">REJECT SIGNAL</button>
+    </div>
+
+    <div class="gate-container" id="vault" style="display:none;">
+        <h1 style="font-size: 1.5rem; text-align: left;">SENTINEL_DASHBOARD</h1>
+        <div class="scan-line"></div>
+        
+        <div id="dashboard">
+            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value">ACTIVE</span></div>
+            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">PHASE_01</span></div>
+            <div class="stat-row"><span class="stat-label">$VOID BALANCE:</span> <span class="stat-value">10.00</span></div>
+            <div class="stat-row"><span class="stat-label">WEEKLY JUICE:</span> <span class="stat-value">0.00 USDC</span></div>
+        </div>
+        
+        <button class="btn btn-oblivion" style="margin-top:20px;" onclick="resetSentinel()">TERMINATE SESSION</button>
     </div>
 
     <script>
-        function ascendProtocol() {
-            alert("ACCESS GRANTED. WELCOME SENTINEL."); 
+        // Check if the user is a returning Sentinel
+        function checkSentinelStatus() {
+            if (localStorage.getItem('luxvoid_ascended') === 'true') {
+                showVault();
+            }
         }
 
-        function oblivionProtocol() {
-            alert("CONNECTION TERMINATED."); 
+        function ascend() {
+            // Save state to browser memory
+            localStorage.setItem('luxvoid_ascended', 'true');
+            showVault();
+        }
+
+        function showVault() {
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('vault').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function resetSentinel() {
+            localStorage.removeItem('luxvoid_ascended');
+            location.reload();
+        }
+
+        function oblivion() {
+            alert("SIGNAL LOST. OBLIVION CHOSEN.");
+            window.location.href = "https://www.google.com"; // placeholder for rejection
         }
     </script>
 
