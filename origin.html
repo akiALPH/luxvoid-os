@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUXVOID // GENESIS_LOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --silver: #c0c0c0; --gold: #ffd700; --alert: #ff3333; --deep-bg: #050505; }
+        
+        body { 
+            background-color: var(--deep-bg); 
+            color: #ccc; 
+            font-family: 'Share Tech Mono', monospace; /* Raw Terminal Style */
+            margin: 0; padding: 0; 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND NOISE */
+        .noise-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('assets/logo.JPG') center/cover;
+            opacity: 0.08; filter: grayscale(100%) contrast(200%) grain(10px);
+            z-index: -1; pointer-events: none;
+        }
+
+        .container { max-width: 650px; margin: 0 auto; padding: 40px 20px; }
+
+        /* HEADER */
+        h1 { color: var(--void-cyan); font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 40px; }
+        
+        /* STORY TEXT */
+        p { margin-bottom: 25px; font-size: 0.9rem; }
+        .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid #555; }
+        .cyan { color: var(--void-cyan); }
+        .copper { color: var(--copper); }
+
+        /* THE LOG ENTRY */
+        .log-entry { 
+            border-left: 2px solid var(--copper); 
+            padding-left: 20px; 
+            margin-bottom: 50px;
+        }
+        .timestamp { color: #555; font-size: 0.7rem; margin-bottom: 10px; display: block; }
+
+        /* THE ELEMENTAL ROADMAP */
+        .roadmap-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333;
+            padding: 20px;
+            margin: 40px 0;
+        }
+        .phase { margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px; }
+        .phase-active { color: var(--copper); text-shadow: 0 0 10px rgba(184, 115, 51, 0.4); }
+        .phase-locked { color: #444; }
+
+        /* THE LEGAL SHIELD (DISCLAIMER) */
+        .legal-shield {
+            margin-top: 80px;
+            padding: 30px;
+            border: 1px solid var(--alert); /* Red Border for Warning */
+            background: rgba(20, 0, 0, 0.8);
+            font-size: 0.65rem;
+            color: #aaa;
+            text-align: justify;
+        }
+        .legal-header { color: var(--alert); font-weight: bold; font-size: 1rem; margin-bottom: 15px; display: block; letter-spacing: 2px; text-align: center; }
+
+        /* NAVIGATION */
+        .btn-back { 
+            display: block; width: 100%; text-align: center; 
+            padding: 20px; margin-top: 40px; margin-bottom: 60px;
+            border: 1px solid var(--void-cyan); color: var(--void-cyan); 
+            text-decoration: none; text-transform: uppercase; letter-spacing: 3px; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 20px var(--void-cyan); }
+
+    </style>
+</head>
+<body>
+
+    <div class="noise-bg"></div>
+
+    <div class="container">
+        <h1>GENESIS_LOG // 001</h1>
+
+        <div class="log-entry">
+            <span class="timestamp">LOG_DATE: 2026-01-14 // ORIGIN_POINT: THE TRENCHES</span>
+            <p>They told me "No."</p>
+            <p>Every bank. Every suit in a high-rise office. They told me hard assets were dead. They said the world runs on credit, on vapor, on infinite printing.</p>
+            <p>I went back to my 9-5. I kept my head down. I kept the lights on. But at night, while the "experts" were sleeping, I was in the forge.</p>
+            <p>I realized the truth: <span class="highlight">They are lying to us.</span> They print paper to steal your time. I wanted to build something they couldn't print. Something heavy. Something real.</p>
+            <p>Luxvoid isn't a corporation. It's a refusal. It's me, fighting the odds, building a reserve of <span class="copper">Elemental Copper</span> for the few who understand that scarcity is the only truth left.</p>
+            <p>I don't have a board of directors. I have <span class="cyan">888 Sentinels</span>. That is my family. If you are reading this, you are the resistance.</p>
+        </div>
+
+        <div class="roadmap-box">
+            <div style="color:#888; font-size:0.7rem; margin-bottom:15px;">/// ELEMENTAL_ROADMAP_PROTOCOL ///</div>
+            <div class="phase phase-active">PHASE I: COPPER [THE SHIELD] // STATUS: ACTIVE</div>
+            <div class="phase" style="color:var(--silver);">PHASE II: SILVER [THE SWORD] // STATUS: LOCKED</div>
+            <div class="phase" style="color:var(--gold); opacity:0.3;">PHASE III: GOLD [THE CROWN] // STATUS: CLASSIFIED</div>
+            <div class="phase" style="color:#fff; opacity:0.1;">PHASE IV: PLATINUM [THE THRONE] // STATUS: CLASSIFIED</div>
+        </div>
+
+        <div class="legal-shield">
+            <span class="legal-header">WARNING: GRATUITY PROTOCOL // NO LIABILITY</span>
+            <p>
+                <strong>1. THE GIFT:</strong> $VOID tokens are a gratuitous loyalty point system gifted to holders of Luxvoid Physical Artifacts. They are a "Thank You" for your loyalty. They have <strong>NO inherent monetary value</strong>, NO equity claim, and NO promise of future performance.
+            </p>
+            <p>
+                <strong>2. THE RISK:</strong> I am a builder, not a bank. The crypto markets are volatile, dangerous, and unforgiving. The project could fail. The token could go to zero. If that happens, you still own the physical Copper Artifact you purchased. That is your hedge. That is your value.
+            </p>
+            <p>
+                <strong>3. THE PACT:</strong> By accepting $VOID, you acknowledge this is an experimental art project. You waive all rights to litigation, class action, or financial claims against the creator. I am not responsible for your wins, and I am not responsible for your losses. <strong>It is free. You cannot sue me for a gift.</strong>
+            </p>
+            <p style="text-align: center; margin-top: 20px; color: #fff; letter-spacing: 1px;">
+                PROCEED ONLY IF YOU TRUST THE FORGE.
+            </p>
+        </div>
+
+        <a href="index.html" class="btn-back">ACKNOWLEDGE & ENTER VAULT</a>
+    </div>
+
+</body>
+</html>
