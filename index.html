@@ -14,8 +14,8 @@
             --copper-accent: #b87333;
         }
 
-        /* HARD-LOCKED CENTER LAYOUT */
-        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; }
+        /* FIXED ANCHOR - PREVENTS ALL SHIFTING */
+        html, body { height: 100dvh; width: 100vw; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; position: fixed; inset: 0; }
 
         /* SCARCITY TICKER */
@@ -24,7 +24,7 @@
         .ticker-item { display: inline-block; padding: 0 45px; font-size: 0.7rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO ABSTRACT LOGO */
+        /* MACRO ABSTRACT BACKGROUND (250% SCALE) */
         .bg-logo { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 250%; height: 250%; 
@@ -33,13 +33,13 @@
             filter: blur(45px) brightness(0.65) contrast(1.1); 
             z-index: -1; animation: deep-pulse 20s infinite alternate; pointer-events: none; 
         }
-        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
+        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
 
-        /* SOVEREIGN CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 45px 35px; border-radius: 40px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
-        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
-        h1 { font-size: 2.5rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
-        .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px; }
+        /* CONTAINER */
+        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
+        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
+        h1 { font-size: 2.4rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
+        .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 30px; }
 
         /* BUTTONS */
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
@@ -47,17 +47,17 @@
         .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.15), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 15px; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
-        /* DASHBOARD */
+        /* VAULT DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 2px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* FORGE LEDGER */
-        .forge-ledger { height: 45px; overflow: hidden; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
-        .forge-item { font-size: 0.5rem; color: var(--void-cyan); opacity: 0.5; font-family: monospace; margin-bottom: 4px; animation: slideUp 5s infinite linear; }
-        @keyframes slideUp { 0% { transform: translateY(100%); } 100% { transform: translateY(-300%); } }
+        /* SENTINEL NETWORK MAP */
+        .network-map { height: 80px; background: rgba(255,255,255,0.03); border-radius: 15px; margin-top: 15px; position: relative; overflow: hidden; border: 1px solid rgba(0,240,255,0.05); }
+        .map-ping { position: absolute; width: 4px; height: 4px; background: var(--void-cyan); border-radius: 50%; box-shadow: 0 0 8px var(--void-cyan); animation: ping 2s infinite; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
 
         /* ID MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
@@ -95,14 +95,14 @@
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
             <div class="stat-row"><span class="stat-label">MONOLITH_SUPPLY:</span> <span class="stat-value highlight" id="supply-display">88,888</span></div>
-            <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H</span></div>
             
-            <div class="forge-ledger">
-                <div class="forge-item">> INITIALIZING_SYNC...</div>
-                <div class="forge-item">> VERIFYING_INDUSTRIAL_ROOTS...</div>
-                <div class="forge-item">> REWARDS_AUTHENTICATED</div>
+            <div class="stat-label" style="margin-top:15px;">GLOBAL_SENTINEL_NETWORK: ONLINE</div>
+            <div class="network-map" id="network-map">
+                <div class="map-ping" style="top:20%; left:30%;"></div>
+                <div class="map-ping" style="top:50%; left:70%;"></div>
+                <div class="map-ping" style="top:40%; left:50%;"></div>
             </div>
         </div>
         <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
@@ -139,7 +139,6 @@
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
             document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
-            document.getElementById('rank-display').innerText = (parseInt(unitID) <= 88) ? "GENESIS_PRIME" : "SENTINEL_ELITE";
             if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
             updateLivePrice();
             simulateSupplyBurn();
@@ -174,7 +173,7 @@
         }
 
         function startScan() {
-            document.getElementById('tagline-text').innerText = "VERIFYING_INDUSTRIAL_CORE...";
+            document.getElementById('tagline-text').innerText = "SYNCING_GLOBAL_NETWORK...";
             document.getElementById('claim-btn').innerText = "SCANNING...";
             setTimeout(() => { ascend(); }, 2500);
         }
