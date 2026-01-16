@@ -6,9 +6,12 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; }
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; --alert-red: #ff3333; }
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+
+        /* BACKGROUND */
+        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.8); z-index: -1; pointer-events: none; }
 
         /* TICKER */
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
@@ -16,35 +19,55 @@
         .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO ABSTRACT BG - FIXED BRIGHTNESS */
-        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.8); z-index: -1; pointer-events: none; }
-
         /* CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 50px 40px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px #000; z-index: 10; flex-shrink: 0; }
+        .gate-container { background: var(--glass-panel); backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px #000; z-index: 10; flex-shrink: 0; transition: all 0.5s ease; max-height: 80vh; overflow-y: auto; }
+        /* Hide Scrollbar */
+        .gate-container::-webkit-scrollbar { display: none; }
+        .gate-container { -ms-overflow-style: none; scrollbar-width: none; }
+
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
         h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
+        h2 { font-size: 1.2rem; letter-spacing: 4px; margin: 0; color: var(--void-cyan); text-transform: uppercase; }
 
         /* BUTTONS */
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
+        .btn-core { background: rgba(184, 115, 51, 0.15); color: var(--copper); border-color: var(--copper); font-size: 0.8rem; margin-top: 20px; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
+        .btn-copy { padding: 5px 10px; font-size: 0.6rem; width: auto; display: inline-block; margin: 0; border-radius: 5px; background: #333; border: none; color: #fff; cursor: pointer; }
 
-        /* DASHBOARD STATS */
+        /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* MATURITY PROGRESS */
-        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 5px; overflow: hidden; }
-        .progress-bar { width: 15%; height: 100%; background: var(--void-green); box-shadow: 0 0 10px var(--void-green); }
+        /* CORE LOGIC SECTIONS */
+        #core-layer { display: none; text-align: left; width: 100%; }
+        .core-section { margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; background: rgba(0,0,0,0.4); }
+        .core-title { font-size: 0.65rem; color: var(--void-cyan); letter-spacing: 2px; margin-bottom: 10px; border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 5px; text-transform: uppercase; }
+        .core-desc { font-size: 0.55rem; color: #888; margin-bottom: 8px; line-height: 1.4; }
 
-        /* MODAL & GLINT */
+        /* TIER BADGES */
+        .tier-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .tier-name { font-size: 0.7rem; color: #fff; font-weight: bold; }
+        .tier-req { font-size: 0.5rem; color: #666; }
+        .locked-icon { color: #555; font-size: 0.7rem; }
+        .unlocked-icon { color: var(--void-green); font-size: 0.7rem; }
+
+        /* PENALTY SCALE */
+        .penalty-row { display: flex; justify-content: space-between; font-size: 0.6rem; color: #888; margin-bottom: 5px; }
+        .penalty-active { color: var(--alert-red); font-weight: bold; }
+
+        /* MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
         .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111, #000); overflow: hidden; }
+        .card-inner.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; inset: 0; backface-visibility: hidden; padding: 25px; }
+        .card-back { transform: rotateY(180deg); background: #080808; }
         .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
+
     </style>
 </head>
 <body onload="initSystem()">
@@ -70,31 +93,89 @@
     <div class="gate-container" id="vault" style="display:none;">
         <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
-        <div id="dashboard" style="display:block;">
+        
+        <div id="dashboard">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
-            <div class="stat-row">
-                <span class="stat-label">MATURITY:</span> 
-                <div style="text-align:right;">
-                    <span class="stat-value">1095_DAYS</span>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
+            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value">10.00 $VOID</span></div>
+            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H : 59M</span></div>
+            <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
+            <button class="btn btn-core" onclick="enterCore()">[ ACCESS_CORE_LOGIC ]</button>
+        </div>
+
+        <div id="core-layer">
+            <h2>CORE_LOGIC</h2>
+            <div class="scan-line"></div>
+
+            <div class="core-section">
+                <div class="core-title">SOVEREIGN_TIER_STATUS</div>
+                
+                <div class="tier-row">
+                    <div>
+                        <div class="tier-name">TIER_1: TRAVELER</div>
+                        <div class="tier-req">PUBLIC / NO_ARTIFACT</div>
+                    </div>
+                    <div class="locked-icon">NO_YIELD</div>
+                </div>
+
+                <div class="tier-row">
+                    <div>
+                        <div class="tier-name" style="color:var(--void-green)">TIER_2: SENTINEL (YOU)</div>
+                        <div class="tier-req">1+ ARTIFACT / AUTHENTICATED</div>
+                    </div>
+                    <div class="unlocked-icon">ACTIVE</div>
+                </div>
+
+                <div class="tier-row">
+                    <div>
+                        <div class="tier-name" style="color:var(--copper)">TIER_3: WARLORD</div>
+                        <div class="tier-req">5+ CORES OR LIQUIDITY_PROVIDER</div>
+                    </div>
+                    <div class="locked-icon">LOCKED</div>
+                </div>
+                <div class="core-desc">WARLORDS GAIN ACCESS TO THE "SOVEREIGN TABLE" (DIRECT LINE) AND SHARE IN TRANSACTION TAX REVENUE.</div>
+            </div>
+
+            <div class="core-section">
+                <div class="core-title">EARLY_EXIT_PENALTY</div>
+                <div class="core-desc">THE PROTOCOL REWARDS PATIENCE. LEAVING EARLY BURNS YOUR SUPPLY TO PROTECT THE TRIBE.</div>
+                <div class="penalty-row penalty-active"><span>YEAR_1 (2026):</span> <span>50% BURN_TAX</span></div>
+                <div class="penalty-row"><span>YEAR_2 (2027):</span> <span>25% BURN_TAX</span></div>
+                <div class="penalty-row"><span>YEAR_3 (2028):</span> <span>0% TAX (FREEDOM)</span></div>
+            </div>
+
+            <div class="core-section">
+                <div class="core-title">CONTRACT_ADDRESS</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#111; padding:8px; border-radius:5px;">
+                    <span style="font-family:monospace; font-size:0.6rem; color:#888;">0x7d1...LuxVoid...888</span>
+                    <button class="btn-copy" onclick="copyCA()">COPY</button>
                 </div>
             </div>
-            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value">88.88 $VOID</span></div>
-            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H : 59M</span></div>
-            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
+
+            <button class="btn btn-forfeit" onclick="exitCore()">RETURN_TO_VAULT</button>
         </div>
-        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
-        <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
+
+        <button class="btn btn-forfeit" id="reset-btn" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
     <div id="id-modal">
-        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="closeCard()">
-            <div class="glint" id="glint"></div>
-            <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
-            <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
-            <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
+            <div class="card-face">
+                <div class="glint" id="glint"></div>
+                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
+                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+            </div>
+            <div class="card-face card-back">
+                <div style="color:var(--copper); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
+                <div style="font-size:0.5rem; color:#888;">SERIAL: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
+                <div style="font-size:0.5rem; color:#888; margin-top:5px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">AUTHENTICATED_ASSET</div>
+            </div>
         </div>
+        <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
@@ -103,6 +184,7 @@
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
+            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
             if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
             updateLivePrice();
         }
@@ -134,9 +216,33 @@
         }
 
         function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); showVault(); }
-        function showVault() { document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; }
+        
+        function showVault() { 
+            document.getElementById('gate').style.display = 'none'; 
+            document.getElementById('vault').style.display = 'block'; 
+        }
+
+        function enterCore() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('core-layer').style.display = 'block';
+            document.getElementById('reset-btn').style.display = 'none';
+        }
+
+        function exitCore() {
+            document.getElementById('core-layer').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('reset-btn').style.display = 'block';
+        }
+
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
+        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
+        
+        function copyCA() {
+            navigator.clipboard.writeText("0x7d1...LuxVoid...888");
+            alert("CONTRACT ADDRESS COPIED TO CLIPBOARD");
+        }
+
         function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
         function oblivion() { 
             if (confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. This physical core will be permanently de-authenticated from the Elite Rewards Club. Proceed into Oblivion?")) {
