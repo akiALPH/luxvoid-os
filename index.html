@@ -6,50 +6,205 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --copper: #b87333; --deep-bg: #000; }
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --copper: #b87333; --deep-bg: #111; }
         
-        /* THE VOID SEAL */
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: var(--deep-bg); 
+            /* FALLBACK GRADIENT: Ensures screen is never pitch black */
+            background: radial-gradient(circle at center, #222 0%, #000 100%);
             color: #fff; font-family: 'Rajdhani', sans-serif; 
             overflow: hidden; overscroll-behavior: none; 
         }
 
-        /* INFINITE BACKGROUND (SYNCED WITH HOME) */
+        /* BACKGROUND IMAGE */
         .infinite-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: url('assets/hero-poster.png') center/cover no-repeat;
             filter: blur(35px) brightness(0.5) saturate(1.1);
             transform: scale(1.2); z-index: -20; pointer-events: none;
+            opacity: 0.8;
         }
 
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.5; pointer-events: none; }
 
-        .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(0, 240, 255, 0.3); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
+        /* TICKER */
+        .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.8); border-bottom: 1px solid rgba(0, 240, 255, 0.3); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
         .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
-        .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; text-shadow: 0 0 10px rgba(0,240,255,0.4); }
+        .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* GLASS PROTOCOL CONTAINER */
+        /* MAIN CONTAINER (Fixed Alignment) */
         .gate-container { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(10, 10, 10, 0.6); /* Semi-transparent */
-            backdrop-filter: blur(25px); /* Heavy Frost */
+            background: rgba(10, 10, 10, 0.7); 
+            backdrop-filter: blur(20px); 
             border: 1px solid rgba(0, 240, 255, 0.2); 
-            padding: 50px 30px; border-radius: 40px; text-align: center; 
+            padding: 40px 30px; border-radius: 40px; text-align: center; 
             width: 85%; max-width: 380px; 
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(0, 240, 255, 0.05); 
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9); 
             z-index: 10;
         }
 
-        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; opacity: 0.5; }
-        
-        /* HOLLOW NEON HEADER */
+        /* SOLID VISIBILITY HEADER */
         h1 { 
             font-size: 2.8rem; letter-spacing: 8px; margin: 0; 
-            color: transparent; -webkit-text-stroke: 1px #fff;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            color: #fff; /* SOLID WHITE - NO TRANSPARENCY RISK */
+            text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
         }
 
-        .tagline { color:
+        .tagline { color: #ccc; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px; text-transform: uppercase; }
+        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; opacity: 0.5; }
+
+        /* BUTTONS */
+        .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border-radius: 50px; transition: all 0.3s ease; text-decoration: none;}
+        .btn-ascend { background: rgba(0, 240, 255, 0.1); color: var(--void-cyan); border: 1px solid rgba(0, 240, 255, 0.4); }
+        .btn-ascend:hover { background: rgba(0, 240, 255, 0.3); color: #fff; }
+        .btn-coa { background: rgba(0, 255, 157, 0.1); color: var(--void-green); border: 1px solid rgba(0, 255, 157, 0.3); font-size: 0.8rem; margin-top: 20px; }
+        .btn-core { background: rgba(184, 115, 51, 0.15); color: var(--copper); border: 1px solid rgba(184, 115, 51, 0.4); font-size: 0.85rem; margin-top: 20px; display: flex; align-items: center; justify-content: center; }
+        .btn-forfeit { background: transparent; color: #666; font-size: 0.6rem; border: none; letter-spacing: 3px; margin-top: 15px; }
+
+        /* EMERGENCY RESET BUTTON */
+        .reset-switch {
+            position: fixed; top: 60px; right: 20px; z-index: 9999;
+            background: #330000; color: #ff0000; border: 1px solid #ff0000;
+            padding: 5px 10px; font-size: 0.5rem; letter-spacing: 1px; cursor: pointer;
+        }
+
+        /* VAULT STATS */
+        #dashboard { display: none; text-align: left; width: 100%; }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .stat-label { color: #888; font-size: 0.6rem; letter-spacing: 1px; }
+        .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
+        .highlight { color: var(--void-green); }
+
+        /* DRAWER & CARD (Standard) */
+        #archive-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%; background: #080808; z-index: 500; border-top: 2px solid var(--void-cyan); border-radius: 40px 40px 0 0; transition: bottom 0.6s; padding: 40px 30px; overflow-y: auto; text-align: left; }
+        #archive-drawer.open { bottom: 0; }
+        .drawer-close { position: absolute; top: 20px; right: 30px; color: #555; font-size: 0.7rem; cursor: pointer; }
+        .chapter-title { color: var(--void-cyan); font-size: 1rem; margin: 30px 0 10px 0; border-bottom: 1px solid #333; }
+        .chapter-text { color: #888; font-size: 0.75rem; line-height: 1.6; }
+        .dl-btn { display:block; margin-top:20px; font-size:0.6rem; color:#444; border:1px solid #333; padding:10px; border-radius:20px; text-align:center; text-decoration:none; }
+
+        footer { position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 50; }
+        .footer-link { color: #666; font-size: 0.6rem; letter-spacing: 3px; cursor: pointer; margin: 0 15px; }
+
+        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
+        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+        .card-inner.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 2px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #1a1a1a, #050505); overflow: hidden; }
+        .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
+        .card-logo { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--copper); object-fit: cover; }
+        .card-text-lg { font-size: 0.8rem; color: #fff; margin-top: 5px; } 
+    </style>
+</head>
+<body onload="initSystem()">
+
+    <button class="reset-switch" onclick="hardReset()">[ HARD RESET ]</button>
+
+    <div class="infinite-bg"></div>
+    <canvas id="particle-canvas"></canvas>
+    <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span><span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span></div></div>
+
+    <div class="gate-container" id="gate">
+        <h1>LUXVOID</h1>
+        <div class="tagline">ELITE_ART_REWARDS</div>
+        <div class="scan-line"></div>
+        <button class="btn btn-ascend" id="claim-btn" onclick="startScan()">CLAIM_SOVEREIGNTY</button>
+        <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
+    </div>
+
+    <div class="gate-container" id="vault" style="display:none;">
+        <h1 style="font-size: 1.5rem; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
+        <div class="scan-line"></div>
+        <div id="dashboard">
+            <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
+            <div class="stat-row"><span class="stat-label">ART_YIELD:</span> <div style="display:flex; align-items:center;"><span class="stat-value" id="reward-display">0.000000</span><button class="btn btn-forfeit" style="margin:0 0 0 10px; padding:2px 8px; font-size:0.5rem; border:1px solid #333;" onclick="compound()">COMPOUND</button></div></div>
+            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
+            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value"><span id="staked-val">10.00</span> $VOID</span></div>
+            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <div><span class="stat-value">1.00 OZ_CU</span> <canvas id="cuChart" style="width:40px; height:15px; display:inline-block; vertical-align:middle;"></canvas></div></div>
+        </div>
+        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
+        <a href="core.html" class="btn btn-core">[ ACCESS_CORE_LOGIC ]</a>
+        <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
+    </div>
+
+    <div id="archive-drawer">
+        <span class="drawer-close" onclick="toggleArchive()">[ CLOSE_DIRECTORY ]</span>
+        <div class="chapter-title">PRIVACY_PROTOCOL</div><p class="chapter-text">Zero-Knowledge interface.</p>
+        <div class="chapter-title">CHAPTER I: THE MANIFESTO</div><p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware.</p>
+        <div class="chapter-title">CHAPTER II: TOKENOMICS</div><p class="chapter-text">88,888 $VOID hard cap.</p>
+        <a href="#" class="dl-btn" onclick="alert('FULL_WHITEPAPER_COMING_SOON')">[ DOWNLOAD_FULL_TECHNICAL_PAPER ]</a>
+    </div>
+
+    <footer><span class="footer-link" onclick="toggleArchive()">[ ARCHIVE ]</span><span class="footer-link" onclick="window.location.href='https://twitter.com/luxvoid'">[ X ]</span></footer>
+
+    <div id="id-modal">
+        <div class="card-inner" id="card-inner" onclick="flipCard()">
+            <div class="card-face card-front">
+                <img src="assets/logo.JPG" class="card-logo" alt="Luxvoid Emblem">
+                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-label">PRODUCTION_LEDGER</div>
+                <div class="card-text-lg">99.9% PURE_COPPER</div>
+                <div id="serial-display" class="card-text-lg"></div>
+            </div>
+        </div>
+        <p style="margin-top:25px; color:#aaa; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
+    </div>
+
+    <script>
+        let rewards = 0;
+        function toggleArchive() { document.getElementById('archive-drawer').classList.toggle('open'); }
+        function hardReset() { localStorage.clear(); location.reload(); }
+
+        function initSystem() {
+            try {
+                initParticles(); 
+                initCuChart(); 
+                const urlParams = new URLSearchParams(window.location.search);
+                let unitID = urlParams.get('id') || "888";
+                document.getElementById('unit-display').innerText = "#" + unitID;
+                document.getElementById('card-id-display').innerText = "#" + unitID;
+                document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
+
+                if (localStorage.getItem('luxvoid_ascended') === 'true') { 
+                    document.getElementById('gate').style.display = 'none';
+                    document.getElementById('vault').style.display = 'block';
+                    setInterval(() => { rewards += 0.000002; document.getElementById('reward-display').innerText = rewards.toFixed(6); }, 1000);
+                }
+                setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000);
+            } catch (e) {
+                console.log("System Failure: " + e);
+            }
+        }
+
+        function compound() { document.getElementById('staked-val').innerText = (parseFloat(document.getElementById('staked-val').innerText) + rewards).toFixed(2); rewards = 0; document.getElementById('reward-display').innerText = "0.000000"; }
+        
+        function initCuChart() {
+            try {
+                const canvas = document.getElementById('cuChart'); const ctx = canvas.getContext('2d'); canvas.width = 40; canvas.height = 15;
+                let data = [5,8,6,9,10]; setInterval(() => { data.shift(); data.push(data[data.length-1] + (Math.random()*4-2)); ctx.clearRect(0,0,40,15); ctx.beginPath(); ctx.strokeStyle = '#b87333'; ctx.lineWidth = 2; for(let i=0; i<data.length; i++) { let x = i*10; let y = 15-(data[i]-5); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); }, 500);
+            } catch(e) {}
+        }
+        
+        function initParticles() {
+            try {
+                const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                let particles = []; for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
+                function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(0, 240, 255, 0.3)'; particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y < 0) p.y = canvas.height; }); requestAnimationFrame(animate); } animate();
+            } catch(e) {}
+        }
+        
+        function startScan() { document.getElementById('claim-btn').innerText = "SCANNING..."; document.getElementById('claim-btn').classList.add('scan-active'); setTimeout(() => { localStorage.setItem('luxvoid_ascended', 'true'); location.reload(); }, 2500); }
+        function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
+        function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
+        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
+        function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
+        function oblivion() { if (confirm("FINAL WARNING: Proceed into Oblivion?")) window.location.href = "https://google.com"; }
+    </script>
+</body>
+</html>
