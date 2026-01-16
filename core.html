@@ -6,55 +6,67 @@
     <title>LUXVOID // CORE_LOGIC</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* HARMONIZED THEME WITH INDEX.HTML */
         :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; --alert: #ff3333; }
-        body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        
+        /* FULL SCREEN FIX */
+        body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; width: 100vw; }
 
-        /* BG (Same as Index but darker for contrast) */
-        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.6); z-index: -2; pointer-events: none; }
+        /* FULL WIDTH BACKGROUND CANVAS */
+        #pulseCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none; }
+        .bg-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100vh; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(80px) brightness(0.5); z-index: -2; pointer-events: none; }
 
         /* HERO & COUNTER */
-        .supply-hero { width: 100%; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--copper); padding: 30px 0; text-align: center; margin-bottom: 20px; box-shadow: 0 0 50px rgba(0,0,0,0.8); position: relative; overflow: hidden; backdrop-filter: blur(20px); }
-        .supply-val { font-size: 2.8rem; letter-spacing: 12px; color: var(--void-cyan); text-shadow: 0 0 25px var(--void-cyan); margin: 0; position: relative; z-index: 2; }
-        .supply-label { font-size: 0.6rem; letter-spacing: 4px; color: var(--copper); margin-top: 5px; text-transform: uppercase; position: relative; z-index: 2; }
-        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.5; z-index: 1; }
+        .supply-hero { width: 100%; padding: 40px 0; text-align: center; margin-bottom: 20px; position: relative; z-index: 2; border-bottom: 1px solid rgba(184, 115, 51, 0.3); background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
+        .supply-val { font-size: 3.5rem; letter-spacing: 12px; color: var(--void-cyan); text-shadow: 0 0 30px var(--void-cyan); margin: 0; }
+        .supply-label { font-size: 0.7rem; letter-spacing: 6px; color: var(--copper); margin-top: 5px; text-transform: uppercase; }
 
-        .container { width: 92%; max-width: 400px; padding-bottom: 40px; }
-        /* HEAVY GLASS THEME APPLIED */
-        .section { background: var(--glass-panel); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 30px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(45px); box-shadow: 0 0 40px rgba(0,0,0,0.5); }
-        h2 { font-size: 0.9rem; letter-spacing: 3px; color: var(--void-cyan); border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 10px; margin-top: 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        /* CONTAINER ALIGNMENT FIX */
+        .container { width: 90%; max-width: 420px; padding-bottom: 60px; z-index: 10; display: flex; flex-direction: column; gap: 15px; }
+        
+        .section { background: var(--glass-panel); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 20px; padding: 25px; backdrop-filter: blur(40px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        h2 { font-size: 0.8rem; letter-spacing: 3px; color: var(--void-cyan); border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 10px; margin-top: 0; text-transform: uppercase; }
 
         /* MATRIX */
         .dist-row { margin-bottom: 15px; }
         .dist-header { display: flex; justify-content: space-between; font-size: 0.6rem; margin-bottom: 5px; color: #888; }
         .dist-val { color: #fff; font-family: monospace; }
-        .bar-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .bar-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 0 15px currentColor; }
+        .bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.5); border-radius: 3px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .bar-fill { height: 100%; border-radius: 3px; width: 0%; transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 0 10px currentColor; }
 
         /* TIER */
-        .tier-bar { display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; }
-        .tier-box { flex: 1; padding: 12px 5px; border-radius: 15px; background: rgba(0,0,0,0.3); text-align: center; font-size: 0.55rem; border: 1px solid rgba(255,255,255,0.05); color: #666; }
-        .tier-active { background: rgba(0, 255, 157, 0.05); border-color: var(--void-green); color: var(--void-green); font-weight: bold; box-shadow: 0 0 20px rgba(0, 255, 157, 0.1); }
+        .tier-bar { display: flex; justify-content: space-between; gap: 8px; margin-top: 15px; }
+        .tier-box { flex: 1; padding: 12px 5px; border-radius: 10px; background: rgba(0,0,0,0.4); text-align: center; font-size: 0.55rem; border: 1px solid rgba(255,255,255,0.05); color: #666; transition: all 0.3s; }
+        .tier-active { background: rgba(0, 255, 157, 0.08); border-color: var(--void-green); color: var(--void-green); font-weight: bold; box-shadow: 0 0 15px rgba(0, 255, 157, 0.1); }
 
-        /* CALCULATOR */
+        /* CALCULATOR & ACTIONS */
         .calc-input-wrap { margin: 20px 0; position: relative; }
-        input[type="number"] { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--void-cyan); padding: 15px; border-radius: 15px; color: var(--void-cyan); font-family: monospace; font-size: 1.1rem; box-sizing: border-box; outline: none; transition: all 0.3s; text-align: center; box-shadow: 0 0 20px rgba(0,240,255,0.1); }
-        .calc-label { font-size: 0.6rem; color: var(--void-cyan); position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--deep-bg); padding: 0 10px; letter-spacing: 2px; border-radius: 10px; border: 1px solid var(--void-cyan); }
-        .yield-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        input[type="number"] { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--void-cyan); padding: 15px; border-radius: 12px; color: var(--void-cyan); font-family: monospace; font-size: 1.2rem; box-sizing: border-box; outline: none; text-align: center; }
+        .calc-label { font-size: 0.55rem; color: var(--void-cyan); position: absolute; top: -8px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 8px; letter-spacing: 2px; border: 1px solid var(--void-cyan); border-radius: 5px; }
+        
+        .yield-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .yield-label { font-size: 0.65rem; color: #aaa; letter-spacing: 1px; }
         .yield-val { font-size: 0.85rem; font-weight: bold; color: var(--void-green); font-family: monospace; }
-        .pulse-indicator { font-size: 0.6rem; color: var(--void-cyan); background: rgba(0, 240, 255, 0.1); padding: 5px 10px; border-radius: 30px; border: 1px solid var(--void-cyan); box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+        
+        /* ACTION BUTTONS */
+        .action-row { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-action { flex: 1; padding: 15px 0; border-radius: 12px; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; letter-spacing: 1px; transition: all 0.3s; text-transform: uppercase; }
+        .btn-stake { background: rgba(0, 255, 157, 0.1); color: var(--void-green); border-color: var(--void-green); }
+        .btn-stake:hover { background: var(--void-green); color: #000; box-shadow: 0 0 20px var(--void-green); }
+        .btn-withdraw { background: rgba(255, 255, 255, 0.05); color: #888; border-color: rgba(255,255,255,0.1); }
+        
+        .pulse-indicator { font-size: 0.55rem; color: var(--void-cyan); background: rgba(0, 240, 255, 0.1); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--void-cyan); float: right; }
 
-        .btn-back { display: block; width: 100%; padding: 20px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: #fff; text-decoration: none; font-weight: bold; letter-spacing: 4px; font-size: 0.8rem; margin-top: 20px; transition: all 0.3s; }
-        .btn-back:hover { border-color: var(--void-cyan); color: var(--void-cyan); }
+        /* UNIFIED RETURN BUTTON */
+        .btn-back { display: block; width: 100%; box-sizing: border-box; padding: 20px; text-align: center; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 40px; color: #fff; text-decoration: none; font-weight: bold; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px; transition: all 0.3s; }
+        .btn-back:hover { border-color: var(--void-cyan); color: var(--void-cyan); box-shadow: 0 0 20px rgba(0,240,255,0.2); }
     </style>
 </head>
 <body onload="initCore()">
     
     <div class="bg-logo"></div>
+    <canvas id="pulseCanvas"></canvas>
 
     <div class="supply-hero">
-        <canvas id="pulseCanvas"></canvas>
         <p class="supply-label">MONOLITH_SUPPLY_BURN</p>
         <h1 class="supply-val" id="burn-counter">88,888</h1>
     </div>
@@ -96,7 +108,19 @@
                 <div class="yield-row"><span class="yield-label">EST_ANNUAL_PULSE:</span><span class="yield-val" id="annual">+ 0.60 $VOID</span></div>
                 <div class="yield-row"><span class="yield-label">3_YEAR_PROJECTION:</span><span class="yield-val" id="total">+ 1.80 $VOID</span></div>
             </div>
-            <p style="font-size: 0.5rem; color: #666; margin-top: 15px; text-align: center; letter-spacing: 1px;">REWARDS FLUCTUATE BASED ON INDUSTRIAL LP_V3.3 PERFORMANCE.</p>
+            
+            <div class="action-row">
+                <button class="btn-action btn-stake" onclick="alert('INITIATING INDUSTRIAL STAKE...\n(Integration Pending)')">INITIATE_STAKE</button>
+                <button class="btn-action btn-withdraw" onclick="alert('WITHDRAWAL LOCKED: MATURITY NOT MET.')">WITHDRAW</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Verification_CA</h2>
+            <div style="background:rgba(0,0,0,0.5); padding:12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:monospace; font-size:0.6rem; color:#aaa;">0x7d1...LuxVoid...888</span>
+                <button style="background:#222; border:1px solid #444; color:#fff; padding:4px 8px; border-radius:4px; font-size:0.5rem; cursor:pointer;" onclick="alert('COPIED')">COPY</button>
+            </div>
         </div>
 
         <a href="index.html" class="btn-back">RETURN_TO_VAULT</a>
@@ -114,18 +138,33 @@
         function startGraph() {
             const canvas = document.getElementById('pulseCanvas');
             const ctx = canvas.getContext('2d');
-            let width = canvas.width = canvas.offsetWidth;
-            let height = canvas.height = canvas.offsetHeight;
+            
+            // Resize canvas to full window
+            const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+            window.addEventListener('resize', resize);
+            resize();
+
             let time = 0;
             function draw() {
-                ctx.clearRect(0, 0, width, height);
-                ctx.beginPath(); ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 2; ctx.shadowBlur = 10; ctx.shadowColor = "#00f0ff";
-                for (let x = 0; x < width; x++) {
-                    let y = height / 2 + Math.sin(x * 0.02 + time) * 20 + Math.sin(x * 0.1 + time * 2) * 10;
-                    if (Math.random() > 0.98) y -= Math.random() * 30; 
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath(); 
+                ctx.strokeStyle = '#00f0ff'; 
+                ctx.lineWidth = 1.5; 
+                ctx.shadowBlur = 15; 
+                ctx.shadowColor = "#00f0ff";
+                
+                let centerY = canvas.height / 2;
+                
+                for (let x = 0; x < canvas.width; x++) {
+                    // Oscilloscope Math
+                    let y = centerY + Math.sin(x * 0.01 + time) * 50 + Math.sin(x * 0.05 + time * 3) * 20;
+                    if (Math.random() > 0.995) y -= (Math.random() * 100 - 50); // Industrial Noise
+                    
                     if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
                 }
-                ctx.stroke(); time += 0.1; requestAnimationFrame(draw);
+                ctx.stroke(); 
+                time += 0.08; 
+                requestAnimationFrame(draw);
             }
             draw();
         }
