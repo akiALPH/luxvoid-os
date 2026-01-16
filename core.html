@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUXVOID // CORE_LOGIC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass: rgba(10, 10, 10, 0.95); --copper: #b87333; --alert: #ff3333; }
+        body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
+        /* THE MONOLITH COUNTER */
+        .supply-hero { width: 100%; background: #000; border-bottom: 1px solid var(--copper); padding: 40px 0; text-align: center; margin-bottom: 30px; box-shadow: 0 0 30px rgba(184, 115, 51, 0.2); }
+        .supply-val { font-size: 3rem; letter-spacing: 15px; color: var(--void-cyan); text-shadow: 0 0 20px var(--void-cyan); margin: 0; }
+        .supply-label { font-size: 0.7rem; letter-spacing: 5px; color: var(--copper); margin-top: 10px; }
+
+        .container { width: 90%; max-width: 400px; padding-bottom: 50px; }
+        .section { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+        h2 { font-size: 1rem; letter-spacing: 4px; color: var(--void-cyan); border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 10px; margin-top: 0; text-transform: uppercase; }
+
+        /* TIER LIST */
+        .tier-card { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .tier-info { display: flex; flex-direction: column; }
+        .tier-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; }
+        .tier-perk { font-size: 0.6rem; color: #666; margin-top: 4px; }
+        .status-badge { font-size: 0.6rem; padding: 4px 10px; border-radius: 5px; background: rgba(255,255,255,0.05); color: #444; }
+        .active-badge { background: var(--void-green); color: #000; font-weight: bold; }
+
+        /* PENALTY CHART */
+        .penalty-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 10px 0; }
+        .penalty-val { color: var(--alert); font-family: monospace; }
+
+        .btn-back { display: block; width: 100%; padding: 20px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: #fff; text-decoration: none; font-weight: bold; letter-spacing: 4px; font-size: 0.8rem; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="supply-hero">
+        <p class="supply-label">PROJECT_MONOLITH // REMAINING_$VOID</p>
+        <h1 class="supply-val" id="burn-counter">88,888</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Sovereign_Tiers</h2>
+            <div class="tier-card">
+                <div class="tier-info"><span class="tier-name">TRAVELER</span><span class="tier-perk">PUBLIC ACCESS / NO YIELD</span></div>
+                <div class="status-badge">RESTRICTED</div>
+            </div>
+            <div class="tier-card">
+                <div class="tier-info"><span class="tier-name" style="color:var(--void-green)">SENTINEL</span><span class="tier-perk">1+ CORE / ELITE REWARDS ACTIVE</span></div>
+                <div class="status-badge active-badge">YOU</div>
+            </div>
+            <div class="tier-card">
+                <div class="tier-info"><span class="tier-name" style="color:var(--copper)">WARLORD</span><span class="tier-perk">LP PROVIDER / REVENUE SHARE</span></div>
+                <div class="status-badge">LOCKED</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Industrial_Staking</h2>
+            <div class="penalty-row"><span>YEAR_1 (2026):</span> <span class="penalty-val">50% BURN_PENALTY</span></div>
+            <div class="penalty-row"><span>YEAR_2 (2027):</span> <span class="penalty-val">25% BURN_PENALTY</span></div>
+            <div class="penalty-row"><span>YEAR_3 (2028):</span> <span style="color:var(--void-green)">0% (FULL MATURITY)</span></div>
+        </div>
+
+        <div class="section">
+            <h2>Protocol_Verification</h2>
+            <p style="font-size: 0.6rem; color: #555; line-height: 1.5;">CONTRACT_ADDRESS: <br><span style="color:#aaa; font-family:monospace;">0x7d1...LuxVoid...888</span></p>
+            <p style="font-size: 0.6rem; color: #555; line-height: 1.5; margin-top: 15px;">GOVERNANCE: BENEVOLENT_DICTATORSHIP_MODEL. CORE AUTHORIZED BY OWNER.</p>
+        </div>
+
+        <a href="index.html" class="btn-back">RETURN_TO_VAULT</a>
+    </div>
+
+    <script>
+        // Simulated real-time supply burn
+        let supply = 88888;
+        setInterval(() => {
+            if(Math.random() > 0.7) {
+                supply -= Math.floor(Math.random() * 3);
+                document.getElementById('burn-counter').innerText = supply.toLocaleString();
+            }
+        }, 4000);
+    </script>
+
+</body>
+</html>
