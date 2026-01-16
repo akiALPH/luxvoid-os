@@ -10,7 +10,7 @@
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.8);
+            --glass-panel: rgba(10, 10, 10, 0.85);
         }
 
         body {
@@ -41,45 +41,45 @@
 
         .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
         .ticker-item { display: inline-block; padding: 0 50px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
-
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* LOGO ENGINE */
+        /* THE RELIC LOGO (FIXED SCALING) */
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%; 
-            height: 80%;
+            width: 300px; /* FIXED SIZE TO PREVENT STRETCHING */
+            height: 300px;
             background-image: url('assets/logo.JPG');
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
-            filter: blur(5px) brightness(0.7); 
+            filter: blur(8px) brightness(0.6); 
             z-index: -1;
-            transition: all 1s ease;
+            transition: all 0.8s ease;
         }
 
-        /* SCANNING ANIMATION CLASS */
         .scanning {
-            animation: scan-rotate 1s infinite linear !important;
-            filter: blur(0px) brightness(1) drop-shadow(0 0 20px var(--void-cyan)) !important;
+            animation: scan-rotate 1.5s infinite linear !important;
+            filter: blur(0px) brightness(1) drop-shadow(0 0 30px var(--void-cyan)) !important;
         }
 
-        @keyframes scan-rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes scan-rotate { 
+            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.1); } 
+            100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.1); } 
+        }
 
         /* ROUNDED LUXURY CONTAINER */
         .gate-container {
             background: var(--glass-panel);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
             border: 1px solid rgba(0, 240, 255, 0.2);
             padding: 50px 40px;
-            border-radius: 30px; /* ROUNDED EDGES */
+            border-radius: 40px; 
             text-align: center;
-            max-width: 360px;
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+            width: 320px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
             z-index: 10;
-            transition: opacity 0.5s ease;
         }
 
         .scan-line {
@@ -88,29 +88,30 @@
             margin: 25px 0;
         }
 
-        h1 { font-size: 2.8rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--void-cyan); }
-        .tagline { color: #666; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 30px; }
+        h1 { font-size: 2.5rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--void-cyan); }
+        .tagline { color: #555; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 30px; }
 
-        /* ROUNDED BUTTONS */
         .btn {
             display: block; width: 100%; padding: 18px 0; margin: 12px 0;
             font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
             letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 50px; /* ROUNDED BUTTONS */
+            border: 1px solid rgba(255,255,255,0.15); 
+            border-radius: 50px;
             transition: all 0.4s ease;
         }
 
-        .btn-ascend { background: rgba(0, 240, 255, 0.05); color: var(--void-cyan); border-color: var(--void-cyan); }
+        .btn-ascend { background: rgba(0, 240, 255, 0.1); color: var(--void-cyan); border-color: var(--void-cyan); }
         .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
+
+        .btn-coa { background: rgba(0, 255, 157, 0.05); color: var(--void-green); border-color: var(--void-green); margin-top: 20px; font-size: 0.8rem; }
 
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 2px; }
 
         /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
-        .stat-label { color: #555; font-size: 0.65rem; }
-        .stat-value { color: #ddd; font-family: monospace; font-size: 0.85rem; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .stat-label { color: #666; font-size: 0.65rem; }
+        .stat-value { color: #eee; font-family: monospace; font-size: 0.85rem; }
         .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
 
     </style>
@@ -142,8 +143,11 @@
             <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value highlight">SENTINEL_ELITE</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
-            <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
+            <div class="stat-row"><span class="stat-label">CORE_STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
         </div>
+        
+        <button class="btn btn-coa" onclick="viewCOA()">VIEW_DIGITAL_COA</button>
+
         <button class="btn btn-forfeit" style="margin-top:25px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
@@ -162,13 +166,11 @@
         }
 
         function startScan() {
-            // Start the visual scan
             document.getElementById('logo-bg').classList.add('scanning');
-            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE...";
+            document.getElementById('tagline-text').innerText = "VERIFYING_ELEMENTAL_CORE...";
             document.getElementById('tagline-text').style.color = "var(--void-cyan)";
             document.getElementById('claim-btn').innerText = "SCANNING...";
 
-            // Delay for "Proof of Authentication"
             setTimeout(() => {
                 ascend();
             }, 3000);
@@ -184,6 +186,12 @@
             document.getElementById('vault').style.display = 'block';
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('logo-bg').classList.remove('scanning');
+            // Fade the logo back for the dashboard
+            document.getElementById('logo-bg').style.opacity = "0.3";
+        }
+
+        function viewCOA() {
+            alert("LUXVOID ELITE SERIES // PROTOCOLS_ENGAGED\n\n- PHYSICAL_ASSET: 1oz 99.9% Pure Copper\n- SECURITY_HASH: [AUTHENTICATED]\n- GUARDIAN_ID: 888-SENTINEL-PRIME\n\nYOUR CORE IS SECURED.");
         }
 
         function resetSentinel() {
