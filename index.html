@@ -54,7 +54,7 @@
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
 
-        /* MATURITY & SCARCITY GAUGES */
+        /* GAUGES */
         .gauge-wrap { margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 15px; }
         .gauge-label { font-size: 0.55rem; color: #666; letter-spacing: 1px; margin-bottom: 5px; display: block; }
         .gauge-bg { width: 100%; height: 6px; background: #222; border-radius: 10px; overflow: hidden; position: relative; }
@@ -99,7 +99,7 @@
     <div class="gate-container" id="vault" style="display:none;">
         <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
-        <div id="dashboard">
+        <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
             <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value" id="rank-display">SENTINEL_ELITE</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
@@ -110,16 +110,12 @@
         <div class="gauge-wrap">
             <span class="gauge-label">MATURITY_LOCK: 1,095_DAYS</span>
             <div class="gauge-bg"><div class="gauge-bg maturity-fill"></div></div>
-            <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:0.5rem; color:#444;">
-                <span>PROTOCOL_STABILITY</span>
-                <span>EARNED_STATUS</span>
-            </div>
         </div>
         
         <div class="forge-feed">
-            <div class="feed-item">> PULSE_PROTOCOL_ACTIVE</div>
-            <div class="feed-item">> MATURITY_CLOCK_ENGAGED</div>
-            <div class="feed-item">> DIAMOND_HANDS_DECREE_VALIDATED</div>
+            <div class="feed-item">> GLOBAL_NETWORK_SYNC_OK</div>
+            <div class="feed-item">> SENTINEL_NODES_ACTIVE: 888</div>
+            <div class="feed-item">> INDUSTRIAL_SOVEREIGNTY_SECURED</div>
         </div>
 
         <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
@@ -175,7 +171,6 @@
 
         function startPulseCountdown() {
             setInterval(() => {
-                // Placeholder logic for a monthly countdown
                 document.getElementById('pulse-countdown').innerText = "29D : 23H : " + Math.floor(Math.random() * 60) + "M";
             }, 60000);
         }
