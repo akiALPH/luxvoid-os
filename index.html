@@ -1,1 +1,68 @@
-<h1>LUXVOID_OS: SYSTEM_BOOTING...</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXVOID_OS</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ff4d00; /* Neon Orange */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .terminal {
+            border: 1px solid #ff4d00;
+            padding: 40px;
+            box-shadow: 0 0 20px #ff4d00;
+            text-align: center;
+        }
+
+        .glitch {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; text-shadow: 0 0 10px #ff4d00; }
+            50% { opacity: 0.5; text-shadow: 0 0 20px #ff4d00; }
+            100% { opacity: 1; text-shadow: 0 0 10px #ff4d00; }
+        }
+
+        .sub-text {
+            font-size: 0.8rem;
+            margin-top: 20px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <div class="glitch">LUXVOID_OS</div>
+        <div class="sub-text">INITIALIZING_MONOLITH_PROTOCOL...</div>
+        <div class="sub-text" style="font-size: 0.6rem;">888_SENTINELS_DETECTED: 0</div>
+    </div>
+</body>
+</html>
