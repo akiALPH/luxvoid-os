@@ -18,12 +18,11 @@
         .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* RESPONSIVE CONTAINER FIX */
         .gate-container { 
             background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%);
             backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.1); 
             padding: 40px 30px; border-radius: 40px; text-align: center; 
-            width: 85%; max-width: 380px; /* Fluid width for perfect alignment */
+            width: 85%; max-width: 380px; 
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); z-index: 10; flex-shrink: 0; 
         }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
@@ -66,6 +65,11 @@
         .card-inner.is-flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 2px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #1a1a1a, #050505); overflow: hidden; }
         .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
+        
+        /* LOGO & CARD UPGRADES */
+        .card-logo { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--copper); box-shadow: 0 5px 15px rgba(0,0,0,0.8); object-fit: cover; }
+        .card-text-lg { font-size: 0.8rem; color: #fff; margin-top: 5px; } /* Increased Legibility */
+        .card-label { color: var(--void-cyan); font-size: 0.7rem; letter-spacing: 2px; }
         .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.2) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
@@ -123,8 +127,20 @@
 
     <div id="id-modal">
         <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
-            <div class="card-face card-front"><div class="glint" id="glint"></div><div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div><div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div><div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div></div>
-            <div class="card-face card-back"><div style="color:var(--void-cyan); font-size:0.6rem; letter-spacing:2px;">PRODUCTION_LEDGER</div><div style="font-size:0.5rem; color:#888; margin-top:10px;">ELEMENT: 99.9% PURE_COPPER</div><div id="serial-display" style="font-size:0.5rem; color:#fff; margin-top:5px;"></div></div>
+            <div class="card-face card-front">
+                <div class="glint" id="glint"></div>
+                <img src="assets/logo.JPG" class="card-logo" alt="Luxvoid Emblem">
+                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-label">PRODUCTION_LEDGER</div>
+                <div style="font-size:0.6rem; color:#888; margin-top:15px;">ELEMENT</div>
+                <div class="card-text-lg">99.9% PURE_COPPER</div>
+                <div style="font-size:0.6rem; color:#888; margin-top:15px;">SERIAL_NUMBER</div>
+                <div id="serial-display" class="card-text-lg"></div>
+            </div>
         </div>
         <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
@@ -138,7 +154,7 @@
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
-            document.getElementById('serial-display').innerText = "SERIAL: LV-2026-" + unitID.padStart(3, '0');
+            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
             if (localStorage.getItem('luxvoid_ascended') === 'true') { 
                 document.getElementById('gate').style.display = 'none';
                 document.getElementById('vault').style.display = 'block';
