@@ -11,17 +11,16 @@
         /* 1. THE VOID SEAL: LOCKS THE VIEWPORT */
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: var(--deep-bg); /* Ultimate fallback */
+            background-color: var(--deep-bg); 
             color: #fff; font-family: 'Rajdhani', sans-serif; 
-            overflow: hidden; /* No scrolling the main page */
-            overscroll-behavior: none; /* Kills the 'rubber band' gap on mobile */
-            touch-action: none; /* Disables standard mobile gestures (zoom/pan) */
+            overflow: hidden; 
+            overscroll-behavior: none; 
+            touch-action: none; 
         }
 
-        /* 2. INFINITE BACKGROUND (FIXED POSITION) */
+        /* 2. INFINITE BACKGROUND */
         .infinite-bg {
-            position: fixed; /* LOCKS TO WINDOW, NOT PAGE */
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: url('assets/hero-poster.png') center/cover no-repeat;
             filter: blur(30px) brightness(0.6) saturate(1.2);
             transform: scale(1.2); 
@@ -29,10 +28,8 @@
             pointer-events: none;
         }
 
-        /* PARTICLES (FIXED) */
         #particle-canvas { 
-            position: fixed; /* LOCKS TO WINDOW */
-            top: 0; left: 0; width: 100vw; height: 100vh; 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             z-index: -10; opacity: 0.7; pointer-events: none; 
         }
 
@@ -92,7 +89,7 @@
         }
         .hero-visible { opacity: 1; transform: translateY(0); }
 
-        /* HOLLOW NEON TEXT */
+        /* NEON TEXT */
         h1 { 
             font-size: clamp(3.5rem, 13vw, 7rem); 
             letter-spacing: clamp(5px, 2vw, 15px); margin-right: calc(clamp(5px, 2vw, 15px) * -1); 
@@ -101,7 +98,7 @@
             text-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
         }
 
-        /* FUNCTIONAL BUTTONS */
+        /* BUTTONS */
         .btn-subtitle { 
             font-size: clamp(0.6rem, 3vw, 0.75rem); 
             letter-spacing: 3px; color: #ccc; text-transform: uppercase; 
@@ -110,7 +107,7 @@
             background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); 
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             cursor: pointer; transition: 0.3s; text-decoration: none;
-            max-width: 85%; line-height: 1.4; pointer-events: auto; /* Ensures clickable */
+            max-width: 85%; line-height: 1.4; pointer-events: auto;
         }
         .btn-subtitle:hover { border-color: var(--void-cyan); color: var(--void-cyan); background: rgba(0, 240, 255, 0.1); }
 
@@ -127,7 +124,7 @@
         }
         .btn-enter:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 60px rgba(0, 240, 255, 0.6); color: #fff; transform: scale(1.05); }
 
-        /* UPGRADED LIBRARY DRAWER */
+        /* ARCHIVE DRAWER */
         #archive-drawer {
             position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%;
             background: linear-gradient(180deg, #111, #050505);
@@ -135,7 +132,7 @@
             border-radius: 40px 40px 0 0; transition: bottom 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
             padding: 40px 30px; box-sizing: border-box; overflow-y: auto; text-align: left;
             box-shadow: 0 -20px 80px rgba(0,0,0,0.9);
-            touch-action: pan-y; /* Allows scrolling inside the drawer */
+            touch-action: pan-y;
         }
         #archive-drawer.open { bottom: 0; }
         .drawer-close { position: absolute; top: 20px; right: 30px; color: #555; font-size: 0.7rem; cursor: pointer; letter-spacing: 2px; }
@@ -152,6 +149,16 @@
         }
         .dl-btn:hover { border-color: var(--copper); color: #fff; background: rgba(184, 115, 51, 0.1); }
         .dl-icon { color: var(--void-cyan); font-weight: bold; }
+
+        /* NEW: GENESIS BUTTON STYLE */
+        .genesis-btn {
+            display: block; width: 100%; text-align: center;
+            padding: 15px; margin-top: 20px;
+            background: rgba(0, 240, 255, 0.1); border: 1px solid var(--void-cyan);
+            color: var(--void-cyan); text-decoration: none; text-transform: uppercase;
+            letter-spacing: 3px; font-weight: bold; border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
 
         .ultimatum { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #222; color: var(--copper); font-size: 0.7rem; letter-spacing: 2px; line-height: 1.8; }
 
@@ -185,18 +192,18 @@
 
     <div id="archive-drawer">
         <span class="drawer-close" onclick="toggleArchive()">[ CLOSE_LEDGER ]</span>
+        
+        <a href="origin.html" class="genesis-btn">/// READ_GENESIS_LOG_001 ///</a>
+
         <div class="chapter-title">DOWNLOAD_PROTOCOL</div>
         <div class="dl-section">
             <a href="#" class="dl-btn" onclick="alert('FILE_LOCKED: GENESIS_BLOCK_PENDING')"><span>01_THE_VISION_DECK.PDF</span><span class="dl-icon">[ ↓ ]</span></a>
             <a href="#" class="dl-btn" onclick="alert('FILE_LOCKED: AUDIT_IN_PROGRESS')"><span>02_TOKENOMICS_SHEET.XLS</span><span class="dl-icon">[ ↓ ]</span></a>
-            <a href="#" class="dl-btn" onclick="alert('FILE_LOCKED: RESTRICTED')"><span>03_SMART_CONTRACT_AUDIT.TXT</span><span class="dl-icon">[ ↓ ]</span></a>
         </div>
         <div class="chapter-title">I. THE MANIFESTO</div>
         <p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware. Assets are born from the forge, physically held and industrially anchored. [cite: 2026-01-14]</p>
         <div class="chapter-title">II. RECIPROCAL SCARCITY</div>
-        <p class="chapter-text">The 88,888 $VOID supply is a hard cap. Every token is a digital shadow of a physical 1oz elemental core. We manufacture products, not just money. [cite: 2026-01-14]</p>
-        <div class="chapter-title">III. THE DIAMOND HANDS DECREE</div>
-        <p class="chapter-text">Industrial Maturity requires 1,095 days. We reward the patient. Leaving the Void early initiates the Burn Penalty to protect the remaining Sentinels. [cite: 2026-01-14]</p>
+        <p class="chapter-text">The 88,888 $VOID supply is a hard cap. Every token is a digital shadow of a physical 1oz elemental core. [cite: 2026-01-14]</p>
         <div class="ultimatum">THIS IS THE DECISION POINT.<br>JOIN THE FAMILY OR REMAIN IN THE FIAT ILLUSION.<br>CHOOSE WISELY.</div>
     </div>
 
