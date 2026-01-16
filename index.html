@@ -19,6 +19,7 @@
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
             height: 100vh;
+            width: 100vw; /* Fixed Width to prevent shift */
             margin: 0;
             overflow: hidden;
             display: flex;
@@ -74,7 +75,7 @@
             width: 320px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 240, 255, 0.05);
             z-index: 10;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Removed Transition on layout properties to prevent glitching */
         }
 
         .scan-line {
@@ -151,8 +152,7 @@
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
-        <div class="tagline" id="tagline-text">ELITE_ART_DIVIDEND</div>
-        <div class="scan-line"></div>
+        <div class="tagline" id="tagline-text">ELITE_ART_REWARDS</div> <div class="scan-line"></div>
         <button class="btn btn-ascend" id="claim-btn" onclick="startScan()">CLAIM_SOVEREIGNTY</button>
         <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
     </div>
@@ -230,8 +230,19 @@
 
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
-        function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); location.reload(); }
-        function oblivion() { if(confirm("FORFEIT LEGACY?")) window.location.href="https://google.com"; }
+        
+        function resetSentinel() { 
+            localStorage.removeItem('luxvoid_ascended'); 
+            location.reload(); 
+        }
+        
+        function oblivion() { 
+            // RESTORED THE ORIGINAL WARNING TEXT
+            let choice = confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. This physical core will be permanently de-authenticated from the Elite Rewards Club. Proceed into Oblivion?");
+            if (choice) {
+                window.location.href = "https://www.google.com";
+            }
+        }
 
         // Card Tilt Effect
         const card = document.getElementById('card');
