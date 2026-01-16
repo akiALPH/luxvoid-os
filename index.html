@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUXVOID_OS // GATEWAY</title>
+    <title>LUXVOID // ELITE_ACCESS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.6);
+            --glass-panel: rgba(10, 10, 10, 0.7);
         }
 
         body {
@@ -26,6 +26,38 @@
             align-items: center;
         }
 
+        /* SCARCITY TICKER - THE TOP MOVING LANE */
+        .ticker-wrap {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .ticker-move {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 40px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--void-cyan);
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
@@ -35,86 +67,97 @@
             background-image: url('assets/logo.JPG');
             background-position: center;
             background-size: cover;
-            filter: blur(40px) brightness(0.3);
+            filter: blur(45px) brightness(0.25);
             z-index: -1;
-            animation: deep-pulse 10s infinite alternate;
+            animation: deep-pulse 12s infinite alternate;
         }
 
         .gate-container {
             background: var(--glass-panel);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 50px 40px;
-            border-radius: 2px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            padding: 60px 40px;
+            border-radius: 4px;
             text-align: center;
-            max-width: 350px;
-            box-shadow: 0 0 80px rgba(0, 240, 255, 0.05);
+            max-width: 380px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 1);
+            z-index: 10;
         }
 
         .scan-line {
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--void-cyan), transparent);
-            margin: 25px 0;
+            margin: 30px 0;
         }
 
-        h1 { font-size: 2.8rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
-        p { color: #888; font-size: 0.8rem; letter-spacing: 4px; margin-bottom: 40px; }
+        h1 { font-size: 3rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 30px var(--void-cyan); text-transform: uppercase; }
+        .tagline { color: #555; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 40px; }
 
         .btn {
-            display: block; width: 100%; padding: 18px 0; margin: 15px 0;
-            font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700;
-            letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: block; width: 100%; padding: 20px 0; margin: 15px 0;
+            font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
+            letter-spacing: 5px; text-transform: uppercase; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.5s ease;
         }
 
         .btn-ascend { background: rgba(0, 240, 255, 0.05); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
+        .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 50px var(--void-cyan); }
 
-        .btn-oblivion { background: transparent; color: #444; font-size: 0.7rem; border: none; letter-spacing: 2px; }
-        .btn-oblivion:hover { color: #ff3333; }
+        .btn-forfeit { background: transparent; color: #333; font-size: 0.65rem; border: none; letter-spacing: 3px; }
+        .btn-forfeit:hover { color: #ff3333; }
 
-        /* THE DASHBOARD LAYER (HIDDEN INITIALLY) */
+        /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
-        .stat-label { color: #666; font-size: 0.7rem; }
-        .stat-value { color: var(--void-green); font-family: monospace; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 10px; }
+        .stat-label { color: #444; font-size: 0.65rem; letter-spacing: 2px; }
+        .stat-value { color: #eee; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+        .highlight { color: var(--void-cyan); }
 
         @keyframes deep-pulse {
-            0% { opacity: 0.4; scale: 1; }
-            100% { opacity: 0.7; scale: 1.05; }
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.08); }
         }
     </style>
 </head>
 <body onload="checkSentinelStatus()">
 
+    <div class="ticker-wrap">
+        <div class="ticker-move">
+            <span class="ticker-item">GLOBAL_COPPER_RESERVE: CRITICAL_DEFICIT</span>
+            <span class="ticker-item">TIME_TO_OBLIVION: T-MINUS 4 YEARS</span>
+            <span class="ticker-item">ASSET_CLASS: RARE_ELEMENTAL_BULLION</span>
+            <span class="ticker-item">STATUS: INDUSTRIAL_HARD_ASSET_REVOLUTION</span>
+            <span class="ticker-item">COPPER_DEMAND_INDEX: 300% GROWTH BY 2030</span>
+        </div>
+    </div>
+
     <div class="bg-logo"></div>
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
+        <div class="tagline">ELITE_ART_DIVIDEND</div>
         <div class="scan-line"></div>
-        <p>RECOGNITION REQUIRED</p>
-
-        <button class="btn btn-ascend" onclick="ascend()">INITIALIZE LINK</button>
-        <button class="btn btn-oblivion" onclick="oblivion()">REJECT SIGNAL</button>
+        
+        <button class="btn btn-ascend" onclick="ascend()">CLAIM_SOVEREIGNTY</button>
+        <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
     </div>
 
     <div class="gate-container" id="vault" style="display:none;">
-        <h1 style="font-size: 1.5rem; text-align: left;">SENTINEL_DASHBOARD</h1>
+        <h1 style="font-size: 1.4rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
         
         <div id="dashboard">
-            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value">ACTIVE</span></div>
-            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">PHASE_01</span></div>
-            <div class="stat-row"><span class="stat-label">$VOID BALANCE:</span> <span class="stat-value">10.00</span></div>
-            <div class="stat-row"><span class="stat-label">WEEKLY JUICE:</span> <span class="stat-value">0.00 USDC</span></div>
+            <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value highlight">SENTINEL_ELITE</span></div>
+            <div class="stat-row"><span class="stat-label">MATURITY_CLOCK:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
+            <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
         </div>
         
-        <button class="btn btn-oblivion" style="margin-top:20px;" onclick="resetSentinel()">TERMINATE SESSION</button>
+        <button class="btn btn-forfeit" style="margin-top:30px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
     <script>
-        // Check if the user is a returning Sentinel
         function checkSentinelStatus() {
             if (localStorage.getItem('luxvoid_ascended') === 'true') {
                 showVault();
@@ -122,7 +165,6 @@
         }
 
         function ascend() {
-            // Save state to browser memory
             localStorage.setItem('luxvoid_ascended', 'true');
             showVault();
         }
@@ -139,8 +181,10 @@
         }
 
         function oblivion() {
-            alert("SIGNAL LOST. OBLIVION CHOSEN.");
-            window.location.href = "https://www.google.com"; // placeholder for rejection
+            let choice = confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. This physical core will be permanently de-authenticated from the Elite Rewards Club. Proceed into Oblivion?");
+            if (choice) {
+                window.location.href = "https://www.google.com";
+            }
         }
     </script>
 
