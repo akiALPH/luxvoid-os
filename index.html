@@ -10,7 +10,7 @@
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.7);
+            --glass-panel: rgba(10, 10, 10, 0.75);
         }
 
         body {
@@ -26,31 +26,31 @@
             align-items: center;
         }
 
-        /* SCARCITY TICKER - THE TOP MOVING LANE */
+        /* SCARCITY TICKER */
         .ticker-wrap {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid var(--void-cyan);
             overflow: hidden;
             white-space: nowrap;
-            padding: 10px 0;
+            padding: 12px 0;
             z-index: 100;
         }
 
         .ticker-move {
             display: inline-block;
-            animation: ticker 30s linear infinite;
+            animation: ticker 25s linear infinite;
         }
 
         .ticker-item {
             display: inline-block;
-            padding: 0 40px;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
+            padding: 0 50px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
             color: var(--void-cyan);
-            text-transform: uppercase;
+            font-weight: 700;
         }
 
         @keyframes ticker {
@@ -58,29 +58,31 @@
             100% { transform: translateX(-100%); }
         }
 
+        /* LOGO FIX: Reduced blur and increased brightness */
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 120%; 
-            height: 120%;
+            width: 110%; 
+            height: 110%;
             background-image: url('assets/logo.JPG');
             background-position: center;
-            background-size: cover;
-            filter: blur(45px) brightness(0.25);
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: blur(15px) brightness(0.6); 
             z-index: -1;
-            animation: deep-pulse 12s infinite alternate;
+            animation: deep-pulse 15s infinite alternate;
         }
 
         .gate-container {
             background: var(--glass-panel);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 240, 255, 0.1);
-            padding: 60px 40px;
-            border-radius: 4px;
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            padding: 50px 40px;
+            border-radius: 8px;
             text-align: center;
-            max-width: 380px;
-            box-shadow: 0 0 100px rgba(0, 0, 0, 1);
+            max-width: 360px;
+            box-shadow: 0 0 60px rgba(0,0,0,1);
             z-index: 10;
         }
 
@@ -88,35 +90,35 @@
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--void-cyan), transparent);
-            margin: 30px 0;
+            margin: 25px 0;
         }
 
-        h1 { font-size: 3rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 30px var(--void-cyan); text-transform: uppercase; }
-        .tagline { color: #555; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 40px; }
+        h1 { font-size: 2.8rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--void-cyan); }
+        .tagline { color: #666; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 30px; }
 
         .btn {
-            display: block; width: 100%; padding: 20px 0; margin: 15px 0;
+            display: block; width: 100%; padding: 18px 0; margin: 12px 0;
             font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
-            letter-spacing: 5px; text-transform: uppercase; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1); transition: all 0.5s ease;
+            letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s ease;
         }
 
         .btn-ascend { background: rgba(0, 240, 255, 0.05); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 50px var(--void-cyan); }
+        .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
 
-        .btn-forfeit { background: transparent; color: #333; font-size: 0.65rem; border: none; letter-spacing: 3px; }
+        .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 2px; }
         .btn-forfeit:hover { color: #ff3333; }
 
         /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 10px; }
-        .stat-label { color: #444; font-size: 0.65rem; letter-spacing: 2px; }
-        .stat-value { color: #eee; font-family: 'Courier New', monospace; font-size: 0.85rem; }
-        .highlight { color: var(--void-cyan); }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .stat-label { color: #555; font-size: 0.65rem; }
+        .stat-value { color: #ddd; font-family: monospace; font-size: 0.85rem; }
+        .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
 
         @keyframes deep-pulse {
-            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.08); }
+            0% { opacity: 0.5; scale: 1; }
+            100% { opacity: 0.8; scale: 1.05; }
         }
     </style>
 </head>
@@ -124,11 +126,10 @@
 
     <div class="ticker-wrap">
         <div class="ticker-move">
-            <span class="ticker-item">GLOBAL_COPPER_RESERVE: CRITICAL_DEFICIT</span>
-            <span class="ticker-item">TIME_TO_OBLIVION: T-MINUS 4 YEARS</span>
-            <span class="ticker-item">ASSET_CLASS: RARE_ELEMENTAL_BULLION</span>
-            <span class="ticker-item">STATUS: INDUSTRIAL_HARD_ASSET_REVOLUTION</span>
-            <span class="ticker-item">COPPER_DEMAND_INDEX: 300% GROWTH BY 2030</span>
+            <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
+            <span class="ticker-item">SCARCITY_PROTOCOL: T-MINUS 1,460 DAYS</span>
+            <span class="ticker-item">GLOBAL_DEMAND: ACCELERATING</span>
+            <span class="ticker-item">ASSET_CLASS: INDUSTRIAL_REVOLUTION_PRIME</span>
         </div>
     </div>
 
@@ -138,30 +139,35 @@
         <h1>LUXVOID</h1>
         <div class="tagline">ELITE_ART_DIVIDEND</div>
         <div class="scan-line"></div>
-        
         <button class="btn btn-ascend" onclick="ascend()">CLAIM_SOVEREIGNTY</button>
         <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
     </div>
 
     <div class="gate-container" id="vault" style="display:none;">
-        <h1 style="font-size: 1.4rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
+        <h1 style="font-size: 1.4rem; text-align: left; letter-spacing: 4px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
-        
         <div id="dashboard">
             <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value highlight">SENTINEL_ELITE</span></div>
-            <div class="stat-row"><span class="stat-label">MATURITY_CLOCK:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
         </div>
-        
-        <button class="btn btn-forfeit" style="margin-top:30px;" onclick="resetSentinel()">RESET_SESSION</button>
+        <button class="btn btn-forfeit" style="margin-top:25px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
     <script>
         function checkSentinelStatus() {
-            if (localStorage.getItem('luxvoid_ascended') === 'true') {
-                showVault();
-            }
+            if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
+            updateLivePrice();
+        }
+
+        function updateLivePrice() {
+            // Simulated live price logic
+            setInterval(() => {
+                let current = parseFloat(document.getElementById('cu-price').innerText);
+                let change = (Math.random() * 0.02 - 0.01);
+                document.getElementById('cu-price').innerText = (current + change).toFixed(2);
+            }, 3000);
         }
 
         function ascend() {
@@ -181,12 +187,10 @@
         }
 
         function oblivion() {
-            let choice = confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. This physical core will be permanently de-authenticated from the Elite Rewards Club. Proceed into Oblivion?");
-            if (choice) {
+            if (confirm("FINAL WARNING: Severing this link forfeits all Elite Rewards. Proceed?")) {
                 window.location.href = "https://www.google.com";
             }
         }
     </script>
-
 </body>
 </html>
