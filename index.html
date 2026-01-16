@@ -10,7 +10,6 @@
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
-        /* MACRO BG + PARTICLES */
         .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.85); z-index: -2; pointer-events: none; }
         #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; pointer-events: none; }
 
@@ -25,7 +24,6 @@
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
         h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
 
-        /* BUTTONS */
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
         .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
@@ -34,12 +32,15 @@
 
         /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* MODAL & CARD FLIP */
+        /* LIVE CHART SPARKLINE */
+        .live-chart { width: 40px; height: 15px; display: inline-block; vertical-align: middle; margin-left: 5px; }
+
+        /* MODAL */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
         .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
@@ -77,8 +78,7 @@
             <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value" id="rank-display">SENTINEL_ELITE</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
-            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value">10.00 $VOID</span></div>
-            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
+            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <div><span class="stat-value">1.00 OZ_CU</span> <canvas id="cuChart" class="live-chart"></canvas></div></div>
         </div>
         <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
         <a href="core.html" class="btn btn-core">[ ACCESS_CORE_LOGIC ]</a>
@@ -106,7 +106,8 @@
 
     <script>
         function initSystem() {
-            initParticles(); // Start ambient particles
+            initParticles();
+            initCuChart(); // Start the Copper Chart
             const urlParams = new URLSearchParams(window.location.search);
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
@@ -119,7 +120,30 @@
             updateLivePrice();
         }
 
-        // AMBIENT PARTICLE ENGINE
+        // COPPER CHART ENGINE
+        function initCuChart() {
+            const canvas = document.getElementById('cuChart');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 40; canvas.height = 15;
+            let data = [5,8,6,9,10,12,11,14,13,15];
+            
+            setInterval(() => {
+                data.shift();
+                data.push(data[data.length-1] + (Math.random() * 4 - 2));
+                ctx.clearRect(0,0,40,15);
+                ctx.beginPath();
+                ctx.strokeStyle = '#b87333';
+                ctx.lineWidth = 2;
+                for(let i=0; i<data.length; i++) {
+                    let x = i * 4;
+                    let y = 15 - (data[i] - 5); 
+                    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+                }
+                ctx.stroke();
+            }, 500);
+        }
+
+        // PARTICLES
         function initParticles() {
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
