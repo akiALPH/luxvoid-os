@@ -8,7 +8,7 @@
     <style>
         :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; }
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
-        body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
         .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.85); z-index: -2; pointer-events: none; }
         #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; pointer-events: none; }
@@ -20,24 +20,18 @@
 
         .gate-container { 
             background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%);
-            backdrop-filter: blur(45px); 
-            border: 1px solid rgba(0, 240, 255, 0.1); 
-            padding: 50px 40px; 
-            border-radius: 40px; 
-            text-align: center; 
-            width: 320px; 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); 
-            z-index: 10; 
-            flex-shrink: 0; 
+            backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.1); 
+            padding: 50px 40px; border-radius: 40px; text-align: center; width: 320px; 
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); z-index: 10; flex-shrink: 0; 
         }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
         h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
 
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
         .btn-core { background: rgba(184, 115, 51, 0.15); color: var(--copper); border-color: var(--copper); font-size: 0.85rem; margin-top: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
+        .btn-quick { background: rgba(0, 255, 157, 0.1); border: 1px solid var(--void-green); color: var(--void-green); font-size: 0.5rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 8px; }
 
         .scan-active { animation: pulseScan 0.8s infinite alternate; color: var(--void-cyan); text-shadow: 0 0 10px var(--void-cyan); }
         @keyframes pulseScan { 0% { opacity: 0.4; } 100% { opacity: 1; letter-spacing: 6px; } }
@@ -48,34 +42,37 @@
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* QUICK ACTION BUTTON */
-        .btn-quick { background: rgba(0, 255, 157, 0.1); border: 1px solid var(--void-green); color: var(--void-green); font-size: 0.5rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 8px; transition: 0.3s; }
-        .btn-quick:hover { background: var(--void-green); color: #000; }
+        #archive-drawer {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%;
+            background: linear-gradient(180deg, #111, #050505);
+            z-index: 500; border-top: 1px solid var(--void-cyan);
+            border-radius: 40px 40px 0 0; transition: bottom 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 40px 30px; box-sizing: border-box; overflow-y: auto; text-align: left;
+        }
+        #archive-drawer.open { bottom: 0; }
+        .drawer-close { position: absolute; top: 20px; right: 30px; color: #555; font-size: 0.7rem; cursor: pointer; letter-spacing: 2px; }
+        .chapter-title { color: var(--void-cyan); font-size: 1rem; letter-spacing: 4px; margin: 30px 0 10px 0; border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 5px; }
+        .chapter-text { color: #888; font-size: 0.7rem; line-height: 1.6; }
+
+        footer { position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 50; }
+        .footer-link { color: #444; font-size: 0.6rem; letter-spacing: 3px; cursor: pointer; margin: 0 15px; text-transform: uppercase; }
 
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
-        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 2px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); overflow: hidden; box-shadow: 0 0 40px rgba(184, 115, 51, 0.25); }
+        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 2px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #1a1a1a, #050505); overflow: hidden; }
         .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
-        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.2) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
 <body onload="initSystem()">
 
     <canvas id="particle-canvas"></canvas>
-    <div class="ticker-wrap">
-        <div class="ticker-move">
-            <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
-            <span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span>
-            <span class="ticker-item">MONOLITH_SUPPLY: 88,888 $VOID MAX</span>
-        </div>
-    </div>
-
+    <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span><span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span><span class="ticker-item">MONOLITH_SUPPLY: 88,888 $VOID MAX</span></div></div>
     <div class="bg-logo" id="logo-bg"></div>
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
-        <div class="tagline" id="tagline-text" style="color: #444; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px;">ELITE_ART_REWARDS</div>
+        <div class="tagline" style="color: #444; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px;">ELITE_ART_REWARDS</div>
         <div class="scan-line"></div>
         <button class="btn btn-ascend" id="claim-btn" onclick="startScan()">CLAIM_SOVEREIGNTY</button>
         <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
@@ -86,15 +83,7 @@
         <div class="scan-line"></div>
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
-            
-            <div class="stat-row">
-                <span class="stat-label">ART_YIELD:</span> 
-                <div style="display:flex; align-items:center;">
-                    <span class="stat-value" style="color:var(--void-cyan)" id="reward-display">0.000000</span>
-                    <button class="btn-quick" onclick="compound()">COMPOUND</button>
-                </div>
-            </div>
-
+            <div class="stat-row"><span class="stat-label">ART_YIELD:</span> <div style="display:flex; align-items:center;"><span class="stat-value" id="reward-display">0.000000</span><button class="btn-quick" onclick="compound()">COMPOUND</button></div></div>
             <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
             <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value"><span id="staked-val">10.00</span> $VOID</span></div>
@@ -105,103 +94,63 @@
         <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
+    <div id="archive-drawer">
+        <span class="drawer-close" onclick="toggleArchive()">[ CLOSE_DIRECTORY ]</span>
+        <div class="chapter-title">PRIVACY_PROTOCOL</div>
+        <p class="chapter-text">Zero-Knowledge interface. We collect no personal data. Sovereignty is anchored to the Elemental Core via MONAD/ALPH protocols [cite: 2025-12-23].</p>
+        <div class="chapter-title">CHAPTER I: THE MANIFESTO</div>
+        <p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware. Assets are born from the forge, physically held and industrially anchored [cite: 2026-01-14].</p>
+        <div class="chapter-title">CHAPTER II: TOKENOMICS</div>
+        <p class="chapter-text">88,888 $VOID hard cap. Tokens are digital shadows of 1oz elemental copper cores [cite: 2026-01-14].</p>
+        <div class="chapter-title">CHAPTER III: THE SCARCITY DECREE</div>
+        <p class="chapter-text">1,095-day maturity. Early exits trigger burn penalties to protect the loyal [cite: 2026-01-14].</p>
+        <div class="chapter-title">CHAPTER IV: THE ROADMAP</div>
+        <p class="chapter-text">2026: Genesis. 2027-29: Squeeze. 2030: Zenith - Capitalizing on Copper scarcity [cite: 2025-12-21].</p>
+    </div>
+
+    <footer><span class="footer-link" onclick="toggleArchive()">[ ARCHIVE ]</span><span class="footer-link" onclick="window.location.href='https://twitter.com/luxvoid'">[ X ]</span></footer>
+
     <div id="id-modal">
-        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
-            <div class="card-face card-front">
-                <div class="glint" id="glint"></div>
-                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
-                <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
-                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
-                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
-            </div>
-            <div class="card-face card-back">
-                <div style="color:var(--void-cyan); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
-                <div style="font-size:0.5rem; color:#888;">SERIAL: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
-                <div style="font-size:0.5rem; color:#888; margin-top:5px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
-                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">AUTHENTICATED_ASSET</div>
-            </div>
+        <div class="card-inner" id="card-inner" onclick="flipCard()">
+            <div class="card-face card-front"><div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div><div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div><div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div></div>
+            <div class="card-face card-back"><div style="color:var(--void-cyan); font-size:0.6rem; letter-spacing:2px;">PRODUCTION_LEDGER</div><div style="font-size:0.5rem; color:#888; margin-top:10px;">ELEMENT: 99.9% PURE_COPPER</div><div id="serial-display" style="font-size:0.5rem; color:#fff; margin-top:5px;"></div></div>
         </div>
         <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
-        let rewards = 0.000000;
-
+        let rewards = 0;
+        function toggleArchive() { document.getElementById('archive-drawer').classList.toggle('open'); }
         function initSystem() {
-            initParticles();
-            initCuChart(); 
+            initParticles(); initCuChart(); 
             const urlParams = new URLSearchParams(window.location.search);
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
-            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
-            
+            document.getElementById('serial-display').innerText = "SERIAL: LV-2026-" + unitID.padStart(3, '0');
             if (localStorage.getItem('luxvoid_ascended') === 'true') { 
                 document.getElementById('gate').style.display = 'none';
                 document.getElementById('vault').style.display = 'block';
-                startRewardPulse();
+                setInterval(() => { rewards += 0.000002; document.getElementById('reward-display').innerText = rewards.toFixed(6); }, 1000);
             }
-            updateLivePrice();
+            setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000);
         }
-
-        // REAL-TIME REWARD ACCRUAL
-        function startRewardPulse() {
-            setInterval(() => {
-                rewards += 0.000002; // Simulated growth
-                document.getElementById('reward-display').innerText = rewards.toFixed(6);
-            }, 1000);
-        }
-
-        function compound() {
-            let currentStaked = parseFloat(document.getElementById('staked-val').innerText);
-            document.getElementById('staked-val').innerText = (currentStaked + rewards).toFixed(2);
-            rewards = 0;
-            document.getElementById('reward-display').innerText = "0.000000";
-            alert("INDUSTRIAL YIELD COMPOUNDED TO CORE ALLOCATION.");
-        }
-
+        function compound() { document.getElementById('staked-val').innerText = (parseFloat(document.getElementById('staked-val').innerText) + rewards).toFixed(2); rewards = 0; document.getElementById('reward-display').innerText = "0.000000"; }
         function initCuChart() {
-            const canvas = document.getElementById('cuChart');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 40; canvas.height = 15;
-            let data = [5,8,6,9,10,12,11,14,13,15];
-            setInterval(() => {
-                data.shift(); data.push(data[data.length-1] + (Math.random() * 4 - 2));
-                ctx.clearRect(0,0,40,15); ctx.beginPath(); ctx.strokeStyle = '#b87333'; ctx.lineWidth = 2;
-                for(let i=0; i<data.length; i++) { let x = i * 4; let y = 15 - (data[i] - 5); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-                ctx.stroke();
-            }, 500);
+            const canvas = document.getElementById('cuChart'); const ctx = canvas.getContext('2d'); canvas.width = 40; canvas.height = 15;
+            let data = [5,8,6,9,10]; setInterval(() => { data.shift(); data.push(data[data.length-1] + (Math.random()*4-2)); ctx.clearRect(0,0,40,15); ctx.beginPath(); ctx.strokeStyle = '#b87333'; ctx.lineWidth = 2; for(let i=0; i<data.length; i++) { let x = i*10; let y = 15-(data[i]-5); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); }, 500);
         }
-
         function initParticles() {
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            let particles = [];
-            for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
-            function animate() {
-                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
-                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y < 0) p.y = canvas.height; });
-                requestAnimationFrame(animate);
-            }
-            animate();
+            const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = []; for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
+            function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(0, 240, 255, 0.3)'; particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y < 0) p.y = canvas.height; }); requestAnimationFrame(animate); } animate();
         }
-
-        function handleGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
-        function handleTouchGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches[0]; glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
-        function updateLivePrice() { setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000); }
-        function startScan() { 
-            const btn = document.getElementById('claim-btn');
-            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE..."; 
-            btn.innerText = "SCANNING..."; btn.classList.add('scan-active');
-            setTimeout(() => { ascend(); }, 2500); 
-        }
-        function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; startRewardPulse(); }
+        function startScan() { document.getElementById('claim-btn').innerText = "SCANNING..."; document.getElementById('claim-btn').classList.add('scan-active'); setTimeout(() => { localStorage.setItem('luxvoid_ascended', 'true'); location.reload(); }, 2500); }
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
         function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
         function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
-        function oblivion() { if (confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. Proceed into Oblivion?")) { window.location.href = "https://www.google.com"; } }
+        function oblivion() { if (confirm("FINAL WARNING: Proceed into Oblivion?")) window.location.href = "https://google.com"; }
     </script>
 </body>
 </html>
