@@ -14,16 +14,17 @@
             color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; 
         }
 
-        /* 1. INFINITY BACKGROUND */
+        /* 1. BOOSTED INFINITY BACKGROUND (No more black void) */
         .infinite-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: url('assets/hero-poster.png') center/cover no-repeat;
-            filter: blur(40px) brightness(0.4);
+            /* Brighter and less blurry to fill the screen */
+            filter: blur(30px) brightness(0.6) saturate(1.2);
             transform: scale(1.2); 
             z-index: -20;
         }
 
-        #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.5; pointer-events: none; }
+        #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.7; pointer-events: none; }
 
         /* PRE-LOADER & TRIGGER */
         #loader {
@@ -32,7 +33,7 @@
             transition: opacity 1s ease-out; cursor: pointer;
         }
         .loader-text { color: var(--void-cyan); font-size: 0.8rem; letter-spacing: 5px; animation: pulse 0.8s infinite alternate; margin-bottom: 20px;}
-        .loader-sub { color: #555; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
+        .loader-sub { color: #555; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; border: 1px solid #333; padding: 8px 15px; border-radius: 20px; }
         @keyframes pulse { 0% { opacity: 0.3; } 100% { opacity: 1; text-shadow: 0 0 15px var(--void-cyan); } }
 
         /* HERO STAGE */
@@ -43,51 +44,40 @@
             overflow: hidden;
         }
 
-        /* 2. THE RIG (Holds everything) */
+        /* 2. LAG FIX (GPU Acceleration) */
         .coin-wrapper {
             position: absolute; top: 50%; left: 50%;
             width: 85vmin; height: 85vmin;
             transform: translate(-50%, -50%);
             transform-style: preserve-3d;
+            /* Will-change prevents the blurry lag on movement */
+            will-change: transform;
             transition: transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1);
             z-index: -1;
             pointer-events: none;
         }
 
-        /* 3. THE SHADOW (Static - Doesn't Spin) */
-        .coin-shadow {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 50%;
-            box-shadow: 0 40px 120px rgba(0,0,0,0.9);
-            transform: translateZ(-1px); /* Pushes shadow slightly behind */
-        }
-
-        /* 4. THE SPINNER (Rotates Continuously) */
         .coin-image {
             width: 100%; height: 100%;
             object-fit: contain;
             background: url('assets/hero-poster.png') center/contain no-repeat;
-            filter: brightness(0.9) contrast(1.2);
+            filter: brightness(1.1) contrast(1.1);
             border-radius: 50%;
-            /* Soft Mask Blend */
             -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 70%);
             mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 70%);
-            /* The Clockwork Animation */
             animation: celestialSpin 60s linear infinite;
+            /* Hardware acceleration to fix blur */
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        @keyframes celestialSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes celestialSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* GLARE (Stays static relative to spin, moves with tilt) */
         .glare-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, transparent 60%);
             mix-blend-mode: overlay;
-            opacity: 0; transition: opacity 0.3s;
-            pointer-events: none;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
         
         .hero-content { 
@@ -98,27 +88,36 @@
         }
         .hero-visible { opacity: 1; transform: translateY(0); }
 
-        /* NEON TYPOGRAPHY */
+        /* 3. HOLLOW NEON TYPOGRAPHY (Glass Effect) */
         h1 { 
-            font-size: clamp(3rem, 12vw, 6.5rem); 
-            letter-spacing: clamp(5px, 2vw, 15px); 
-            margin: 0; line-height: 1;
-            text-transform: uppercase; color: #fff;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 50px rgba(0, 240, 255, 0.2);
+            font-size: clamp(3.5rem, 13vw, 7rem); 
+            /* Negative margin compensates for wide spacing to center perfectly */
+            letter-spacing: clamp(5px, 2vw, 15px); margin-right: calc(clamp(5px, 2vw, 15px) * -1); 
+            line-height: 1; text-transform: uppercase; 
+            
+            /* The Hollow Glass Look */
+            color: transparent;
+            -webkit-text-stroke: 2px #fff;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
         }
 
-        /* FROSTED SUBTITLE */
-        .subtitle { 
-            font-size: clamp(0.5rem, 3vw, 0.75rem); 
+        /* 4. FUNCTIONAL SUBTITLE BUTTON */
+        .btn-subtitle { 
+            font-size: clamp(0.6rem, 3vw, 0.75rem); 
             letter-spacing: 3px; color: #ccc; text-transform: uppercase; 
             border: 1px solid rgba(184, 115, 51, 0.5); 
-            padding: 12px 20px; border-radius: 40px; 
+            padding: 15px 30px; border-radius: 40px; 
             background: rgba(0, 0, 0, 0.4); 
             backdrop-filter: blur(8px); 
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            pointer-events: none;
-            max-width: 80%;
-            line-height: 1.4;
+            cursor: pointer; transition: 0.3s;
+            text-decoration: none;
+            max-width: 85%; line-height: 1.4;
+        }
+        .btn-subtitle:hover {
+            border-color: var(--void-cyan);
+            color: var(--void-cyan);
+            background: rgba(0, 240, 255, 0.1);
         }
 
         .btn-enter { 
@@ -131,14 +130,22 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
         }
-        
-        .btn-enter:hover { 
-            background: rgba(0, 240, 255, 0.2); 
-            box-shadow: 0 0 60px rgba(0, 240, 255, 0.6); 
-            color: #fff; transform: scale(1.05);
-        }
+        .btn-enter:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 60px rgba(0, 240, 255, 0.6); color: #fff; transform: scale(1.05); }
 
-        footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #666; font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; z-index: 20; pointer-events: none; }
+        /* ARCHIVE DRAWER (Added to Home) */
+        #archive-drawer {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%;
+            background: linear-gradient(180deg, #111, #050505);
+            z-index: 500; border-top: 1px solid var(--void-cyan);
+            border-radius: 40px 40px 0 0; transition: bottom 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 40px 30px; box-sizing: border-box; overflow-y: auto; text-align: left;
+        }
+        #archive-drawer.open { bottom: 0; }
+        .drawer-close { position: absolute; top: 20px; right: 30px; color: #555; font-size: 0.7rem; cursor: pointer; letter-spacing: 2px; }
+        .chapter-title { color: var(--void-cyan); font-size: 1rem; letter-spacing: 4px; margin: 30px 0 10px 0; border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 5px; }
+        .chapter-text { color: #888; font-size: 0.75rem; line-height: 1.6; }
+
+        footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #888; font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; z-index: 20; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -153,26 +160,40 @@
 
     <section class="hero" id="hero-stage">
         <div class="coin-wrapper" id="coin-tilt">
-            <div class="coin-shadow"></div>
             <div class="coin-image"></div>
             <div class="glare-overlay" id="coin-glare"></div>
         </div>
         
         <div class="hero-content" id="hero-content">
             <h1>LUXVOID</h1>
-            <div class="subtitle">INDUSTRIAL_REVOLUTION // HARD_ASSET_VAULT</div>
+            <button class="btn-subtitle" onclick="toggleArchive()">INDUSTRIAL_REVOLUTION // READ_MANIFESTO</button>
             <a href="index.html" class="btn-enter">ACCESS_SOVEREIGN_OS</a>
         </div>
 
         <footer>LUXVOID // MONAD_ALPH // SOVEREIGN_ASSET_PROTECTION</footer>
     </section>
 
+    <div id="archive-drawer">
+        <span class="drawer-close" onclick="toggleArchive()">[ CLOSE_DIRECTORY ]</span>
+        <div class="chapter-title">PRIVACY_PROTOCOL</div>
+        <p class="chapter-text">Zero-Knowledge interface. We collect no personal data. Sovereignty is anchored to the Elemental Core.</p>
+        <div class="chapter-title">CHAPTER I: THE MANIFESTO</div>
+        <p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware. Assets are born from the forge, physically held and industrially anchored.</p>
+        <div class="chapter-title">CHAPTER II: TOKENOMICS</div>
+        <p class="chapter-text">88,888 $VOID hard cap. Tokens are digital shadows of 1oz elemental copper cores.</p>
+        <div class="chapter-title">CHAPTER III: THE SCARCITY DECREE</div>
+        <p class="chapter-text">1,095-day maturity. Early exits trigger burn penalties to protect the loyal.</p>
+        <div class="chapter-title">CHAPTER IV: THE ROADMAP</div>
+        <p class="chapter-text">2026: Genesis. 2027-29: Squeeze. 2030: Zenith - Capitalizing on Copper scarcity.</p>
+    </div>
+
     <script>
+        function toggleArchive() { document.getElementById('archive-drawer').classList.toggle('open'); }
+
         function startExperience() {
             const loader = document.getElementById('loader');
             const content = document.getElementById('hero-content');
             
-            // Request Gyro (iOS)
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
                     .then(r => { if (r === 'granted') window.addEventListener('deviceorientation', handleGyro); })
@@ -198,19 +219,18 @@
 
         function isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent); }
 
-        // GYRO LOGIC
         function handleGyro(event) {
             const coin = document.getElementById('coin-tilt');
             const glare = document.getElementById('coin-glare');
             let x = event.gamma; let y = event.beta;
             if (x > 30) x = 30; if (x < -30) x = -30;
             if (y > 30) y = 30; if (y < -30) y = -30;
+            // Removed blur filter from transform to fix mobile lag
             coin.style.transform = `translate(-50%, -50%) rotateY(${x}deg) rotateX(${-y + 45}deg)`;
             glare.style.opacity = '1';
             glare.style.transform = `translate(${-x * 2}px, ${-y * 2}px)`;
         }
 
-        // MOUSE LOGIC
         const stage = document.getElementById('hero-stage');
         const coin = document.getElementById('coin-tilt');
         const glare = document.getElementById('coin-glare');
@@ -224,7 +244,6 @@
             glare.style.transform = `translate(${-xWalk * 2}px, ${-yWalk * 2}px)`;
         });
 
-        // PARTICLES
         function initParticles() {
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
