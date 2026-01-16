@@ -10,7 +10,7 @@
             --void-cyan: #00f0ff; 
             --void-green: #00ff9d; 
             --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.75);
+            --glass-panel: rgba(10, 10, 10, 0.8);
         }
 
         body {
@@ -26,7 +26,7 @@
             align-items: center;
         }
 
-        /* SCARCITY TICKER */
+        /* TICKER */
         .ticker-wrap {
             position: fixed;
             top: 0;
@@ -39,56 +39,51 @@
             z-index: 100;
         }
 
-        .ticker-move {
-            display: inline-block;
-            animation: ticker 25s linear infinite;
-        }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 50px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
 
-        .ticker-item {
-            display: inline-block;
-            padding: 0 50px;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            color: var(--void-cyan);
-            font-weight: 700;
-        }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* LOGO FIX: Reduced blur and increased brightness */
+        /* LOGO ENGINE */
         .bg-logo {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 110%; 
-            height: 110%;
+            width: 80%; 
+            height: 80%;
             background-image: url('assets/logo.JPG');
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
-            filter: blur(15px) brightness(0.6); 
+            filter: blur(5px) brightness(0.7); 
             z-index: -1;
-            animation: deep-pulse 15s infinite alternate;
+            transition: all 1s ease;
         }
 
+        /* SCANNING ANIMATION CLASS */
+        .scanning {
+            animation: scan-rotate 1s infinite linear !important;
+            filter: blur(0px) brightness(1) drop-shadow(0 0 20px var(--void-cyan)) !important;
+        }
+
+        @keyframes scan-rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* ROUNDED LUXURY CONTAINER */
         .gate-container {
             background: var(--glass-panel);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 240, 255, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.2);
             padding: 50px 40px;
-            border-radius: 8px;
+            border-radius: 30px; /* ROUNDED EDGES */
             text-align: center;
             max-width: 360px;
-            box-shadow: 0 0 60px rgba(0,0,0,1);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
             z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
         .scan-line {
-            width: 100%;
-            height: 1px;
+            width: 100%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--void-cyan), transparent);
             margin: 25px 0;
         }
@@ -96,18 +91,20 @@
         h1 { font-size: 2.8rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--void-cyan); }
         .tagline { color: #666; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 30px; }
 
+        /* ROUNDED BUTTONS */
         .btn {
             display: block; width: 100%; padding: 18px 0; margin: 12px 0;
             font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
             letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 50px; /* ROUNDED BUTTONS */
+            transition: all 0.4s ease;
         }
 
         .btn-ascend { background: rgba(0, 240, 255, 0.05); color: var(--void-cyan); border-color: var(--void-cyan); }
         .btn-ascend:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
 
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 2px; }
-        .btn-forfeit:hover { color: #ff3333; }
 
         /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
@@ -116,10 +113,6 @@
         .stat-value { color: #ddd; font-family: monospace; font-size: 0.85rem; }
         .highlight { color: var(--void-green); text-shadow: 0 0 5px var(--void-green); }
 
-        @keyframes deep-pulse {
-            0% { opacity: 0.5; scale: 1; }
-            100% { opacity: 0.8; scale: 1.05; }
-        }
     </style>
 </head>
 <body onload="checkSentinelStatus()">
@@ -128,18 +121,17 @@
         <div class="ticker-move">
             <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
             <span class="ticker-item">SCARCITY_PROTOCOL: T-MINUS 1,460 DAYS</span>
-            <span class="ticker-item">GLOBAL_DEMAND: ACCELERATING</span>
             <span class="ticker-item">ASSET_CLASS: INDUSTRIAL_REVOLUTION_PRIME</span>
         </div>
     </div>
 
-    <div class="bg-logo"></div>
+    <div class="bg-logo" id="logo-bg"></div>
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
-        <div class="tagline">ELITE_ART_DIVIDEND</div>
+        <div class="tagline" id="tagline-text">ELITE_ART_DIVIDEND</div>
         <div class="scan-line"></div>
-        <button class="btn btn-ascend" onclick="ascend()">CLAIM_SOVEREIGNTY</button>
+        <button class="btn btn-ascend" id="claim-btn" onclick="startScan()">CLAIM_SOVEREIGNTY</button>
         <button class="btn btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
     </div>
 
@@ -162,11 +154,23 @@
         }
 
         function updateLivePrice() {
-            // Simulated live price logic
             setInterval(() => {
                 let current = parseFloat(document.getElementById('cu-price').innerText);
                 let change = (Math.random() * 0.02 - 0.01);
                 document.getElementById('cu-price').innerText = (current + change).toFixed(2);
+            }, 3000);
+        }
+
+        function startScan() {
+            // Start the visual scan
+            document.getElementById('logo-bg').classList.add('scanning');
+            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE...";
+            document.getElementById('tagline-text').style.color = "var(--void-cyan)";
+            document.getElementById('claim-btn').innerText = "SCANNING...";
+
+            // Delay for "Proof of Authentication"
+            setTimeout(() => {
+                ascend();
             }, 3000);
         }
 
@@ -179,6 +183,7 @@
             document.getElementById('gate').style.display = 'none';
             document.getElementById('vault').style.display = 'block';
             document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('logo-bg').classList.remove('scanning');
         }
 
         function resetSentinel() {
