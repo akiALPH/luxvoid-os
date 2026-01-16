@@ -6,7 +6,7 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; }
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --copper: #b87333; }
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
@@ -19,8 +19,20 @@
         .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 50px 40px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px #000; z-index: 10; flex-shrink: 0; }
+        /* CHAMELEON CONTAINER */
+        /* Replaced flat glass with a Deep Obsidian Gradient */
+        .gate-container { 
+            background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%);
+            backdrop-filter: blur(45px); 
+            border: 1px solid rgba(0, 240, 255, 0.1); 
+            padding: 50px 40px; 
+            border-radius: 40px; 
+            text-align: center; 
+            width: 320px; 
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); 
+            z-index: 10; 
+            flex-shrink: 0; 
+        }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
         h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
 
@@ -30,23 +42,35 @@
         .btn-core { background: rgba(184, 115, 51, 0.15); color: var(--copper); border-color: var(--copper); font-size: 0.85rem; margin-top: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
+        /* SCANNING ANIMATION */
+        .scan-active { animation: pulseScan 0.8s infinite alternate; color: var(--void-cyan); text-shadow: 0 0 10px var(--void-cyan); }
+        @keyframes pulseScan { 0% { opacity: 0.4; } 100% { opacity: 1; letter-spacing: 6px; } }
+
         /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
-        .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 1px; }
+        .stat-label { color: #666; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
-
-        /* LIVE CHART SPARKLINE */
         .live-chart { width: 40px; height: 15px; display: inline-block; vertical-align: middle; margin-left: 5px; }
 
-        /* MODAL */
+        /* MODAL & CARD FLIP */
         #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
         .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111, #000); overflow: hidden; box-shadow: 0 0 30px rgba(184, 115, 51, 0.2); }
-        .card-back { transform: rotateY(180deg); background: #090909; }
-        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.15) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
+        
+        /* CARD VISIBILITY FIX: Lighter Gunmetal Background + Stronger Copper Border */
+        .card-face { 
+            position: absolute; inset: 0; backface-visibility: hidden; 
+            border-radius: 20px; 
+            border: 2px solid var(--copper); /* Thicker Border */
+            padding: 25px; box-sizing: border-box; 
+            background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); /* Lighter Gradient */
+            overflow: hidden; 
+            box-shadow: 0 0 40px rgba(184, 115, 51, 0.25); /* Stronger Glow */
+        }
+        .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
+        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.2) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
 <body onload="initSystem()">
@@ -75,9 +99,10 @@
         <div class="scan-line"></div>
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
-            <div class="stat-row"><span class="stat-label">RANK:</span> <span class="stat-value" id="rank-display">SENTINEL_ELITE</span></div>
+            <div class="stat-row"><span class="stat-label">REWARD_STATUS:</span> <span class="stat-value" id="rank-display">ACTIVE_EARNER</span></div>
             <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
             <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
+            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value">10.00 $VOID</span></div>
             <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <div><span class="stat-value">1.00 OZ_CU</span> <canvas id="cuChart" class="live-chart"></canvas></div></div>
         </div>
         <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
@@ -95,7 +120,7 @@
                 <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
             </div>
             <div class="card-face card-back">
-                <div style="color:var(--copper); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
+                <div style="color:var(--void-cyan); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
                 <div style="font-size:0.5rem; color:#888;">SERIAL: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
                 <div style="font-size:0.5rem; color:#888; margin-top:5px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
                 <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">AUTHENTICATED_ASSET</div>
@@ -107,7 +132,7 @@
     <script>
         function initSystem() {
             initParticles();
-            initCuChart(); // Start the Copper Chart
+            initCuChart(); 
             const urlParams = new URLSearchParams(window.location.search);
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
@@ -120,30 +145,19 @@
             updateLivePrice();
         }
 
-        // COPPER CHART ENGINE
         function initCuChart() {
             const canvas = document.getElementById('cuChart');
             const ctx = canvas.getContext('2d');
             canvas.width = 40; canvas.height = 15;
             let data = [5,8,6,9,10,12,11,14,13,15];
-            
             setInterval(() => {
-                data.shift();
-                data.push(data[data.length-1] + (Math.random() * 4 - 2));
-                ctx.clearRect(0,0,40,15);
-                ctx.beginPath();
-                ctx.strokeStyle = '#b87333';
-                ctx.lineWidth = 2;
-                for(let i=0; i<data.length; i++) {
-                    let x = i * 4;
-                    let y = 15 - (data[i] - 5); 
-                    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-                }
+                data.shift(); data.push(data[data.length-1] + (Math.random() * 4 - 2));
+                ctx.clearRect(0,0,40,15); ctx.beginPath(); ctx.strokeStyle = '#b87333'; ctx.lineWidth = 2;
+                for(let i=0; i<data.length; i++) { let x = i * 4; let y = 15 - (data[i] - 5); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
                 ctx.stroke();
             }, 500);
         }
 
-        // PARTICLES
         function initParticles() {
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
@@ -151,12 +165,8 @@
             let particles = [];
             for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
             function animate() {
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
-                particles.forEach(p => {
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-                    p.y -= p.speed; if(p.y < 0) p.y = canvas.height;
-                });
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
+                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y < 0) p.y = canvas.height; });
                 requestAnimationFrame(animate);
             }
             animate();
@@ -165,7 +175,16 @@
         function handleGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
         function handleTouchGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches[0]; glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
         function updateLivePrice() { setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000); }
-        function startScan() { document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE..."; document.getElementById('claim-btn').innerText = "SCANNING..."; setTimeout(() => { ascend(); }, 2500); }
+        
+        // ANIMATED SCANNING
+        function startScan() { 
+            const btn = document.getElementById('claim-btn');
+            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE..."; 
+            btn.innerText = "SCANNING..."; 
+            btn.classList.add('scan-active'); // Adds the pulse animation
+            setTimeout(() => { ascend(); }, 2500); 
+        }
+
         function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; }
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
