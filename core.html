@@ -9,72 +9,100 @@
         :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass: rgba(10, 10, 10, 0.95); --copper: #b87333; --alert: #ff3333; }
         body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
-        /* THE MONOLITH COUNTER */
-        .supply-hero { width: 100%; background: #000; border-bottom: 1px solid var(--copper); padding: 30px 0; text-align: center; margin-bottom: 20px; box-shadow: 0 0 30px rgba(184, 115, 51, 0.2); }
-        .supply-val { font-size: 2.8rem; letter-spacing: 12px; color: var(--void-cyan); text-shadow: 0 0 20px var(--void-cyan); margin: 0; }
-        .supply-label { font-size: 0.6rem; letter-spacing: 4px; color: var(--copper); margin-top: 5px; text-transform: uppercase; }
+        /* HERO & COUNTER */
+        .supply-hero { width: 100%; background: #000; border-bottom: 1px solid var(--copper); padding: 30px 0; text-align: center; margin-bottom: 20px; box-shadow: 0 0 40px rgba(184, 115, 51, 0.15); position: relative; overflow: hidden; }
+        .supply-val { font-size: 2.8rem; letter-spacing: 12px; color: var(--void-cyan); text-shadow: 0 0 20px var(--void-cyan); margin: 0; position: relative; z-index: 2; }
+        .supply-label { font-size: 0.6rem; letter-spacing: 4px; color: var(--copper); margin-top: 5px; text-transform: uppercase; position: relative; z-index: 2; }
+
+        /* LIVE GRAPH CANVAS */
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; z-index: 1; }
 
         .container { width: 92%; max-width: 400px; padding-bottom: 40px; }
         .section { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 15px; backdrop-filter: blur(10px); }
         h2 { font-size: 0.9rem; letter-spacing: 3px; color: var(--void-cyan); border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 8px; margin-top: 0; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
 
-        /* COMPACT TIER STATUS */
+        /* DISTRIBUTION MATRIX */
+        .dist-row { margin-bottom: 15px; }
+        .dist-header { display: flex; justify-content: space-between; font-size: 0.6rem; margin-bottom: 5px; color: #888; }
+        .dist-val { color: #fff; font-family: monospace; }
+        .bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 3px; width: 0%; transition: width 1.5s ease-out; box-shadow: 0 0 10px currentColor; }
+
+        /* TIER BAR */
         .tier-bar { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
         .tier-box { flex: 1; padding: 10px 5px; border-radius: 10px; background: rgba(255,255,255,0.03); text-align: center; font-size: 0.55rem; border: 1px solid transparent; }
         .tier-active { background: rgba(0, 255, 157, 0.1); border-color: var(--void-green); color: var(--void-green); font-weight: bold; }
-        .tier-locked { color: #444; }
 
-        /* YIELD TABLE */
-        .yield-table { margin-top: 10px; }
-        .yield-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .yield-label { font-size: 0.7rem; color: #888; }
+        /* CALCULATOR */
+        .calc-input-wrap { margin: 15px 0; position: relative; }
+        input[type="number"] { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 12px; border-radius: 10px; color: var(--void-green); font-family: monospace; font-size: 1rem; box-sizing: border-box; outline: none; transition: border 0.3s; }
+        .calc-label { font-size: 0.55rem; color: #555; position: absolute; top: -8px; left: 12px; background: var(--deep-bg); padding: 0 5px; letter-spacing: 1px; }
+
+        .yield-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .yield-label { font-size: 0.65rem; color: #888; }
         .yield-val { font-size: 0.8rem; font-weight: bold; color: var(--void-green); font-family: monospace; }
+        .pulse-indicator { font-size: 0.6rem; color: var(--void-cyan); background: rgba(0, 240, 255, 0.05); padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(0, 240, 255, 0.2); }
 
-        /* INFO ICON & POPUP */
-        .info-trigger { cursor: help; font-size: 0.8rem; color: #555; border: 1px solid #333; border-radius: 50%; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s; }
-        .info-trigger:hover { color: var(--alert); border-color: var(--alert); }
-        
-        /* CONTRACT BOX */
-        .ca-box { background: #111; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.6rem; color: #aaa; word-break: break-all; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .ca-box { background: #111; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.6rem; color: #aaa; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
         .btn-copy { background: #222; border: 1px solid #333; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.5rem; cursor: pointer; }
 
         .btn-back { display: block; width: 100%; padding: 18px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: #fff; text-decoration: none; font-weight: bold; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px; }
     </style>
 </head>
-<body>
+<body onload="initCore()">
 
     <div class="supply-hero">
+        <canvas id="pulseCanvas"></canvas>
         <p class="supply-label">MONOLITH_SUPPLY_BURN</p>
         <h1 class="supply-val" id="burn-counter">88,888</h1>
     </div>
 
     <div class="container">
+        
+        <div class="section">
+            <h2>Supply_Matrix</h2>
+            
+            <div class="dist-row">
+                <div class="dist-header"><span>CIRCULATING (FORGED)</span> <span class="dist-val">8,888</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width:10%; background:var(--void-cyan);" id="bar1"></div></div>
+            </div>
+
+            <div class="dist-row">
+                <div class="dist-header"><span>MATURITY_LOCK (STAKED)</span> <span class="dist-val">45,000</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width:50%; background:var(--void-green);" id="bar2"></div></div>
+            </div>
+
+            <div class="dist-row">
+                <div class="dist-header"><span>LIQUIDITY_POOL (V3.3)</span> <span class="dist-val">20,000</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width:22%; background:var(--copper);" id="bar3"></div></div>
+            </div>
+
+            <div class="dist-row">
+                <div class="dist-header"><span>TEAM / TREASURY</span> <span class="dist-val">15,000</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width:18%; background:#555;" id="bar4"></div></div>
+            </div>
+        </div>
+
         <div class="section">
             <h2>Sovereign_Rank</h2>
             <div class="tier-bar">
                 <div class="tier-box">TRAVELER</div>
                 <div class="tier-box tier-active">SENTINEL</div>
-                <div class="tier-box tier-locked">WARLORD</div>
+                <div class="tier-box">WARLORD</div>
             </div>
         </div>
 
         <div class="section">
-            <h2>Industrial_Yields <span class="info-trigger" onclick="showPenalty()">i</span></h2>
-            <div class="yield-table">
-                <div class="yield-row">
-                    <span class="yield-label">YEAR_1 MATURITY:</span>
-                    <span class="yield-val">+ 2.0%</span>
-                </div>
-                <div class="yield-row">
-                    <span class="yield-label">YEAR_2 MATURITY:</span>
-                    <span class="yield-val">+ 6.0%</span>
-                </div>
-                <div class="yield-row">
-                    <span class="yield-label">YEAR_3 MATURITY:</span>
-                    <span class="yield-val">+ 18.0%</span>
-                </div>
+            <h2>Industrial_Pulse <span class="pulse-indicator">V3.3_ACTIVE</span></h2>
+            <div class="calc-input-wrap" style="margin-top: 20px;">
+                <span class="calc-label">ALLOCATED_$VOID</span>
+                <input type="number" id="voidInput" value="10" oninput="calculate()">
             </div>
-            <p style="font-size: 0.5rem; color: #444; margin-top: 10px; text-align: center;">YIELD IS ACCRUED BASED ON INDUSTRIAL MATURITY STATUS.</p>
+            <div class="yield-table">
+                <div class="yield-row"><span class="yield-label">EST_ANNUAL_PULSE:</span><span class="yield-val" id="annual">+ 0.60 $VOID</span></div>
+                <div class="yield-row"><span class="yield-label">3_YEAR_PROJECTION:</span><span class="yield-val" id="total">+ 1.80 $VOID</span></div>
+            </div>
+            <p style="font-size: 0.5rem; color: #444; margin-top: 10px; text-align: center;">REWARDS FLUCTUATE BASED ON LP_V3.3 PERFORMANCE.</p>
         </div>
 
         <div class="section">
@@ -89,6 +117,48 @@
     </div>
 
     <script>
+        // ANIMATION ENGINE
+        function initCore() {
+            startGraph();
+            calculate();
+            // Animate Bars on load
+            setTimeout(() => { document.getElementById('bar1').style.width = '10%'; }, 100);
+            setTimeout(() => { document.getElementById('bar2').style.width = '50%'; }, 300);
+            setTimeout(() => { document.getElementById('bar3').style.width = '22%'; }, 500);
+            setTimeout(() => { document.getElementById('bar4').style.width = '18%'; }, 700);
+        }
+
+        // 1. LIVE PULSE GRAPH
+        function startGraph() {
+            const canvas = document.getElementById('pulseCanvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = canvas.offsetWidth;
+            let height = canvas.height = canvas.offsetHeight;
+            let time = 0;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.beginPath();
+                ctx.strokeStyle = '#00f0ff';
+                ctx.lineWidth = 2;
+
+                for (let x = 0; x < width; x++) {
+                    // Create a "heartbeat" wave combining sine waves and random noise
+                    let y = height / 2 + Math.sin(x * 0.02 + time) * 20 + Math.sin(x * 0.1 + time * 2) * 10;
+                    // Add occasional "Spikes" for industrial feel
+                    if (Math.random() > 0.98) y -= Math.random() * 30; 
+                    
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                time += 0.1;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // 2. SUPPLY BURN SIM
         let supply = 88888;
         setInterval(() => {
             if(Math.random() > 0.65) {
@@ -97,13 +167,19 @@
             }
         }, 4000);
 
-        function showPenalty() {
-            alert("STAKING PROTOCOL WARNING:\n\n- Early exit within Year 1: 50% BURN PENALTY\n- Early exit within Year 2: 25% BURN PENALTY\n- Full Maturity (Year 3): 0% PENALTY\n\nProtective measures ensure reciprocal scarcity for the 888.");
+        // 3. CALCULATOR
+        function calculate() {
+            let amount = document.getElementById('voidInput').value;
+            if (amount < 0) amount = 0;
+            let annualEst = (amount * 0.06).toFixed(2);
+            let totalEst = (annualEst * 3).toFixed(2);
+            document.getElementById('annual').innerText = "+ " + annualEst + " $VOID";
+            document.getElementById('total').innerText = "+ " + totalEst + " $VOID";
         }
 
         function copyCA() {
             navigator.clipboard.writeText("0x7d1...LuxVoid...888");
-            alert("CONTRACT ADDRESS COPIED");
+            alert("COPIED");
         }
     </script>
 
