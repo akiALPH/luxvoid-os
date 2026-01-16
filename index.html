@@ -6,92 +6,58 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --void-cyan: #00f0ff; 
-            --void-green: #00ff9d; 
-            --deep-bg: #050505;
-            --glass-panel: rgba(10, 10, 10, 0.9);
-            --copper-accent: #b87333;
-        }
-
-        /* FIXED ANCHOR ENGINE */
-        html, body { height: 100dvh; width: 100vw; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; }
-        body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; position: fixed; inset: 0; }
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --glass-panel: rgba(10, 10, 10, 0.92); --copper: #b87333; }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
+        body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
         /* TICKER */
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
-        .ticker-move { display: inline-block; animation: ticker 30s linear infinite; }
-        .ticker-item { display: inline-block; padding: 0 45px; font-size: 0.7rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* MACRO ABSTRACT BACKGROUND */
-        .bg-logo { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 250%; height: 250%; 
-            background-image: url('assets/logo.JPG'); 
-            background-position: center; background-size: cover; 
-            filter: blur(45px) brightness(0.65) contrast(1.1); 
-            z-index: -1; animation: deep-pulse 20s infinite alternate; pointer-events: none; 
-        }
-        @keyframes deep-pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
-
-        /* 3D CORE OBJECT */
-        .core-3d-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; z-index: 1; perspective: 1000px; opacity: 0.4; pointer-events: none; display: none; }
-        .core-cube { width: 100px; height: 100px; position: absolute; top: 100px; left: 100px; transform-style: preserve-3d; animation: rotateCore 15s infinite linear; }
-        .face { position: absolute; width: 100px; height: 100px; border: 1px solid var(--void-cyan); background: rgba(0, 240, 255, 0.05); }
-        .f1 { transform: rotateY(0deg) translateZ(50px); } .f2 { transform: rotateY(90deg) translateZ(50px); }
-        .f3 { transform: rotateY(180deg) translateZ(50px); } .f4 { transform: rotateY(-90deg) translateZ(50px); }
-        .f5 { transform: rotateX(90deg) translateZ(50px); } .f6 { transform: rotateX(-90deg) translateZ(50px); }
-        @keyframes rotateCore { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
+        /* MACRO ABSTRACT BG - FIXED BRIGHTNESS */
+        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.8); z-index: -1; pointer-events: none; }
 
         /* CONTAINER */
-        .gate-container { background: var(--glass-panel); backdrop-filter: blur(40px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 40px 30px; border-radius: 40px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 0 60px rgba(0, 0, 0, 1); z-index: 10; flex-shrink: 0; }
+        .gate-container { background: var(--glass-panel); backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.15); padding: 50px 40px; border-radius: 40px; text-align: center; width: 320px; box-shadow: 0 0 60px #000; z-index: 10; flex-shrink: 0; }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 25px 0; }
-        h1 { font-size: 2.4rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); text-transform: uppercase; }
-        .tagline { color: #555; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 30px; }
+        h1 { font-size: 2.6rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
 
         /* BUTTONS */
-        .btn { display: block; width: 100%; padding: 18px 0; margin: 10px 0; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
+        .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; }
         .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-gov { background: rgba(184, 115, 51, 0.1); color: var(--copper-accent); border-color: var(--copper-accent); font-size: 0.8rem; }
+        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
-        /* DASHBOARD */
+        /* DASHBOARD STATS */
         #dashboard { display: none; text-align: left; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
-        .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 2px; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
+        .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* ID MODAL */
-        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
-        .card-scene { width: 300px; height: 180px; perspective: 1000px; }
-        .card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
-        .card-inner.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; border: 1px solid var(--copper-accent); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #000 100%); overflow: hidden; }
-        .card-back { transform: rotateY(180deg); background: #080808; }
-        .glint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.15) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); transition: transform 0.1s; }
+        /* MATURITY PROGRESS */
+        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 5px; overflow: hidden; }
+        .progress-bar { width: 15%; height: 100%; background: var(--void-green); box-shadow: 0 0 10px var(--void-green); }
+
+        /* MODAL & GLINT */
+        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
+        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111, #000); overflow: hidden; }
+        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
-<body onload="initSystem()" onmousemove="rotateRelic(event)" ontouchmove="rotateRelicTouch(event)">
+<body onload="initSystem()">
 
     <div class="ticker-wrap">
         <div class="ticker-move">
             <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
-            <span class="ticker-item">MONOLITH_SUPPLY: <span id="supply-ticker">88,888</span> $VOID REMAINING</span>
             <span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span>
+            <span class="ticker-item">MONOLITH_SUPPLY: 88,888 $VOID MAX</span>
         </div>
     </div>
 
     <div class="bg-logo" id="logo-bg"></div>
-
-    <div class="core-3d-wrap" id="core-3d">
-        <div class="core-cube" id="cube">
-            <div class="face f1"></div><div class="face f2"></div>
-            <div class="face f3"></div><div class="face f4"></div>
-            <div class="face f5"></div><div class="face f6"></div>
-        </div>
-    </div>
 
     <div class="gate-container" id="gate">
         <h1>LUXVOID</h1>
@@ -102,84 +68,56 @@
     </div>
 
     <div class="gate-container" id="vault" style="display:none;">
-        <h1 style="font-size: 1.2rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
+        <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
         <div id="dashboard" style="display:block;">
             <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
-            <div class="stat-row"><span class="stat-label">VOTING_WEIGHT:</span> <span class="stat-value">1_UNIT</span></div>
-            <div class="stat-row"><span class="stat-label">MATURITY:</span> <span class="stat-value">1095_DAYS</span></div>
-            
-            <div style="background: rgba(255,255,255,0.03); border-radius:15px; padding:15px; margin-top:15px; border:1px solid rgba(184, 115, 51, 0.1);">
-                <div style="font-size: 0.5rem; color: var(--copper-accent); letter-spacing: 1px; margin-bottom: 5px;">FORGE_PROPOSAL_#04</div>
-                <div style="font-size: 0.75rem; color: #eee; margin-bottom: 10px;">DEPLOY_INDUSTRIAL_COPPER_BATCH_ALPHA</div>
-                <button class="btn btn-gov" onclick="alert('VOTE_RECORDED_ON_NETWORK')">SUBMIT_VOTE</button>
+            <div class="stat-row"><span class="stat-label">ELITE_YIELD:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
+            <div class="stat-row">
+                <span class="stat-label">MATURITY:</span> 
+                <div style="text-align:right;">
+                    <span class="stat-value">1095_DAYS</span>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                </div>
             </div>
+            <div class="stat-row"><span class="stat-label">STAKED_ALLOCATION:</span> <span class="stat-value">88.88 $VOID</span></div>
+            <div class="stat-row"><span class="stat-label">NEXT_PULSE:</span> <span class="stat-value">29D : 23H : 59M</span></div>
+            <div class="stat-row"><span class="stat-label">VAULT_WEIGHT:</span> <span class="stat-value">1.00 OZ_CU</span></div>
         </div>
-        <button class="btn btn-ascend" style="margin-top:20px; font-size:0.8rem;" onclick="openCard()">VIEW_ELITE_ID</button>
+        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
         <button class="btn btn-forfeit" style="margin-top:20px;" onclick="resetSentinel()">RESET_SESSION</button>
     </div>
 
     <div id="id-modal">
-        <div class="card-scene">
-            <div class="card-inner" id="card-inner" onclick="flipCard()" onmousemove="handleGlint(event)">
-                <div class="card-face card-front">
-                    <div class="glint" id="glint"></div>
-                    <div style="color:var(--copper-accent); font-weight:700; letter-spacing:5px; font-size: 1.1rem; margin-bottom:30px;">LUXVOID</div>
-                    <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
-                    <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
-                    <div style="position:absolute; bottom:25px; left:25px; font-size:0.5rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
-                </div>
-                <div class="card-face card-back">
-                    <div style="color:var(--copper-accent); font-size:0.7rem; letter-spacing:2px; margin-bottom:15px;">PRODUCTION_LEDGER</div>
-                    <div style="font-size:0.6rem; color:#888;">SERIAL_NO: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
-                    <div style="font-size:0.6rem; color:#888; margin-top:10px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
-                    <div style="position:absolute; bottom:25px; left:25px; font-size:0.5rem; color:var(--void-cyan);">AUTHENTICATED_INDUSTRIAL_ASSET</div>
-                </div>
-            </div>
+        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="closeCard()">
+            <div class="glint" id="glint"></div>
+            <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+            <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
+            <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
         </div>
-        <p style="margin-top:30px; color:#444; font-size:0.7rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
-        let currentSupply = 88888;
-
         function initSystem() {
             const urlParams = new URLSearchParams(window.location.search);
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
-            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
             if (localStorage.getItem('luxvoid_ascended') === 'true') { showVault(); }
             updateLivePrice();
-            simulateSupplyBurn();
-        }
-
-        function rotateRelic(e) {
-            const cube = document.getElementById('cube');
-            let x = (window.innerWidth / 2 - e.pageX) / 10;
-            let y = (window.innerHeight / 2 - e.pageY) / 10;
-            cube.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-        }
-
-        function rotateRelicTouch(e) {
-            const cube = document.getElementById('cube');
-            const touch = e.touches[0];
-            let x = (window.innerWidth / 2 - touch.pageX) / 10;
-            let y = (window.innerHeight / 2 - touch.pageY) / 10;
-            cube.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-        }
-
-        function simulateSupplyBurn() {
-            setInterval(() => {
-                currentSupply -= Math.floor(Math.random() * 2);
-                document.getElementById('supply-ticker').innerText = currentSupply.toLocaleString();
-            }, 5000);
         }
 
         function handleGlint(e) {
             const glint = document.getElementById('glint');
             const rect = e.currentTarget.getBoundingClientRect();
             glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`;
+        }
+
+        function handleTouchGlint(e) {
+            const glint = document.getElementById('glint');
+            const rect = e.currentTarget.getBoundingClientRect();
+            const touch = e.touches[0];
+            glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`;
         }
 
         function updateLivePrice() {
@@ -190,25 +128,15 @@
         }
 
         function startScan() {
-            document.getElementById('tagline-text').innerText = "CALIBRATING_RELIC_CORE...";
+            document.getElementById('tagline-text').innerText = "ANALYZING_ELEMENTAL_CORE...";
             document.getElementById('claim-btn').innerText = "SCANNING...";
             setTimeout(() => { ascend(); }, 2500);
         }
 
-        function ascend() { 
-            localStorage.setItem('luxvoid_ascended', 'true'); 
-            showVault(); 
-        }
-
-        function showVault() { 
-            document.getElementById('gate').style.display = 'none'; 
-            document.getElementById('vault').style.display = 'block'; 
-            document.getElementById('core-3d').style.display = 'block';
-        }
-
+        function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); showVault(); }
+        function showVault() { document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; }
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
-        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
         function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
         function oblivion() { 
             if (confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. This physical core will be permanently de-authenticated from the Elite Rewards Club. Proceed into Oblivion?")) {
