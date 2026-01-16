@@ -7,10 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
+        html, body { height: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
 
-        /* PRE-LOADER (THE CURTAIN) */
+        /* PRE-LOADER SAFETY FIX */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center;
@@ -19,49 +18,34 @@
         .loader-text { color: var(--void-cyan); font-size: 0.8rem; letter-spacing: 5px; animation: pulse 1s infinite alternate; }
         @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* HERO SECTION */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; text-align: center; overflow: hidden; }
+        /* HERO SECTION - LOCKED TO VIEWPORT */
+        .hero { height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; text-align: center; overflow: hidden; }
         
-        /* VIDEO BACKGROUND */
         #hero-video { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: -1; 
-            /* Subtle brightness drop ensures text pops */
-            filter: brightness(0.5); 
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; 
+            width: auto; height: auto; z-index: -1; transform: translate(-50%, -50%);
+            object-fit: cover; filter: brightness(0.4); 
         }
         
-        /* TEXTURE OVERLAY */
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 30%, #050505 100%); z-index: 0; pointer-events: none; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, #050505 90%); z-index: 0; }
 
-        .hero-content { position: relative; z-index: 10; padding: 20px; opacity: 0; transform: translateY(30px); transition: all 1.5s ease-out; }
+        .hero-content { position: relative; z-index: 10; padding: 20px; opacity: 0; transform: translateY(20px); transition: all 1s ease-out; }
         .hero-visible { opacity: 1; transform: translateY(0); }
 
-        h1 { font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 40px var(--void-cyan); text-transform: uppercase; }
+        h1 { font-size: clamp(2rem, 10vw, 4rem); letter-spacing: clamp(10px, 4vw, 20px); margin: 0; text-shadow: 0 0 30px var(--void-cyan); text-transform: uppercase; }
         .subtitle { font-size: 0.8rem; letter-spacing: 6px; color: var(--copper); margin-top: 15px; text-transform: uppercase; border: 1px solid var(--copper); padding: 10px 20px; display: inline-block; border-radius: 30px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
 
-        /* SCROLL SECTIONS */
-        .content-section { min-height: 80vh; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; }
-        
-        .obsidian-panel { 
-            background: linear-gradient(165deg, rgba(20,20,20,0.95) 0%, rgba(0,0,0,0.98) 100%); 
-            border: 1px solid rgba(184, 115, 51, 0.3); 
-            padding: 50px 30px; 
-            border-radius: 30px; 
-            max-width: 700px; 
-            backdrop-filter: blur(20px); 
-            box-shadow: 0 20px 80px rgba(0,0,0,1); 
-        }
-
-        h2 { font-size: 1.8rem; letter-spacing: 8px; color: var(--void-cyan); margin-bottom: 25px; text-transform: uppercase; }
-        p { font-size: 1rem; line-height: 1.8; color: #aaa; letter-spacing: 1px; margin-bottom: 30px; }
-        .highlight-copper { color: var(--copper); font-weight: bold; }
-        
-        /* BUTTONS */
-        .btn-enter { padding: 20px 50px; font-family: 'Rajdhani'; font-weight: 700; font-size: 1rem; letter-spacing: 4px; color: var(--void-cyan); background: transparent; border: 1px solid var(--void-cyan); border-radius: 50px; cursor: pointer; transition: all 0.4s; text-decoration: none; display: inline-block; }
+        .btn-enter { margin-top: 40px; padding: 15px 40px; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; letter-spacing: 4px; color: var(--void-cyan); background: transparent; border: 1px solid var(--void-cyan); border-radius: 50px; cursor: pointer; transition: 0.4s; text-decoration: none; display: inline-block; }
         .btn-enter:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 30px var(--void-cyan); }
 
-        .disclaimer { font-size: 0.5rem; color: #444; max-width: 600px; margin: 50px auto; line-height: 1.4; text-transform: uppercase; letter-spacing: 1px; }
-        footer { padding: 40px; text-align: center; border-top: 1px solid #111; color: #333; font-size: 0.6rem; letter-spacing: 3px; }
+        /* SCROLLABLE CONTENT AREA */
+        .content-container { background: #050505; position: relative; z-index: 20; }
+        .content-section { min-height: 80vh; padding: 100px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .obsidian-panel { background: linear-gradient(165deg, rgba(30,30,30,0.9) 0%, rgba(5,5,5,0.98) 100%); border: 1px solid rgba(184, 115, 51, 0.2); padding: 50px 30px; border-radius: 40px; max-width: 700px; backdrop-filter: blur(30px); box-shadow: 0 20px 80px #000; }
+        h2 { font-size: 1.8rem; letter-spacing: 8px; color: var(--void-cyan); margin-bottom: 25px; }
+        p { font-size: 1rem; line-height: 1.8; color: #aaa; margin-bottom: 30px; }
+        
+        .footer { padding: 50px; text-align: center; color: #222; font-size: 0.6rem; letter-spacing: 3px; border-top: 1px solid #111; }
     </style>
 </head>
 <body>
@@ -69,27 +53,44 @@
     <div id="loader"><div class="loader-text">INITIALIZING MONOLITH...</div></div>
 
     <section class="hero">
-        <video id="hero-video" autoplay muted loop playsinline>
+        <video id="hero-video" autoplay muted loop playsinline preload="auto">
             <source src="assets/hero-core.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
-        
         <div class="hero-content" id="hero-content">
             <h1>LUXVOID</h1>
             <div class="subtitle">INDUSTRIAL_LUXURY // ELEMENTAL_HEDGE</div>
             <br>
-            <a href="#proof" class="btn-enter" style="margin-top: 40px; font-size: 0.7rem; padding: 15px 30px; border-color: #555; color: #888;">INITIATE_PROTOCOL</a>
+            <a href="index.html" class="btn-enter">ENTER_SOVEREIGN_VAULT</a>
         </div>
     </section>
 
-    <section class="content-section" id="proof">
-        <div class="obsidian-panel">
-            <h2>THE_HARD_ASSET_PROOF</h2>
-            <p>We do not sell promises. We sell <span class="highlight-copper">Copper</span>. When you acquire a Luxvoid Artifact, the transaction is complete. You hold the hedge in your hand. The metal is the asset; everything else is a shadow.</p>
-        </div>
-    </section>
+    <div class="content-container">
+        <section class="content-section">
+            <div class="obsidian-panel">
+                <h2>THE_FORGE_AWAKENS</h2>
+                <p>We reject the "infinite supply" model of digital vaporware. LUXVOID is anchored to the forge. Every asset is a digital shadow of a physical 1oz elemental core.</p>
+            </div>
+        </section>
+        <footer class="footer">LUXVOID // EST_2026 // MONAD_ALPH_ENABLED</footer>
+    </div>
 
-    <section class="content-section">
-        <div class="obsidian-panel">
-            <h2>SOVEREIGN_GRATUITY</h2>
-            <p>We choose to reward our family. The $
+    <script>
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('hero-content');
+            loader.style.opacity = '0';
+            setTimeout(() => { 
+                loader.style.display = 'none'; 
+                content.classList.add('hero-visible');
+            }, 1000);
+        }
+
+        // Logic: Wait for video to load OR clear after 4 seconds max (Safety Timer)
+        const video = document.getElementById('hero-video');
+        video.oncanplaythrough = hideLoader;
+        setTimeout(hideLoader, 4000); 
+    </script>
+
+</body>
+</html>
