@@ -10,8 +10,9 @@
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
         body { display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
-        /* MACRO ABSTRACT BG - Restored to V16 Brightness */
-        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.85); z-index: -1; pointer-events: none; }
+        /* MACRO BG + PARTICLES */
+        .bg-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250%; height: 250%; background-image: url('assets/logo.JPG'); background-position: center; background-size: cover; filter: blur(60px) brightness(0.85); z-index: -2; pointer-events: none; }
+        #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; pointer-events: none; }
 
         /* TICKER */
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
@@ -31,21 +32,25 @@
         .btn-core { background: rgba(184, 115, 51, 0.15); color: var(--copper); border-color: var(--copper); font-size: 0.85rem; margin-top: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; }
         .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; }
 
-        /* DASHBOARD STATS */
+        /* DASHBOARD */
         #dashboard { display: none; text-align: left; width: 100%; }
         .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 8px; }
         .stat-label { color: #555; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.8rem; }
         .highlight { color: var(--void-green); }
 
-        /* MODAL & GLINT */
-        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; }
-        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111, #000); overflow: hidden; }
-        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
+        /* MODAL & CARD FLIP */
+        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
+        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+        .card-inner.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111, #000); overflow: hidden; box-shadow: 0 0 30px rgba(184, 115, 51, 0.2); }
+        .card-back { transform: rotateY(180deg); background: #090909; }
+        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.15) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); }
     </style>
 </head>
 <body onload="initSystem()">
 
+    <canvas id="particle-canvas"></canvas>
     <div class="ticker-wrap">
         <div class="ticker-move">
             <span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span>
@@ -81,26 +86,58 @@
     </div>
 
     <div id="id-modal">
-        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="closeCard()">
-            <div class="glint" id="glint"></div>
-            <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
-            <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
-            <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
+            <div class="card-face card-front">
+                <div class="glint" id="glint"></div>
+                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                <div style="color:#555; font-size:0.6rem; letter-spacing:2px; margin-bottom:5px;">SOVEREIGN_HOLDER</div>
+                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+            </div>
+            <div class="card-face card-back">
+                <div style="color:var(--copper); font-size:0.6rem; letter-spacing:2px; margin-bottom:10px;">PRODUCTION_LEDGER</div>
+                <div style="font-size:0.5rem; color:#888;">SERIAL: <span id="serial-display" style="color:#fff;">LV-2026-000</span></div>
+                <div style="font-size:0.5rem; color:#888; margin-top:5px;">ELEMENT: <span style="color:#fff;">99.9% PURE_COPPER</span></div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">AUTHENTICATED_ASSET</div>
+            </div>
         </div>
+        <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
         function initSystem() {
+            initParticles(); // Start ambient particles
             const urlParams = new URLSearchParams(window.location.search);
             let unitID = urlParams.get('id') || "888";
             document.getElementById('unit-display').innerText = "#" + unitID;
             document.getElementById('card-id-display').innerText = "#" + unitID;
+            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
             if (localStorage.getItem('luxvoid_ascended') === 'true') { 
                 document.getElementById('gate').style.display = 'none';
                 document.getElementById('vault').style.display = 'block';
             }
             updateLivePrice();
         }
+
+        // AMBIENT PARTICLE ENGINE
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
+            function animate() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
+                particles.forEach(p => {
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+                    p.y -= p.speed; if(p.y < 0) p.y = canvas.height;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
         function handleGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
         function handleTouchGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches[0]; glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
         function updateLivePrice() { setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000); }
@@ -108,6 +145,7 @@
         function ascend() { localStorage.setItem('luxvoid_ascended', 'true'); document.getElementById('gate').style.display = 'none'; document.getElementById('vault').style.display = 'block'; }
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
+        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
         function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
         function oblivion() { if (confirm("FINAL WARNING: You are about to sever a Sovereign Legacy link. Proceed into Oblivion?")) { window.location.href = "https://www.google.com"; } }
     </script>
