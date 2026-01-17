@@ -3,56 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXVOID // CORE_LOGIC</title>
+    <title>LUXVOID // CORE</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
-        html, body { height: 100%; width: 100%; margin: 0; background: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; }
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.2); z-index: -10; }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; --glass: rgba(10, 10, 10, 0.9); }
+        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(35px) brightness(0.6); z-index: -10; opacity: 0.8; }
+        .monolith { 
+            width: 100%; max-width: 420px; height: 100%; max-height: 850px;
+            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(30px); display: flex; flex-direction: column; position: relative;
+        }
+        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; } }
         
-        .app-container { width: 100%; max-width: 450px; height: 100%; max-height: 850px; background: rgba(10,10,10,0.9); border: 1px solid #222; display: flex; flex-direction: column; position: relative; }
-        @media (min-width: 1024px) { .app-container { border-radius: 40px; height: 90vh; } }
-
-        .content { padding: 30px; flex: 1; overflow-y: auto; }
-        h2 { font-size: 0.8rem; letter-spacing: 4px; color: var(--void-cyan); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 30px; }
+        .content { flex: 1; padding: 25px; overflow-y: auto; }
+        h2 { border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--void-cyan); letter-spacing: 3px; }
         
-        .math-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.9rem; border-left: 2px solid var(--copper); padding-left: 15px; }
-        .label { color: #555; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
+        .data-box { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .label { font-size: 0.6rem; color: #666; letter-spacing: 2px; margin-bottom: 5px; }
+        .val { font-size: 1.2rem; }
 
-        .bar-bg { width: 100%; height: 2px; background: #222; margin: 10px 0 30px 0; }
-        .bar-fill { height: 100%; background: var(--void-cyan); width: 68%; box-shadow: 0 0 10px var(--void-cyan); }
-
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; border-top: 1px solid #222; }
-        .nav-btn { padding: 15px; border: 1px solid #333; color: #555; text-decoration: none; text-align: center; font-size: 0.7rem; border-radius: 10px; }
-        .nav-btn:hover { color: var(--void-cyan); border-color: var(--void-cyan); }
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
+        .nav-link { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #333; text-align: center; color: #666; font-size: 0.65rem; text-decoration: none; letter-spacing: 1px; transition: 0.3s; }
+        .nav-link:hover { border-color: var(--void-cyan); color: #fff; }
+        .active-nav { border-color: var(--void-cyan); color: var(--void-cyan); background: rgba(0,240,255,0.05); }
     </style>
 </head>
 <body>
     <div class="infinite-bg"></div>
-    <div class="app-container">
+    <div class="monolith">
         <div class="content">
             <h2>CORE_INTELLIGENCE</h2>
             
-            <div class="math-row">
-                <div><div class="label">CIRCULATING_SUPPLY</div><div>88,888 $VOID</div></div>
-                <div style="text-align:right;"><div class="label">SCARCITY_MULT</div><div>1.8x</div></div>
+            <div class="data-box">
+                <div class="label">CIRCULATING SUPPLY</div>
+                <div class="val">88,888 <span style="font-size:0.8rem; color:#888;">$VOID</span></div>
             </div>
 
-            <div class="label">VAULT_LOCK_SATURATION</div>
-            <div class="bar-bg"><div class="bar-fill"></div></div>
-
-            <div class="math-row">
-                <div><div class="label">NEXT_HALVING</div><div id="clock" style="color:var(--void-cyan);">347d 22h</div></div>
+            <div class="data-box">
+                <div class="label">SCARCITY MULTIPLIER</div>
+                <div class="val" style="color:var(--copper);">1.8x</div>
+                <div style="height:4px; background:#222; margin-top:10px;"><div style="width:60%; height:100%; background:var(--copper);"></div></div>
             </div>
 
-            <p style="font-size:0.6rem; color:#444; margin-top:40px; line-height:1.6;">
-                THE SQUEEZE PROTOCOL: As physical copper artifacts are resin-forged and dispatched, the digital supply shrinks. Value is not printed; it is earned through production. [cite: 2026-01-14]
-            </p>
-        </div>
-
-        <div class="nav-grid">
-            <a href="index.html" class="nav-btn">RETURN_TO_VAULT</a>
-            <a href="forge.html" class="nav-btn">THE_FORGE</a>
+            <div class="data-box">
+                <div class="label">SQUEEZE PROTOCOL</div>
+                <p style="font-size:0.7rem; color:#aaa; line-height:1.5;">Supply is hard-capped. Tokens are only minted upon physical production of Copper Artifacts.</p>
+            </div>
+            
+            <div class="nav-grid">
+                <a href="index.html" class="nav-link">VAULT</a>
+                <a href="core.html" class="nav-link active-nav">CORE LOGIC</a>
+                <a href="origin.html" class="nav-link">MANIFESTO</a>
+                <a href="forge.html" class="nav-link" style="background:var(--void-cyan); color:#000; font-weight:bold;">FORGE</a>
+            </div>
         </div>
     </div>
 </body>
