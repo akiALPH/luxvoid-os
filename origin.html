@@ -3,104 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXVOID // GENESIS_LOG</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>LUXVOID // ORIGIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --silver: #c0c0c0; --gold: #ffd700; --alert: #ff3333; --deep-bg: #050505; }
-        
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
         body { 
             background-color: var(--deep-bg); color: #ccc; 
-            font-family: 'Share Tech Mono', monospace; 
-            margin: 0; padding: 0; line-height: 1.6; overflow-x: hidden;
+            font-family: 'Inter', sans-serif; 
+            margin: 0; padding: 40px 20px; text-align: center;
         }
 
-        /* RESTORED LOGO BACKGROUND */
-        .noise-bg {
+        .infinite-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('assets/logo.JPG') center/cover no-repeat;
-            opacity: 0.15; /* Adjusted for visibility without overpowering text */
-            filter: grayscale(100%) contrast(150%);
-            z-index: -1; pointer-events: none;
+            background: url('assets/hero-poster.png') center/cover;
+            opacity: 0.2; filter: blur(20px); z-index: -1;
         }
 
-        .container { max-width: 650px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 10; }
+        h1 { 
+            font-family: 'Rajdhani', sans-serif; color: var(--void-cyan); 
+            font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; 
+            margin-bottom: 50px; text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+        }
 
-        h1 { color: var(--void-cyan); font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 40px; }
-        p { margin-bottom: 25px; font-size: 0.9rem; }
-        .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid #555; }
-        .cyan { color: var(--void-cyan); }
-        .copper { color: var(--copper); }
-
-        .log-entry { border-left: 2px solid var(--copper); padding-left: 20px; margin-bottom: 50px; }
-        .timestamp { color: #555; font-size: 0.7rem; margin-bottom: 10px; display: block; }
-
-        .roadmap-box { background: rgba(0,0,0,0.8); border: 1px solid #333; padding: 20px; margin: 40px 0; backdrop-filter: blur(5px); }
-        .phase { margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px; }
-        .phase-active { color: var(--copper); text-shadow: 0 0 10px rgba(184, 115, 51, 0.4); }
-
-        .legal-shield { margin-top: 80px; padding: 30px; border: 1px solid var(--alert); background: rgba(20, 0, 0, 0.9); font-size: 0.65rem; color: #aaa; text-align: justify; }
-        .legal-header { color: var(--alert); font-weight: bold; font-size: 1rem; margin-bottom: 15px; display: block; letter-spacing: 2px; text-align: center; }
-
+        .section { margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left; }
+        .subtitle { color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; letter-spacing: 3px; border-left: 3px solid var(--copper); padding-left: 15px; margin-bottom: 15px; }
+        p { font-size: 0.9rem; line-height: 1.6; color: #aaa; }
+        
         .btn-proceed { 
-            display: block; width: 100%; text-align: center; 
-            padding: 20px; margin-top: 40px;
-            background: rgba(0, 240, 255, 0.1); border: 1px solid var(--void-cyan); color: var(--void-cyan); 
-            text-decoration: none; text-transform: uppercase; letter-spacing: 3px; 
-            font-family: 'Rajdhani', sans-serif; font-weight: 700;
-            transition: 0.3s;
+            display: inline-block; padding: 20px 60px; 
+            border: 1px solid var(--void-cyan); color: var(--void-cyan); 
+            font-family: 'Rajdhani', sans-serif; font-weight: bold; letter-spacing: 3px; 
+            text-decoration: none; transition: 0.3s;
+            background: rgba(0, 240, 255, 0.05);
         }
-        .btn-proceed:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 20px var(--void-cyan); }
-
-        .btn-leave {
-            display: block; width: 100%; text-align: center; padding: 15px; margin-top: 15px; margin-bottom: 60px;
-            color: #555; text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
-            border: 1px solid transparent; transition: 0.3s; cursor: pointer;
-        }
-        .btn-leave:hover { color: #888; border-color: #333; }
+        .btn-proceed:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 30px rgba(0, 240, 255, 0.4); }
     </style>
 </head>
 <body>
-    <div class="noise-bg"></div>
-    <div class="container">
-        <h1>GENESIS_LOG // 001</h1>
+    <div class="infinite-bg"></div>
+    
+    <h1>GIVE ART A DIVIDEND</h1>
 
-        <div class="log-entry">
-            <span class="timestamp">LOG_DATE: 2026-01-14 // ORIGIN: THE NAVIGATOR</span>
-            
-            <p>I learned survival on the wild seas in 2015. When the storm hits, you don't panic. You hold the line.</p>
-            <p>I came to this country with nothing but that discipline. Today, I work the roads. I am a Foreman. My job is simple: <span class="highlight">Control the chaos. Keep the crew safe.</span></p>
-            <p>I watch the world rush by—fast money, fast debt, fast crashes. I see people driving blind into financial ruin. They need a traffic stop. They need a safe lane.</p>
-            <p><strong>Luxvoid is that safe lane.</strong></p>
-            <p>During the long winter nights, I retreat to the forge. I take <span class="copper">Elemental Copper</span>—the oldest money on earth—and I seal it in <span class="cyan">Industrial Resin</span>. I preserve it, just like I preserve my crew.</p>
-            <p>This isn't just a coin. It is a "Resin-Forged Artifact." It is a piece of the hull to hold onto when the economy sinks.</p>
-            <p>I don't have a boardroom. I have <span class="cyan">888 Sentinels</span>. I am the Foreman, and this is my crew. We arrive alive.</p>
-        </div>
-
-        <div class="roadmap-box">
-            <div style="color:#888; font-size:0.7rem; margin-bottom:15px;">/// ELEMENTAL_ROADMAP_PROTOCOL ///</div>
-            <div class="phase phase-active">PHASE I: COPPER [THE SHIELD] // STATUS: ACTIVE</div>
-            <div class="phase" style="color:var(--silver);">PHASE II: SILVER [THE SWORD] // STATUS: LOCKED</div>
-            <div class="phase" style="color:var(--gold); opacity:0.3;">PHASE III: GOLD [THE CROWN] // STATUS: CLASSIFIED</div>
-        </div>
-
-        <div class="legal-shield">
-            <span class="legal-header">WARNING: GRATUITY PROTOCOL // NO LIABILITY</span>
-            <p><strong>1. THE GIFT:</strong> $VOID tokens are a gratuitous loyalty point system. NO inherent monetary value.</p>
-            <p><strong>2. THE RISK:</strong> I am a builder, not a bank. The project could fail. The token could go to zero. If that happens, you still own the physical Resin-Forged Artifact. That is your hedge.</p>
-            <p><strong>3. THE PACT:</strong> You waive all rights to litigation. It is free. You cannot sue me for a gift.</p>
-            <p style="text-align: center; margin-top: 20px; color: #fff;">PROCEED ONLY IF YOU TRUST THE FORGE.</p>
-        </div>
-
-        <a href="index.html" class="btn-proceed">I ACKNOWLEDGE // PROCEED TO GATE</a>
-        <div class="btn-leave" onclick="leaveProtocol()">I DO NOT ACCEPT // EXIT PROTOCOL</div>
+    <div class="section">
+        <div class="subtitle">I. THE END OF VAPORWARE</div>
+        <p>Most digital assets are born from nothing. Luxvoid is born from the forge. We reject the "infinite supply" model. We believe that value must be earned, physically held, and industrially anchored.</p>
     </div>
 
-    <script>
-        function leaveProtocol() {
-            if(confirm("WARNING: Disconnecting from Sovereignty Network. Return to the Grid?")) {
-                window.location.href = "https://google.com";
-            }
-        }
-    </script>
+    <div class="section">
+        <div class="subtitle">II. PROOF OF PRODUCTION</div>
+        <p>The 88,888 $VOID supply is a hard cap. No "team dumps," no "private seed rounds." The only way to introduce $VOID into the ecosystem is to manufacture a physical Luxvoid artifact. We don't print money; we create products.</p>
+    </div>
+
+    <div class="section">
+        <div class="subtitle">III. RECIPROCAL SCARCITY</div>
+        <p>We are not a Ponzi; we are a Veblen-Utility ecosystem. The Buyer gets a 99.9% pure bullion hedge. The Network gets committed liquidity. The Brand gets a global tribe of Sentinels who protect the value of the Void.</p>
+    </div>
+
+    <a href="index.html" class="btn-proceed">ENTER THE GATE</a>
 </body>
 </html>
