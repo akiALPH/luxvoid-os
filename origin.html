@@ -14,11 +14,13 @@
             margin: 0; padding: 0; line-height: 1.6; overflow-x: hidden;
         }
 
-        .infinite-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: url('assets/hero-poster.png') center/cover no-repeat;
-            filter: blur(40px) brightness(0.4) saturate(0); 
-            transform: scale(1.2); z-index: -20; pointer-events: none;
+        /* RESTORED LOGO BACKGROUND */
+        .noise-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('assets/logo.JPG') center/cover no-repeat;
+            opacity: 0.15; /* Adjusted for visibility without overpowering text */
+            filter: grayscale(100%) contrast(150%);
+            z-index: -1; pointer-events: none;
         }
 
         .container { max-width: 650px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 10; }
@@ -32,11 +34,11 @@
         .log-entry { border-left: 2px solid var(--copper); padding-left: 20px; margin-bottom: 50px; }
         .timestamp { color: #555; font-size: 0.7rem; margin-bottom: 10px; display: block; }
 
-        .roadmap-box { background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 20px; margin: 40px 0; backdrop-filter: blur(5px); }
+        .roadmap-box { background: rgba(0,0,0,0.8); border: 1px solid #333; padding: 20px; margin: 40px 0; backdrop-filter: blur(5px); }
         .phase { margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px; }
         .phase-active { color: var(--copper); text-shadow: 0 0 10px rgba(184, 115, 51, 0.4); }
 
-        .legal-shield { margin-top: 80px; padding: 30px; border: 1px solid var(--alert); background: rgba(20, 0, 0, 0.8); font-size: 0.65rem; color: #aaa; text-align: justify; }
+        .legal-shield { margin-top: 80px; padding: 30px; border: 1px solid var(--alert); background: rgba(20, 0, 0, 0.9); font-size: 0.65rem; color: #aaa; text-align: justify; }
         .legal-header { color: var(--alert); font-weight: bold; font-size: 1rem; margin-bottom: 15px; display: block; letter-spacing: 2px; text-align: center; }
 
         .btn-proceed { 
@@ -52,13 +54,13 @@
         .btn-leave {
             display: block; width: 100%; text-align: center; padding: 15px; margin-top: 15px; margin-bottom: 60px;
             color: #555; text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
-            border: 1px solid transparent; transition: 0.3s;
+            border: 1px solid transparent; transition: 0.3s; cursor: pointer;
         }
         .btn-leave:hover { color: #888; border-color: #333; }
     </style>
 </head>
 <body>
-    <div class="infinite-bg"></div>
+    <div class="noise-bg"></div>
     <div class="container">
         <h1>GENESIS_LOG // 001</h1>
 
@@ -90,7 +92,15 @@
         </div>
 
         <a href="index.html" class="btn-proceed">I ACKNOWLEDGE // PROCEED TO GATE</a>
-        <a href="https://google.com" class="btn-leave">I DO NOT ACCEPT // EXIT PROTOCOL</a>
+        <div class="btn-leave" onclick="leaveProtocol()">I DO NOT ACCEPT // EXIT PROTOCOL</div>
     </div>
+
+    <script>
+        function leaveProtocol() {
+            if(confirm("WARNING: Disconnecting from Sovereignty Network. Return to the Grid?")) {
+                window.location.href = "https://google.com";
+            }
+        }
+    </script>
 </body>
 </html>
