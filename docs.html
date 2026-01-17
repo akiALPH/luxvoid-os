@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUXVOID // DOCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --obsidian: #444; --glass: rgba(10, 10, 10, 0.95); --border: rgba(0, 240, 255, 0.2); }
+        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Share Tech Mono', monospace; color: #ccc; }
+        
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(35px) brightness(0.6); z-index: -10; opacity: 0.8; }
+        
+        .monolith { 
+            width: 100%; max-width: 480px; height: 100%; max-height: 850px;
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(30px); display: flex; flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; } }
+
+        .content { flex: 1; padding: 30px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--void-cyan) #111; }
+        
+        h1 { font-family: 'Rajdhani', sans-serif; color: var(--void-cyan); font-size: 2rem; margin: 0 0 10px 0; letter-spacing: 5px; border-bottom: 2px solid var(--void-cyan); padding-bottom: 15px; }
+        h2 { font-family: 'Rajdhani', sans-serif; color: #fff; margin-top: 40px; border-left: 3px solid var(--copper); padding-left: 10px; letter-spacing: 3px; }
+        
+        p { font-size: 0.8rem; line-height: 1.6; margin-bottom: 15px; color: #aaa; }
+        
+        .box { background: rgba(255,255,255,0.03); border: 1px dashed #444; padding: 15px; margin: 15px 0; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; border-bottom: 1px solid #222; padding-bottom: 2px; }
+        .val { color: #fff; font-weight: bold; }
+        .highlight { color: var(--void-cyan); }
+
+        .tier-card { border: 1px solid #333; padding: 15px; margin-bottom: 15px; background: linear-gradient(90deg, #111, transparent); }
+        .tier-title { color: var(--copper); font-family: 'Rajdhani', sans-serif; font-weight: bold; letter-spacing: 2px; }
+        .tier-perk { font-size: 0.7rem; color: #888; margin-top: 5px; }
+
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; padding-top: 20px; border-top: 1px solid #222; padding: 20px; }
+        .nav-link { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #333; text-align: center; color: #666; font-size: 0.65rem; text-decoration: none; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
+        .nav-link:hover { border-color: var(--void-cyan); color: #fff; }
+
+        /* SCROLLBAR CUSTOMIZATION */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--void-cyan); }
+    </style>
+</head>
+<body>
+    <div class="infinite-bg"></div>
+    <div class="monolith">
+        <div class="content">
+            <h1>PROJECT MONOLITH</h1>
+            <div style="font-size:0.7rem; color:#666; letter-spacing:2px; margin-bottom:30px;">CLASSIFIED DOCS // V1.2 // READ ONLY</div>
+
+            <h2>1.0 THE MISSION</h2>
+            <p>Most crypto is vaporware. Luxvoid is the bridge. We provide a "Risk-Free" entry into the digital economy.</p>
+            <div class="box">
+                <div style="color:var(--void-cyan); font-weight:bold; margin-bottom:5px;">THE GUARANTEE</div>
+                <p style="margin:0;">The $VOID token is a <strong>Gratuitous Loyalty Gift</strong>. Even if the digital market fluctuates, you retain 100% of the physical copper value. You cannot lose on the asset.</p>
+            </div>
+
+            <h2>2.0 TRANSPARENCY LEDGER</h2>
+            <p>We operate as a "Glass Box." Here is exactly where your $99 goes:</p>
+            <div class="box">
+                <div class="stat-row"><span>HARD ASSET (Copper/Resin)</span><span class="val">25%</span></div>
+                <div class="stat-row"><span>LOGISTICS & LABOR</span><span class="val">20%</span></div>
+                <div class="stat-row"><span class="highlight">LIQUIDITY PUMP (Buyback)</span><span class="val highlight">25%</span></div>
+                <div class="stat-row"><span>YIELD TREASURY</span><span class="val">15%</span></div>
+                <div class="stat-row"><span>ARCHITECT FEE</span><span class="val">15%</span></div>
+            </div>
+
+            <h2>3.0 PROTOCOL MECHANICS</h2>
+            <p><strong>Total Supply:</strong> 88,888 (Hard Capped)</p>
+            <p><strong>The Pulse:</strong> Users must scan their Artifact every 30 days to claim Yield. Inactive accounts stop earning.</p>
+            <p><strong>The Trap:</strong> Staking is flexible, but "Diamond Hands" (12 Month Lock) earn 3x Yield. Early unstaking incurs a 25% penalty distributed to remaining holders.</p>
+
+            <h2>4.0 SENTINEL TIERS</h2>
+            
+            <div class="tier-card">
+                <div class="tier-title">LEVEL 1: COPPER (SOLDIER)</div>
+                <div class="tier-perk">REQ: Own 1 Artifact. PERK: Vault Access + 10 $VOID Drop.</div>
+            </div>
+
+            <div class="tier-card" style="border-color:#ccc;">
+                <div class="tier-title" style="color:#ccc;">LEVEL 2: SILVER (LIEUTENANT)</div>
+                <div class="tier-perk">REQ: Hold 500 $VOID. PERK: Unlocks "Silver Bullion" Forge.</div>
+            </div>
+
+            <div class="tier-card" style="border-color:gold;">
+                <div class="tier-title" style="color:gold;">LEVEL 3: GOLD (GENERAL)</div>
+                <div class="tier-perk">REQ: Hold 5,000 $VOID. PERK: "God Mode" (1-Hour Early Access to Drops).</div>
+            </div>
+
+            <h2>5.0 THE OBSIDIAN UPGRADE</h2>
+            <p>For the true Lunatics. You do not return your Copper. You evolve.</p>
+            <div class="box" style="border-color:var(--void-cyan);">
+                <div style="color:var(--void-cyan); margin-bottom:5px;">PROTOCOL: BLACK_FORGE</div>
+                <p><strong>Cost:</strong> $49.00 + Burn 500 $VOID.</p>
+                <p><strong>Reward:</strong> Receive the "Obsidian Edition" (Black/Smoked Resin) Artifact. Random Design.</p>
+                <p><strong>Effect:</strong> Permanently upgrades Staking Yield to 1.2x Multiplier.</p>
+            </div>
+
+        </div>
+
+        <div class="nav-grid">
+            <a href="index.html" class="nav-link">VAULT</a>
+            <a href="core.html" class="nav-link">CORE LOGIC</a>
+            <a href="origin.html" class="nav-link">MANIFESTO</a>
+            <a href="forge.html" class="nav-link" style="background:var(--void-cyan); color:#000; font-weight:bold;">FORGE</a>
+        </div>
+    </div>
+</body>
+</html>
