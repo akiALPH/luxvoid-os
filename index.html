@@ -3,153 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXVOID // SOVEREIGN_OS</title>
+    <title>LUXVOID // OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --void-green: #00ff9d; --alert: #ff3333; --glass: rgba(12, 12, 12, 0.9); }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --glass: rgba(8, 8, 8, 0.9); --border: 1px solid rgba(0, 240, 255, 0.3); }
         
-        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+        body { margin: 0; background: #000; height: 100vh; overflow: hidden; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; color: #fff; }
         
-        /* COLORFUL BACKGROUND */
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(30px) contrast(1.2) brightness(0.7); z-index: -10; animation: pulse 8s infinite alternate; }
-        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 0.9; } }
-
+        /* THE NEBULA THEME (Unified) */
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(30px) brightness(0.6); z-index: -10; }
+        
+        /* THE COCKPIT */
         .monolith { 
-            width: 100%; max-width: 420px; height: 100%; max-height: 850px;
-            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 60px rgba(0, 240, 255, 0.15);
-            backdrop-filter: blur(40px); display: flex; flex-direction: column; position: relative;
+            width: 100%; max-width: 450px; height: 100%; max-height: 850px;
+            background: var(--glass); border: var(--border);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+            display: flex; flex-direction: column; position: relative;
         }
-        @media (min-width: 1024px) { .monolith { border-radius: 30px; height: 90vh; border: 1px solid var(--copper); } }
+        @media (min-width: 1024px) { .monolith { border-radius: 30px; height: 90vh; } }
 
-        /* TICKER */
-        .ticker-wrap { background: #000; border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 8px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .ticker-move { display: inline-block; animation: ticker 20s linear infinite; }
-        .ticker-item { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--void-cyan); margin: 0 20px; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        .content { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
+        /* HEADER & TICKER */
+        .ticker { background: #000; border-bottom: 1px solid var(--void-cyan); padding: 5px; white-space: nowrap; overflow: hidden; font-family: 'Share Tech Mono'; font-size: 0.7rem; color: var(--void-cyan); }
+        .header { text-align: center; padding: 20px; border-bottom: 1px dashed #333; }
+        h1 { margin: 0; letter-spacing: 6px; font-size: 1.8rem; text-shadow: 0 0 10px var(--void-cyan); }
         
-        h1 { margin: 0; letter-spacing: 8px; font-size: 2rem; text-shadow: 0 0 15px var(--void-cyan); text-align: center; }
-        .sub-head { font-size: 0.7rem; color: var(--copper); letter-spacing: 4px; text-align: center; margin-bottom: 30px; font-weight: bold; }
+        /* DASHBOARD STATS */
+        .grid-box { padding: 15px; margin: 15px; background: rgba(255,255,255,0.02); border: 1px solid #333; border-radius: 8px; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; color: #aaa; border-bottom: 1px dashed #222; padding-bottom: 5px; }
+        .val { color: #fff; font-family: 'Share Tech Mono'; }
+        .highlight { color: var(--void-cyan); text-shadow: 0 0 5px var(--void-cyan); }
 
-        /* DASHBOARD STATS - NOW WITH BORDERS */
-        .dashboard-grid { border: 1px solid #333; background: rgba(0,0,0,0.5); padding: 15px; margin-bottom: 20px; border-radius: 8px; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
-        .stat-label { font-size: 0.7rem; color: #888; letter-spacing: 1px; }
-        .stat-val { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); }
-        .highlight { color: var(--void-green); text-shadow: 0 0 10px rgba(0, 255, 157, 0.4); }
-
-        /* SUPPLY BOX */
-        .supply-box { background: rgba(20, 0, 0, 0.4); padding: 15px; border: 1px solid var(--alert); border-radius: 8px; margin: 20px 0; }
-        .bar-bg { width: 100%; height: 6px; background: #222; margin-top: 8px; border-radius: 3px; overflow: hidden; }
-        .bar-fill { height: 100%; background: var(--void-cyan); width: 12%; box-shadow: 0 0 10px var(--void-cyan); animation: shimmer 2s infinite linear; }
-        @keyframes shimmer { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        /* THE 3D CARD (INTERACTIVE) */
+        .card-container { perspective: 1000px; padding: 20px; display: flex; justify-content: center; }
+        .card {
+            width: 300px; height: 180px; position: relative; transform-style: preserve-3d;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.1s; /* Fast response for tilt */
+        }
+        .card-face {
+            position: absolute; inset: 0; 
+            background: linear-gradient(135deg, #111, #000); 
+            border: 2px solid var(--copper); border-radius: 15px;
+            padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        /* The Shine Effect */
+        .card::before {
+            content: ""; position: absolute; inset: 0; border-radius: 15px;
+            background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.1) 45%, transparent 50%);
+            z-index: 2; pointer-events: none; opacity: 0.5;
+        }
 
         /* BUTTONS */
-        .btn-card { 
-            width: 100%; padding: 18px; 
-            background: linear-gradient(90deg, rgba(0,240,255,0.1), rgba(0,240,255,0.2)); 
-            border: 1px solid var(--void-cyan); color: var(--void-cyan); 
-            font-weight: bold; letter-spacing: 3px; cursor: pointer; margin-bottom: 15px; 
-            box-shadow: 0 0 20px rgba(0,240,255,0.1); transition: 0.3s;
+        .btn-main {
+            margin: 0 15px; padding: 15px; background: rgba(0, 240, 255, 0.1); 
+            border: 1px solid var(--void-cyan); color: var(--void-cyan);
+            font-weight: bold; letter-spacing: 2px; cursor: pointer; text-align: center;
+            transition: 0.3s;
         }
-        .btn-card:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
+        .btn-main:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 20px var(--void-cyan); }
 
-        /* 3D HOLOGRAPHIC CARD */
-        #id-modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; flex-direction: column; justify-content: center; align-items: center; perspective: 1200px; }
-        
-        .card { 
-            width: 320px; height: 200px; position: relative; 
-            transform-style: preserve-3d; transition: transform 0.8s; cursor: pointer; 
-            border-radius: 15px; 
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.2);
-        }
-        .card.flipped { transform: rotateY(180deg); }
-        
-        .card-face { 
-            position: absolute; inset: 0; backface-visibility: hidden; padding: 25px; 
-            background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
-            border: 2px solid var(--copper); border-radius: 15px;
-            overflow: hidden;
-        }
-        /* Holographic Shine Effect */
-        .card-face::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(115deg, transparent 30%, rgba(0, 240, 255, 0.3) 45%, transparent 60%);
-            animation: holo 6s infinite linear; pointer-events: none;
-        }
-        @keyframes holo { 0% { transform: translateX(-100%) translateY(-20%); } 100% { transform: translateX(100%) translateY(20%); } }
+        /* NAVIGATION BAR */
+        .nav-bar { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid #333; }
+        .nav-btn { background: #050505; border: none; border-right: 1px solid #333; color: #666; padding: 15px; font-size: 0.7rem; cursor: pointer; font-family: 'Rajdhani'; font-weight: bold; letter-spacing: 1px; }
+        .nav-btn:hover { color: #fff; background: #111; }
+        .active { color: var(--void-cyan); border-top: 2px solid var(--void-cyan); }
 
-        .card-back { transform: rotateY(180deg); background: #080808; border-color: var(--void-cyan); }
+        /* MODALS (POP UPS) */
+        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; padding: 30px; flex-direction: column; overflow-y: auto; }
+        .modal-title { font-size: 1.5rem; color: var(--copper); border-bottom: 1px solid var(--copper); margin-bottom: 20px; padding-bottom: 10px; }
+        .modal-text { font-size: 0.9rem; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
+        .close-btn { background: transparent; border: 1px solid #555; color: #fff; padding: 10px; width: 100%; cursor: pointer; }
 
-        /* NAV GRID */
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; padding-top: 20px; border-top: 1px solid #333; }
-        .nav-link { padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; text-align: center; color: #888; font-size: 0.7rem; text-decoration: none; letter-spacing: 2px; transition: 0.3s; font-weight: bold; }
-        .nav-link:hover { border-color: var(--void-cyan); color: #fff; background: rgba(0,240,255,0.1); }
-        .active-nav { border-color: var(--void-cyan); color: var(--void-cyan); box-shadow: inset 0 0 15px rgba(0,240,255,0.1); }
     </style>
 </head>
-<body onload="init()">
+<body>
     <div class="infinite-bg"></div>
     <div class="monolith">
-        <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU: $4.42/LB</span><span class="ticker-item">PROTOCOL: ONLINE</span><span class="ticker-item">SUPPLY: 88,888</span><span class="ticker-item">YIELD: ACTIVE</span></div></div>
-
-        <div class="content" id="vault-private">
+        <div class="ticker">PROTOCOL: ONLINE // CU_PRICE: $4.42 // YIELD: ACTIVE</div>
+        
+        <div class="header">
             <h1>LUXVOID</h1>
-            <div class="sub-head">SOVEREIGN_OS // V1.2</div>
-
-            <div class="dashboard-grid">
-                <div class="stat-row"><span class="stat-label">UNIT_ID</span><span class="stat-val highlight">#888</span></div>
-                <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-val highlight">AUTHENTICATED</span></div>
-                <div class="stat-row"><span class="stat-label">NET_YIELD</span><span class="stat-val">0.00420 $VOID</span></div>
-            </div>
-
-            <div class="supply-box">
-                <div class="stat-row"><span class="stat-label" style="color:var(--alert)">NEXT HALVING</span><span class="stat-val" style="color:var(--alert)" id="clock">00:00:00</span></div>
-                <div class="stat-row" style="margin-top:5px;"><span class="stat-label">SUPPLY BURN (12%)</span></div>
-                <div class="bar-bg"><div class="bar-fill"></div></div>
-            </div>
-
-            <button class="btn-card" onclick="openCard()">VIEW ELITE ID [3D]</button>
-
-            <div class="nav-grid">
-                <a href="index.html" class="nav-link active-nav">VAULT</a>
-                <a href="core.html" class="nav-link">CORE LOGIC</a>
-                <a href="origin.html" class="nav-link">MANIFESTO</a>
-                <a href="forge.html" class="nav-link" style="color:#000; background:var(--void-cyan);">FORGE</a>
-            </div>
+            <div style="font-size:0.7rem; letter-spacing:3px; color:var(--copper);">SOVEREIGN OS v1.3</div>
         </div>
 
-        <div id="id-modal">
-            <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="grid-box">
+            <div class="row"><span>UNIT ID</span><span class="val highlight">#888</span></div>
+            <div class="row"><span>STATUS</span><span class="val">AUTHENTICATED</span></div>
+            <div class="row"><span style="color:var(--void-cyan)">LIFETIME YIELD</span><span class="val highlight">1,240.50 $VOID</span></div>
+        </div>
+
+        <div class="card-container" id="cardArea">
+            <div class="card" id="tiltCard">
                 <div class="card-face">
-                    <img src="assets/logo.JPG" style="width:40px; border-radius:50%; border:2px solid var(--copper); box-shadow: 0 0 15px var(--copper);">
-                    <div style="font-size:2rem; letter-spacing:5px; margin-top:15px; text-shadow:0 0 10px #fff;">#888</div>
-                    <div style="position:absolute; bottom:20px; font-size:0.6rem; color:var(--void-cyan); letter-spacing:2px;">[ TAP TO FLIP ]</div>
-                </div>
-                <div class="card-face card-back">
-                    <div style="color:var(--copper); font-size:0.7rem; letter-spacing:2px; font-weight:bold;">.999 COPPER // 1 OZ</div>
-                    <div style="margin-top:20px; font-size:1rem; font-family:'Share Tech Mono';">LV-2026-888</div>
-                    <div style="position:absolute; bottom:20px; width:100%; text-align:center;">
-                        <div style="width:80%; height:30px; background:#fff; margin:0 auto;"></div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <img src="assets/logo.JPG" style="width:30px; border-radius:50%; border:1px solid var(--copper);">
+                        <span style="font-size:0.7rem; color:var(--copper);">SENTINEL</span>
                     </div>
+                    <div style="font-size:1.5rem; letter-spacing:4px; text-shadow:0 0 10px white;">#888</div>
+                    <div style="font-size:0.6rem; font-family:'Share Tech Mono'; opacity:0.7;">LV-2026-X88</div>
                 </div>
             </div>
-            <button onclick="closeCard()" style="margin-top:40px; background:transparent; border:1px solid #444; color:#888; padding:10px 30px; letter-spacing:2px; cursor:pointer;">CLOSE INTERFACE</button>
         </div>
+        <div style="text-align:center; font-size:0.6rem; color:#666; margin-bottom:20px;">[ TILT DEVICE TO REFLECT ]</div>
+
+        <div class="btn-main" onclick="openModal('manifesto-modal')">VIEW MANIFESTO</div>
+
+        <div class="nav-bar">
+            <button class="nav-btn active">VAULT</button>
+            <button class="nav-btn" onclick="window.location.href='forge.html'">FORGE</button>
+            <button class="nav-btn" onclick="window.location.href='docs.html'">DOCS</button>
+        </div>
+
+        <div id="manifesto-modal" class="modal">
+            <div class="modal-title">THE DARK FORGE</div>
+            <div class="modal-text">
+                "When every suit-wearing black-rock person said NO to the hedge... I forged in the dark."<br><br>
+                They print paper. We pour metal.<br>
+                They sell vaporware. We ship freight.<br><br>
+                Luxvoid is not a company. It is a rebellion against infinite supply. Every token is anchored to a physical core. If the internet dies, you still have the copper.
+            </div>
+            <button class="close-btn" onclick="closeModal('manifesto-modal')">CLOSE FILE</button>
+        </div>
+
     </div>
 
     <script>
-        function init() { startClock(); }
-        function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
-        function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
-        function startClock() {
-            setInterval(() => {
-                let d = new Date();
-                document.getElementById('clock').innerText = "347d " + d.getHours() + "h " + d.getMinutes() + "m " + d.getSeconds() + "s";
-            }, 1000);
-        }
+        // TILT EFFECT SCRIPT
+        const card = document.getElementById('tiltCard');
+        const area = document.getElementById('cardArea');
+
+        // Mouse Move (PC)
+        area.addEventListener('mousemove', (e) => {
+            const rect = area.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xPct = (x / rect.width) - 0.5;
+            const yPct = (y / rect.height) - 0.5;
+
+            // Calculate rotation (Max 20 degrees)
+            const xRot = yPct * -20; 
+            const yRot = xPct * 20;
+            
+            card.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+        });
+
+        // Reset on leave
+        area.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        });
+
+        // MODAL LOGIC
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
 </html>
