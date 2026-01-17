@@ -6,128 +6,145 @@
     <title>LUXVOID // GATEWAY</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --alert: #ff3333; --glass: rgba(5, 5, 5, 0.9); }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --alert: #ff3333; --glass: rgba(10, 10, 10, 0.7); }
         body { margin: 0; background: #000; height: 100vh; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-        /* LOADER SCREEN */
+        /* LOADER */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             animation: fadeOut 1s ease-in-out 2.5s forwards; pointer-events: none;
         }
         .loader-text { font-size: 1.5rem; letter-spacing: 5px; color: var(--void-cyan); animation: pulse 0.5s infinite alternate; }
-        .loader-bar { width: 200px; height: 2px; background: #333; margin-top: 10px; overflow: hidden; }
-        .loader-fill { width: 0%; height: 100%; background: var(--void-cyan); animation: load 2s ease-in-out forwards; }
-
+        .loader-bar { width: 200px; height: 3px; background: #222; margin-top: 15px; overflow: hidden; border-radius: 2px; }
+        .loader-fill { width: 0%; height: 100%; background: var(--void-cyan); animation: load 2s ease-in-out forwards; box-shadow: 0 0 20px var(--void-cyan); }
         @keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
         @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 
-        /* BACKGROUND - LOGO BREATHING */
-        .infinite-bg { 
+        /* BACKGROUND LAYERS (Pulse + Stars) */
+        .bg-pulse { 
             position: fixed; inset: -20%; 
             background: url('assets/logo.JPG') center/cover no-repeat; 
-            filter: blur(40px) brightness(0.4) contrast(1.2); 
-            z-index: -10; animation: breathe 8s infinite alternate; 
+            filter: blur(50px) brightness(0.3) contrast(1.5); 
+            z-index: -10; animation: breathe 8s infinite alternate; opacity: 0.6;
         }
-        @keyframes breathe { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.05); opacity: 0.8; } }
+        .bg-stars {
+            position: fixed; inset: 0; z-index: -5;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 200px 200px;
+            animation: space 60s linear infinite; opacity: 0.4;
+        }
+        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        @keyframes space { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
 
-        /* TOP HUD */
+        /* MOVING TICKER */
         .hud-top { 
-            position: absolute; top: 0; left: 0; width: 100%; 
+            position: absolute; top: 0; left: 0; width: 100%; overflow: hidden;
             background: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
-            padding: 10px 0; border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            display: flex; justify-content: space-around; font-family: 'Share Tech Mono'; font-size: 0.7rem; color: var(--void-cyan);
+            padding: 12px 0; border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            font-family: 'Share Tech Mono'; font-size: 0.8rem; color: var(--void-cyan); text-shadow: 0 0 5px var(--void-cyan);
         }
+        .ticker-wrap { white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 20s linear infinite; padding-left: 100%; }
+        .ticker-item { padding: 0 30px; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* CENTRAL GYRO COIN */
+        /* MAIN STAGE & GYRO COIN */
         .main-stage {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            perspective: 1000px;
+            perspective: 1000px; z-index: 1;
         }
         .coin-wrapper {
-            width: 250px; height: 250px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(184, 115, 51, 0.2), transparent 70%);
-            box-shadow: 0 0 80px rgba(184, 115, 51, 0.1);
+            width: 280px; height: 280px; 
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s; /* Gyro Smoothness */
+            transition: transform 0.1s ease-out; filter: drop-shadow(0 0 30px rgba(184, 115, 51, 0.3));
         }
-        .coin-img { width: 180px; filter: drop-shadow(0 0 20px var(--copper)); }
+        /* IMPORTANT: Ensure your coin image is named 'coin.png' in assets folder */
+        .coin-img { width: 220px; height: auto; } 
 
-        /* COMMAND CENTER (BUTTONS) */
-        .command-deck {
-            margin-top: 50px; width: 300px; display: flex; flex-direction: column; gap: 15px; z-index: 10;
-        }
+        /* HIGH CLASS BUTTONS */
+        .command-deck { margin-top: 60px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 20px; }
         .btn-cmd {
-            background: rgba(0, 0, 0, 0.6); border: 1px solid #444; color: #fff;
-            padding: 15px; font-family: 'Share Tech Mono'; letter-spacing: 2px;
-            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
-            text-align: center; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            background: var(--glass); backdrop-filter: blur(10px);
+            border: 1px solid var(--void-cyan); color: #fff;
+            padding: 22px; font-family: 'Rajdhani'; font-weight: bold; font-size: 1.1rem; letter-spacing: 4px;
+            cursor: pointer; transition: 0.3s all; position: relative; overflow: hidden;
+            text-align: center; box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
         }
-        .btn-cmd:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--void-cyan); color: var(--void-cyan); text-shadow: 0 0 8px var(--void-cyan); }
+        .btn-cmd:hover { background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 50px var(--void-cyan); letter-spacing: 6px; }
         
-        .btn-forge { border-color: var(--copper); color: var(--copper); }
-        .btn-forge:hover { background: rgba(184, 115, 51, 0.1); border-color: #fff; color: #fff; text-shadow: 0 0 8px var(--copper); }
+        .btn-forge { border-color: var(--copper); color: var(--copper); box-shadow: 0 0 20px rgba(184, 115, 51, 0.1); }
+        .btn-forge:hover { background: rgba(184, 115, 51, 0.15); box-shadow: 0 0 50px var(--copper); color: #fff; }
 
-        .btn-disconnect { opacity: 0.5; font-size: 0.7rem; border: none; background: transparent; margin-top: 10px; }
-        .btn-disconnect:hover { opacity: 1; color: var(--alert); text-shadow: 0 0 5px var(--alert); }
+        .btn-disconnect { 
+            background: transparent; border: 1px solid #333; font-size: 0.8rem; padding: 15px; opacity: 0.6; box-shadow: none; clip-path: none;
+        }
+        .btn-disconnect:hover { border-color: var(--alert); color: var(--alert); box-shadow: 0 0 20px var(--alert); opacity: 1; letter-spacing: 4px; }
 
-        /* FOOTER DOCS */
-        .footer { position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 0.6rem; color: #666; letter-spacing: 2px; }
-        .doc-link { color: #888; text-decoration: none; margin: 0 10px; cursor: pointer; border-bottom: 1px dotted #444; }
-        .doc-link:hover { color: #fff; border-color: #fff; }
+        /* FOOTER BUTTONS */
+        .footer { 
+            position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 20px; z-index: 10;
+        }
+        .doc-btn {
+            background: rgba(0,0,0,0.5); border: 1px solid #444; padding: 10px 20px;
+            font-family: 'Share Tech Mono'; font-size: 0.7rem; color: #888; letter-spacing: 2px; cursor: pointer; transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .doc-btn:hover { border-color: #fff; color: #fff; box-shadow: 0 0 15px #fff; }
 
-        /* MODALS (POP UPS) */
+        /* MODALS */
         .modal-overlay { 
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; 
-            justify-content: center; align-items: center; backdrop-filter: blur(10px);
+            justify-content: center; align-items: center; backdrop-filter: blur(20px);
         }
         .modal-content { 
-            width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto;
-            background: rgba(10, 10, 10, 0.9); border: 1px solid var(--void-cyan); 
-            padding: 30px; box-shadow: 0 0 50px rgba(0, 240, 255, 0.1);
+            width: 85%; max-width: 550px; max-height: 85vh; overflow-y: auto;
+            background: rgba(15, 15, 15, 0.95); border: 1px solid var(--void-cyan); 
+            padding: 40px; box-shadow: 0 0 80px rgba(0, 240, 255, 0.15);
         }
-        .modal-title { font-size: 1.5rem; color: var(--copper); border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 10px; letter-spacing: 3px; }
-        .text-body { font-size: 0.9rem; line-height: 1.6; color: #ccc; font-family: 'Share Tech Mono'; }
-        .highlight { color: #fff; font-weight: bold; }
+        .modal-title { font-size: 1.8rem; color: var(--copper); border-bottom: 2px solid #333; margin-bottom: 25px; padding-bottom: 15px; letter-spacing: 4px; text-transform: uppercase; }
+        .text-body { font-size: 1rem; line-height: 1.7; color: #ccc; font-family: 'Rajdhani'; }
+        .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid var(--copper); }
         
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--void-cyan); }
-
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: var(--void-cyan); border-radius: 3px; }
     </style>
 </head>
 <body>
-
-    <div id="loader">
-        <div class="loader-text">LOADING_MONOLITH</div>
-        <div class="loader-bar"><div class="loader-fill"></div></div>
-    </div>
-
-    <div class="infinite-bg"></div>
+    <div id="loader"><div class="loader-text">LOADING_MONOLITH</div><div class="loader-bar"><div class="loader-fill"></div></div></div>
+    
+    <div class="bg-pulse"></div>
+    <div class="bg-stars"></div>
 
     <div class="hud-top">
-        <span>CU_SPOT: $4.42/LB</span>
-        <span>HALVING: T-345D</span>
-        <span>VOID: $1.00 (PEG)</span>
+        <div class="ticker-wrap">
+            <div class="ticker-move">
+                <span class="ticker-item">/// CU_SPOT: $4.42/LB /// HALVING: T-345D /// VOID: $1.00 (PEG) /// SYSTEM: ONLINE ///</span>
+            </div>
+        </div>
     </div>
 
     <div class="main-stage" id="stage">
-        
         <div class="coin-wrapper" id="gyroCoin">
-            <img src="assets/logo.JPG" class="coin-img" style="border-radius:50%;">
+            <img src="assets/coin.png" class="coin-img" alt="Copper Artifact"> 
         </div>
 
         <div class="command-deck">
             <button class="btn-cmd" onclick="openModal('genesis')">GENESIS_101</button>
             <button class="btn-cmd btn-forge" onclick="window.location.href='forge.html'">ACQUIRE_ACCESS_KEY</button>
             <button class="btn-cmd" onclick="window.location.href='index.html'">INITIALIZE_OS [OWNER]</button>
-            <button class="btn-cmd btn-disconnect" onclick="alert('WARNING: DISCONNECTING FROM FUTURE. CONFIRM?')">DISCONNECT</button>
+            <button class="btn-cmd btn-disconnect" onclick="alert('WARNING: RETURN TO FIAT MATRIX? OPPORTUNITY COST: INFINITE.')">DISCONNECT</button>
         </div>
     </div>
 
     <div class="footer">
-        <span class="doc-link" onclick="openModal('manifesto')">MANIFESTO</span>
-        <span class="doc-link" onclick="openModal('legal')">LEGAL_PROTOCOLS</span>
+        <button class="doc-btn" onclick="openModal('manifesto')">MANIFESTO</button>
+        <button class="doc-btn" onclick="openModal('legal')">LEGAL_PROTOCOLS</button>
     </div>
 
     <div id="genesis" class="modal-overlay" onclick="if(event.target === this) closeModal('genesis')">
@@ -140,9 +157,9 @@
                 <p>I realized the lie: <strong>You cannot print energy. You cannot print metal.</strong></p>
                 <p>So I rejected their VC money. I rejected the "BlackRock" model. I built the Forge.</p>
                 <p>Luxvoid is not a startup. It is a rebellion against the vapor.</p>
-                <p style="color:var(--copper); margin-top:20px;">// THE ARCHITECT</p>
+                <p style="color:var(--copper); margin-top:20px; font-weight:bold;">// THE ARCHITECT</p>
             </div>
-            <button class="btn-cmd" style="margin-top:20px;" onclick="closeModal('genesis')">ACKNOWLEDGE</button>
+            <button class="btn-cmd" style="margin-top:30px; padding: 15px;" onclick="closeModal('genesis')">ACKNOWLEDGE</button>
         </div>
     </div>
 
@@ -154,38 +171,30 @@
                 <p><strong>II. RECIPROCAL SCARCITY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the Copper runs out, the door welds shut.</p>
                 <p><strong>III. THE VEBLEN UTILITY</strong><br>We do not sell to the masses. We sell to the Sentinels. High price is the filter.</p>
             </div>
-            <button class="btn-cmd" style="margin-top:20px;" onclick="closeModal('manifesto')">CLOSE</button>
+            <button class="btn-cmd" style="margin-top:30px; padding: 15px;" onclick="closeModal('manifesto')">CLOSE</button>
         </div>
     </div>
 
     <div id="legal" class="modal-overlay" onclick="if(event.target === this) closeModal('legal')">
         <div class="modal-content">
-            <div class="modal-title" style="color:var(--alert);">LEGAL DISCLAIMER</div>
-            <div class="text-body" style="font-size:0.7rem;">
-                <p><strong>1.0 SOUVENIR CLASSIFICATION</strong><br>
-                The "Luxvoid Sentinel Artifact" is sold strictly as a physical <strong>SOUVENIR</strong> and Art Collectible. The $99 price covers manufacturing, labor, and logistics.</p>
-                <p><strong>2.0 NO FINANCIAL ADVICE</strong><br>
-                The $VOID token is a gratuitous loyalty point. The Architect makes no representation of future value. You acknowledge you are buying a physical object, not a financial security.</p>
-                <p><strong>3.0 LIMITATION OF LIABILITY</strong><br>
-                By entering this ecosystem, you absolve Luxvoid of any market volatility. If the token goes to zero, you still own the Copper. That is your only guarantee.</p>
+            <div class="modal-title" style="color:var(--alert); border-color:var(--alert);">SOUVENIR CLASSIFICATION</div>
+            <div class="text-body">
+                <p><strong>1.0 ART & SOUVENIR</strong><br>The "Luxvoid Sentinel Artifact" is sold strictly as a physical **SOUVENIR** and Art Collectible. The $99 price covers manufacturing, labor, and logistics.</p>
+                <p><strong>2.0 NO FINANCIAL ADVICE</strong><br>The $VOID token is a gratuitous loyalty point attached to the art. The Architect makes no representation of future digital value.</p>
+                <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object, not a financial security. If the token goes to zero, you still own the Copper. That is your only guarantee.</p>
             </div>
-            <button class="btn-cmd" style="margin-top:20px; border-color:var(--alert); color:var(--alert);" onclick="closeModal('legal')">I AGREE</button>
+            <button class="btn-cmd" style="margin-top:30px; padding: 15px; border-color:var(--alert); color:var(--alert);" onclick="closeModal('legal')">I AGREE</button>
         </div>
     </div>
 
     <script>
-        // MODAL LOGIC
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        // GYRO / MOUSE TILT LOGIC
-        const stage = document.getElementById('stage');
-        const coin = document.getElementById('gyroCoin');
         
         document.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.clientX) / 20;
-            let y = (window.innerHeight / 2 - e.clientY) / 20;
-            coin.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            let x = (window.innerWidth / 2 - e.clientX) / 25;
+            let y = (window.innerHeight / 2 - e.clientY) / 25;
+            document.getElementById('gyroCoin').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
     </script>
 </body>
