@@ -3,38 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXVOID // MANIFESTO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    <title>LUXVOID // GENESIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; }
-        body { background: #050505; color: #ccc; font-family: 'Share Tech Mono', monospace; margin: 0; display: flex; justify-content: center; min-height: 100vh; }
-        
-        .monolith { width: 100%; max-width: 500px; padding: 40px 20px; background: rgba(5,5,5,0.9); box-sizing: border-box; }
-        
-        .bg-logo { position: fixed; inset: 0; background: url('assets/logo.JPG') center/cover; opacity: 0.15; z-index: -1; filter: grayscale(100%); }
-        
-        h1 { color: var(--void-cyan); font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; letter-spacing: 2px; }
-        
-        .section { margin-bottom: 40px; text-align: left; }
-        .subtitle { color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; letter-spacing: 3px; border-left: 3px solid var(--copper); padding-left: 15px; margin-bottom: 10px; }
-        p { font-size: 0.85rem; line-height: 1.6; color: #aaa; margin: 0; }
-        
-        .warning-box { border: 1px solid #ff3333; padding: 15px; margin-top: 40px; background: rgba(20,0,0,0.6); font-size: 0.7rem; color: #ff6666; }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
+        body { 
+            background-color: var(--deep-bg); color: #ccc; 
+            font-family: 'Share Tech Mono', monospace; 
+            margin: 0; padding: 20px; 
+            display: flex; justify-content: center; min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        .btn-yes { display: block; width: 100%; padding: 20px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--void-cyan); color: var(--void-cyan); text-decoration: none; margin-top: 30px; text-align: center; font-family: 'Rajdhani', sans-serif; font-weight: bold; letter-spacing: 2px; transition: 0.3s; }
-        .btn-yes:hover { background: var(--void-cyan); color: #000; }
+        /* PULSATING BACKGROUND */
+        .infinite-bg {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, #1a0b00 0%, #001114 40%, #000000 100%);
+            z-index: -2; animation: pulseBg 10s ease-in-out infinite alternate;
+        }
+        .nebula {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('assets/hero-poster.png') center/cover;
+            opacity: 0.4; mix-blend-mode: screen; filter: hue-rotate(0deg) contrast(1.2);
+            z-index: -1; animation: drift 60s linear infinite;
+        }
+
+        /* GLASS MONOLITH */
+        .monolith { 
+            width: 100%; max-width: 500px; padding: 40px 25px; 
+            background: rgba(10, 10, 10, 0.85); 
+            border: 1px solid rgba(0, 240, 255, 0.2); 
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(20px); 
+            margin-top: 20px; margin-bottom: 20px;
+            position: relative;
+        }
+        /* SCAN LINE ANIMATION */
+        .monolith::after {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        h1 { 
+            font-family: 'Rajdhani', sans-serif; color: var(--void-cyan); 
+            font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; 
+            margin-bottom: 40px; text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            border-bottom: 2px solid var(--void-cyan); padding-bottom: 15px;
+        }
+
+        .section { margin-bottom: 40px; text-align: left; }
+        .subtitle { 
+            color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; 
+            letter-spacing: 2px; border-left: 4px solid var(--copper); 
+            padding-left: 15px; margin-bottom: 15px; 
+            text-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
+        }
+        p { font-size: 0.95rem; line-height: 1.6; color: #bbb; text-shadow: 0 0 2px #000; }
         
-        .btn-no { display: block; width: 100%; padding: 15px; background: transparent; border: none; color: #555; margin-top: 10px; cursor: pointer; letter-spacing: 2px; font-family: 'Share Tech Mono', monospace; }
-        .btn-no:hover { color: #888; }
+        /* GLOWING BUTTONS */
+        .btn-proceed { 
+            display: block; width: 100%; padding: 20px 0; margin-top: 40px;
+            border: 1px solid var(--void-cyan); color: #000; 
+            font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 3px; 
+            text-decoration: none; text-align: center;
+            background: var(--void-cyan);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+            transition: 0.3s;
+        }
+        .btn-proceed:hover { background: #fff; box-shadow: 0 0 50px var(--void-cyan); transform: scale(1.02); }
+
+        .warning-box {
+            border: 1px solid #ff3333; background: rgba(50, 0, 0, 0.3);
+            color: #ff6666; padding: 15px; font-size: 0.75rem;
+            margin-top: 40px; box-shadow: 0 0 15px rgba(255, 50, 50, 0.2);
+        }
+
+        @keyframes pulseBg { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+        @keyframes drift { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
-    <div class="bg-logo"></div>
+    <div class="infinite-bg"></div>
+    <div class="nebula"></div>
+    
     <div class="monolith">
         <h1>GIVE ART A DIVIDEND</h1>
 
         <div class="section">
-            <div class="subtitle">I. THE END OF VAPORWARE</div>
+            <div class="subtitle">I. END OF VAPORWARE</div>
             <p>Most digital assets are born from nothing. Luxvoid is born from the forge. We reject the "infinite supply" model. We believe that value must be earned, physically held, and industrially anchored.</p>
         </div>
 
@@ -52,8 +109,7 @@
             WARNING: I am a builder, not a bank. If the digital token fails, you still own the physical artifact. That is your hedge.
         </div>
 
-        <a href="index.html" class="btn-yes">I ACKNOWLEDGE // PROCEED</a>
-        <button class="btn-no" onclick="if(confirm('Disconnect from Sovereignty Network?')) window.location.href='https://google.com'">I DO NOT ACCEPT // EXIT</button>
+        <a href="index.html" class="btn-proceed">I ACKNOWLEDGE // ENTER VAULT</a>
     </div>
 </body>
 </html>
