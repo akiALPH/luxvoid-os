@@ -4,64 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LUXVOID // SOVEREIGN_OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --alert: #ff3333; --glass: rgba(15, 15, 15, 0.9); }
-        body { margin: 0; background: #000; font-family: 'Rajdhani', sans-serif; color: #fff; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover; opacity: 0.3; filter: blur(30px); z-index: -1; }
-        
-        .terminal { 
-            width: 90%; max-width: 400px; padding: 40px; 
-            background: var(--glass); border: 1px solid #333; 
-            box-shadow: 0 40px 80px #000; text-align: center; position: relative;
+        :root { --void-cyan: #00f0ff; --void-green: #00ff9d; --deep-bg: #050505; --copper: #b87333; --alert: #ff3333; }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
+
+        /* ATMOSPHERE */
+        .infinite-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(35px) brightness(0.6) saturate(1.2); transform: scale(1.2); z-index: -20; pointer-events: none; opacity: 0.8; }
+        .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* MAIN PANEL */
+        .gate-container { 
+            background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%);
+            backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.1); 
+            padding: 30px; border-radius: 40px; text-align: center; 
+            width: 90%; max-width: 380px; 
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); z-index: 10; flex-shrink: 0; 
+            max-height: 80vh; overflow-y: auto; 
         }
-        
+        .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
+        h1 { font-size: 2.2rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
+
+        /* BUTTONS */
+        .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; text-decoration: none; text-align: center;}
+        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
+        .btn-forge { background: linear-gradient(90deg, var(--void-cyan), #00c3ff); color: #000; border: none; font-weight:800; box-shadow: 0 0 20px rgba(0,240,255,0.3); margin-top: 20px; }
+        .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; margin-top: 15px; cursor: pointer; }
+        .btn-login { background: transparent; border: 1px solid #444; color: #666; font-size: 0.7rem; padding: 10px; border-radius: 20px; width: 100%; margin-top: 10px;}
+
+        /* STATS & BARS */
+        .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; }
+        .stat-label { color: #666; font-size: 0.6rem; letter-spacing: 1px; }
+        .stat-value { color: #fff; font-family: monospace; font-size: 0.75rem; }
+        .highlight { color: var(--void-green); }
+        .supply-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; margin-top: 15px; border: 1px solid #333; }
+        .clock-val { color: var(--alert); font-family: monospace; font-size: 0.9rem; letter-spacing: 2px; text-align: right; }
+        .bar-bg { width: 100%; height: 4px; background: #222; margin-top: 5px; border-radius: 2px; }
+        .bar-fill { height: 100%; background: var(--void-cyan); width: 12%; box-shadow: 0 0 5px var(--void-cyan); }
+
+        /* HOLOGRAPHIC ID CARD (THE CERTIFICATE) */
+        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
+        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+        .card-inner.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #222 50%, #111 100%); box-shadow: 0 0 25px rgba(184, 115, 51, 0.2); overflow: hidden; }
+        .card-face::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(115deg, transparent 20%, rgba(0, 240, 255, 0.15) 45%, rgba(184, 115, 51, 0.15) 55%, transparent 80%); pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
+        .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
+        .card-logo { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--copper); box-shadow: 0 5px 15px rgba(0,0,0,0.8); object-fit: cover; }
+        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.4) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); mix-blend-mode: soft-light; }
+
         /* LOCKED STATE */
-        .lock-icon { font-size: 3rem; color: #444; margin: 20px 0; }
-        .status { color: var(--alert); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 10px; }
-        .blurred-data { filter: blur(6px); opacity: 0.5; user-select: none; margin: 20px 0; }
-        
-        .btn-forge { 
-            display: block; width: 100%; padding: 15px; 
-            background: var(--void-cyan); color: #000; font-weight: bold; 
-            text-decoration: none; letter-spacing: 3px; margin-top: 30px;
-        }
+        .blur-overlay { filter: blur(8px); opacity: 0.3; pointer-events: none; user-select: none; }
+        .locked-msg { color: var(--alert); font-size: 0.8rem; letter-spacing: 3px; margin: 20px 0; border: 1px solid var(--alert); padding: 10px; border-radius: 10px; background: rgba(255,0,0,0.1); display: block; }
     </style>
 </head>
-<body onload="init()">
-    <div class="bg"></div>
-    
-    <div class="terminal" id="terminal">
-        <h1 style="letter-spacing:10px; margin:0;">LUXVOID</h1>
-        
-        <div id="locked-view">
-            <div class="lock-icon">🔒</div>
-            <div class="status">ACCESS RESTRICTED</div>
-            <p style="font-size:0.7rem; color:#666;">Authentication required to view Sentinel Assets.</p>
-            
-            <div class="blurred-data">
-                <div>UNIT_ID: #888</div>
-                <div>YIELD: 420.00</div>
-                <div>STATUS: ACTIVE</div>
-            </div>
+<body onload="initSystem()">
 
-            <a href="forge.html" class="btn-forge">ACQUIRE ARTIFACT</a>
+    <div class="infinite-bg"></div>
+    <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span><span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span><span class="ticker-item">MONOLITH_SUPPLY: 88,888 $VOID MAX</span></div></div>
+
+    <div class="gate-container" id="gate-public">
+        <h1>LUXVOID</h1>
+        <div class="tagline" style="color: #444; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px;">PUBLIC_TERMINAL // UNREGISTERED</div>
+        <div class="scan-line"></div>
+        
+        <div class="locked-msg">[ ACCESS_DENIED ]<br>SENTINEL_KEY_REQUIRED</div>
+        
+        <div class="blur-overlay">
+            <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value">#XXX</span></div>
+            <div class="stat-row"><span class="stat-label">YIELD:</span> <span class="stat-value">0.000000</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value">LOCKED</span></div>
         </div>
+
+        <a href="forge.html" class="btn btn-forge">ACQUIRE ARTIFACT</a>
+        <button class="btn btn-login" onclick="attemptLogin()">SENTINEL_LOGIN</button>
+    </div>
+
+    <div class="gate-container" id="vault-private" style="display:none;">
+        <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
+        <div class="scan-line"></div>
+        
+        <div id="dashboard" style="display:block;">
+            <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
+            <div class="stat-row"><span class="stat-label">ART_YIELD:</span> <span class="stat-value" id="reward-display">0.000000</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
+            
+            <div class="supply-box">
+                <div class="stat-row"><span class="stat-label" style="color:var(--alert);">NEXT_HALVING:</span> <span class="clock-val" id="countdown">00:00:00:00</span></div>
+                <div class="stat-row" style="margin-top:10px;"><span class="stat-label">AVAILABLE_SUPPLY (12%)</span></div>
+                <div class="bar-bg"><div class="bar-fill"></div></div>
+            </div>
+        </div>
+
+        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
+        <a href="forge.html" class="btn btn-forge">ENTER THE FORGE</a>
+        <button class="btn-forfeit" onclick="logout()">LOGOUT</button>
+    </div>
+
+    <div id="id-modal">
+        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
+            <div class="card-face card-front">
+                <div class="glint" id="glint"></div>
+                <img src="assets/logo.JPG" class="card-logo" alt="Luxvoid Emblem">
+                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
+                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
+                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
+            </div>
+            <div class="card-face card-back">
+                <div style="color:var(--void-cyan); font-size:0.7rem; letter-spacing:2px;">PRODUCTION_LEDGER</div>
+                <div style="font-size:0.6rem; color:#888; margin-top:15px;">ELEMENT</div>
+                <div style="font-size:0.8rem; color:#fff;">99.9% PURE_COPPER</div>
+                <div style="font-size:0.6rem; color:#888; margin-top:15px;">SERIAL_NUMBER</div>
+                <div id="serial-display" style="font-size:0.8rem; color:#fff;">LV-2026-888</div>
+            </div>
+        </div>
+        <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
     </div>
 
     <script>
-        function init() {
-            // ONLY unlock if the key is present. DO NOT redirect if missing.
+        function initSystem() {
+            // CHECK FOR KEY
             const params = new URLSearchParams(window.location.search);
-            if (params.get('key') === 'sentinel' || localStorage.getItem('sentinel') === 'true') {
-                localStorage.setItem('sentinel', 'true');
-                // If unlocked, we would show the vault code here (hidden for brevity in this fix)
-                document.querySelector('.status').innerText = "WELCOME SENTINEL";
-                document.querySelector('.status').style.color = "#00f0ff";
-                document.querySelector('.lock-icon').innerText = "🔓";
-                document.querySelector('.blurred-data').style.filter = "none";
-                document.querySelector('.blurred-data').style.opacity = "1";
+            if (params.get('key') === 'sentinel' || localStorage.getItem('luxvoid_key') === 'true') {
+                localStorage.setItem('luxvoid_key', 'true');
+                showVault();
             }
+            // START ANIMATIONS
+            setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000);
+            startClock();
+        }
+
+        function showVault() {
+            document.getElementById('gate-public').style.display = 'none';
+            document.getElementById('vault-private').style.display = 'block';
+        }
+
+        function attemptLogin() {
+             // SIMULATE CHECK
+             if (localStorage.getItem('luxvoid_key') === 'true') { showVault(); }
+             else { alert("ACCESS DENIED: No Sentinel Artifact Detected."); }
+        }
+
+        function logout() { localStorage.removeItem('luxvoid_key'); location.reload(); }
+
+        // CARD LOGIC
+        function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
+        function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
+        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
+        function handleGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
+        function handleTouchGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches[0]; glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
+
+        function startClock() {
+            const dest = new Date("Dec 31, 2026 00:00:00").getTime();
+            setInterval(function() {
+                let now = new Date().getTime(); let diff = dest - now;
+                let d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById("countdown").innerHTML = d + "d " + "22h 14m 03s"; // Simplified for stability
+            }, 1000);
         }
     </script>
 </body>
