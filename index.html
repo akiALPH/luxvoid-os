@@ -6,97 +6,92 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; --glass: rgba(20, 20, 20, 0.85); }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --void-green: #00ff9d; --glass: rgba(10, 10, 10, 0.9); }
         
-        /* MONOLITH SCALING (PC FRIENDLY) */
-        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        /* MONOLITH WRAPPER: PC & MOBILE FRIENDLY */
+        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; }
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.3); z-index: -10; }
         
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.4); z-index: -10; }
-        
-        .app-container {
-            width: 100%; max-width: 450px; height: 100%; max-height: 850px;
+        .monolith { 
+            width: 100%; max-width: 420px; height: 100%; max-height: 820px;
             background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.1);
-            backdrop-filter: blur(30px); display: flex; flex-direction: column;
-            position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            backdrop-filter: blur(30px); display: flex; flex-direction: column; position: relative;
         }
-        @media (min-width: 1024px) { .app-container { border-radius: 40px; height: 90vh; } }
+        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; border: 1px solid rgba(184, 115, 51, 0.3); } }
 
-        /* HEADER & TICKER */
-        .header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #222; }
-        h1 { margin: 0; font-size: 1.8rem; letter-spacing: 10px; color: #fff; text-shadow: 0 0 20px var(--void-cyan); }
-        .ticker { background: #000; color: var(--void-cyan); font-size: 0.6rem; padding: 5px; letter-spacing: 2px; overflow: hidden; white-space: nowrap; }
-
-        /* SENTINEL CARD SECTION */
-        .content { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
+        /* INTERFACE */
+        .ticker { background: #000; color: var(--void-cyan); font-size: 0.55rem; padding: 8px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid #222; }
+        .content { flex: 1; padding: 25px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
         
-        .card-perspective { perspective: 1000px; margin-bottom: 30px; }
+        /* THE HOLOGRAPHIC CARD */
+        .card-stage { perspective: 1000px; margin-bottom: 30px; cursor: pointer; }
         .card { 
-            width: 320px; height: 190px; position: relative; transition: 0.8s; transform-style: preserve-3d; cursor: pointer;
-            background: linear-gradient(135deg, #111, #222); border: 1px solid var(--copper); border-radius: 20px;
-            box-shadow: 0 0 30px rgba(184, 115, 51, 0.2);
+            width: 300px; height: 180px; position: relative; transform-style: preserve-3d; transition: 0.6s;
+            background: linear-gradient(135deg, #111, #1a1a1a); border: 1px solid var(--copper); border-radius: 15px;
+            box-shadow: 0 0 20px rgba(184, 115, 51, 0.2);
         }
-        .card-inner { position: absolute; inset: 20px; border-left: 2px solid var(--void-cyan); padding-left: 15px; }
-        .card-id { font-size: 1.5rem; color: #fff; letter-spacing: 5px; }
-
-        /* NAVIGATION BUTTONS (THE LIBERTY) */
-        .nav-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .nav-btn { 
-            padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid #333; 
-            border-radius: 15px; text-decoration: none; color: #888; text-align: center;
-            font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s;
+        .card-inner { padding: 20px; border-left: 2px solid var(--void-cyan); margin: 15px; height: 115px; }
+        
+        /* NAVIGATION GRID */
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+        .nav-link { 
+            padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #333; 
+            border-radius: 12px; text-decoration: none; color: #666; font-size: 0.7rem; 
+            text-align: center; letter-spacing: 2px; transition: 0.3s;
         }
-        .nav-btn:hover { border-color: var(--void-cyan); color: #fff; background: rgba(0, 240, 255, 0.05); }
-        .active-btn { border-color: var(--void-cyan); color: var(--void-cyan); }
+        .nav-link:hover { border-color: var(--void-cyan); color: #fff; }
+        .active { border-color: var(--void-cyan); color: var(--void-cyan); background: rgba(0,240,255,0.05); }
+        .forge-btn { grid-column: span 2; background: var(--void-cyan); color: #000; font-weight: bold; border: none; }
 
-        .btn-forge { grid-column: span 2; background: var(--void-cyan); color: #000; font-weight: bold; border: none; }
+        /* STATS */
+        .stat-row { width: 100%; display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 10px; color: #888; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .val { color: #fff; }
     </style>
 </head>
-<body onload="checkAccess()">
+<body onload="verify()">
     <div class="infinite-bg"></div>
-
-    <div class="app-container">
-        <div class="ticker">/// LIVE_CU_INDEX: $4.42/LB /// OBLIVION_PROTOCOL: ACTIVE ///</div>
+    <div class="monolith">
+        <div class="ticker">OBLIVION_PROTOCOL: ACTIVE // UNIT_888_ONLINE</div>
         
-        <div class="header">
-            <h1>LUXVOID</h1>
-            <div style="font-size:0.6rem; color:var(--copper); letter-spacing:3px; margin-top:5px;">SENTINEL_INTERFACE_V.1</div>
-        </div>
-
-        <div class="content">
-            <div class="card-perspective" onclick="this.querySelector('.card').classList.toggle('flipped')">
+        <div class="content" id="vault-view" style="display:none;">
+            <div class="card-stage" onclick="this.querySelector('.card').style.transform += 'rotateY(180deg)'">
                 <div class="card">
                     <div class="card-inner">
-                        <div style="font-size:0.6rem; color:var(--void-cyan); margin-bottom:10px;">SENTINEL_ID_LINK</div>
-                        <div class="card-id" id="id-display">#888</div>
-                        <div style="margin-top:40px; font-size:0.6rem; color:#555;">STATUS: <span style="color:var(--void-green);">VERIFIED</span></div>
-                        <div style="font-size:0.5rem; color:#333; margin-top:5px;">OS_VERSION: NAVIGATION_001</div>
+                        <div style="font-size:0.5rem; color:var(--void-cyan);">SENTINEL_ID</div>
+                        <div style="font-size:1.5rem; letter-spacing:5px;">#888</div>
+                        <div style="margin-top:35px; font-size:0.6rem; color:var(--void-green);">STATUS: AUTHENTICATED</div>
                     </div>
                 </div>
             </div>
 
-            <div class="nav-grid">
-                <a href="index.html" class="nav-btn active-btn">VAULT_DASH</a>
-                <a href="core.html" class="nav-btn">CORE_LOGIC</a>
-                <a href="origin.html" class="nav-btn">GENESIS_LOG</a>
-                <a href="forge.html" class="nav-btn btn-forge">ENTER THE FORGE</a>
+            <div class="stat-row"><span>ART_YIELD</span><span class="val" style="color:var(--void-green);">0.000420 $VOID</span></div>
+            <div class="stat-row"><span>MATURITY</span><span class="val">1,095 DAYS</span></div>
+            <div class="stat-row"><span>ALLOCATION</span><span class="val">100%</span></div>
+
+            <div class="nav-grid" style="margin-top:20px;">
+                <a href="index.html" class="nav-link active">VAULT</a>
+                <a href="core.html" class="nav-link">CORE</a>
+                <a href="origin.html" class="nav-link">LOGS</a>
+                <a href="forge.html" class="nav-link forge-btn">FORGE NEW ARTIFACT</a>
             </div>
         </div>
 
-        <div style="padding: 20px; text-align: center;">
-            <button onclick="logout()" style="background:none; border:none; color:#333; font-size:0.6rem; letter-spacing:2px; cursor:pointer;">[ TERMINATE_SESSION ]</button>
+        <div class="content" id="gate-view">
+            <h2 style="letter-spacing:5px; color:var(--alert);">ACCESS_DENIED</h2>
+            <p style="font-size:0.7rem; color:#444; text-align:center;">No Sentinel Artifact detected in local sensors.</p>
+            <a href="forge.html" class="nav-link forge-btn" style="margin-top:20px;">ACQUIRE_ARTIFACT</a>
         </div>
     </div>
 
     <script>
-        function checkAccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('key') === 'sentinel' || localStorage.getItem('luxvoid_access') === 'true') {
-                localStorage.setItem('luxvoid_access', 'true');
-            } else {
-                window.location.href = "forge.html"; // Redirect if not a sentinel
+        function verify() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('key') === 'sentinel' || localStorage.getItem('sentinel') === 'true') {
+                localStorage.setItem('sentinel', 'true');
+                document.getElementById('gate-view').style.display = 'none';
+                document.getElementById('vault-view').style.display = 'flex';
             }
         }
-        function logout() { localStorage.removeItem('luxvoid_access'); window.location.href = "forge.html"; }
     </script>
 </body>
 </html>
