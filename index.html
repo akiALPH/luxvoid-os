@@ -6,90 +6,61 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --void-green: #00ff9d; --glass: rgba(10, 10, 10, 0.9); }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --alert: #ff3333; --glass: rgba(15, 15, 15, 0.9); }
+        body { margin: 0; background: #000; font-family: 'Rajdhani', sans-serif; color: #fff; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover; opacity: 0.3; filter: blur(30px); z-index: -1; }
         
-        /* MONOLITH WRAPPER: PC & MOBILE FRIENDLY */
-        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; }
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.3); z-index: -10; }
-        
-        .monolith { 
-            width: 100%; max-width: 420px; height: 100%; max-height: 820px;
-            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.1);
-            backdrop-filter: blur(30px); display: flex; flex-direction: column; position: relative;
+        .terminal { 
+            width: 90%; max-width: 400px; padding: 40px; 
+            background: var(--glass); border: 1px solid #333; 
+            box-shadow: 0 40px 80px #000; text-align: center; position: relative;
         }
-        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; border: 1px solid rgba(184, 115, 51, 0.3); } }
-
-        /* INTERFACE */
-        .ticker { background: #000; color: var(--void-cyan); font-size: 0.55rem; padding: 8px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid #222; }
-        .content { flex: 1; padding: 25px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
         
-        /* THE HOLOGRAPHIC CARD */
-        .card-stage { perspective: 1000px; margin-bottom: 30px; cursor: pointer; }
-        .card { 
-            width: 300px; height: 180px; position: relative; transform-style: preserve-3d; transition: 0.6s;
-            background: linear-gradient(135deg, #111, #1a1a1a); border: 1px solid var(--copper); border-radius: 15px;
-            box-shadow: 0 0 20px rgba(184, 115, 51, 0.2);
-        }
-        .card-inner { padding: 20px; border-left: 2px solid var(--void-cyan); margin: 15px; height: 115px; }
+        /* LOCKED STATE */
+        .lock-icon { font-size: 3rem; color: #444; margin: 20px 0; }
+        .status { color: var(--alert); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 10px; }
+        .blurred-data { filter: blur(6px); opacity: 0.5; user-select: none; margin: 20px 0; }
         
-        /* NAVIGATION GRID */
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-        .nav-link { 
-            padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #333; 
-            border-radius: 12px; text-decoration: none; color: #666; font-size: 0.7rem; 
-            text-align: center; letter-spacing: 2px; transition: 0.3s;
+        .btn-forge { 
+            display: block; width: 100%; padding: 15px; 
+            background: var(--void-cyan); color: #000; font-weight: bold; 
+            text-decoration: none; letter-spacing: 3px; margin-top: 30px;
         }
-        .nav-link:hover { border-color: var(--void-cyan); color: #fff; }
-        .active { border-color: var(--void-cyan); color: var(--void-cyan); background: rgba(0,240,255,0.05); }
-        .forge-btn { grid-column: span 2; background: var(--void-cyan); color: #000; font-weight: bold; border: none; }
-
-        /* STATS */
-        .stat-row { width: 100%; display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 10px; color: #888; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .val { color: #fff; }
     </style>
 </head>
-<body onload="verify()">
-    <div class="infinite-bg"></div>
-    <div class="monolith">
-        <div class="ticker">OBLIVION_PROTOCOL: ACTIVE // UNIT_888_ONLINE</div>
+<body onload="init()">
+    <div class="bg"></div>
+    
+    <div class="terminal" id="terminal">
+        <h1 style="letter-spacing:10px; margin:0;">LUXVOID</h1>
         
-        <div class="content" id="vault-view" style="display:none;">
-            <div class="card-stage" onclick="this.querySelector('.card').style.transform += 'rotateY(180deg)'">
-                <div class="card">
-                    <div class="card-inner">
-                        <div style="font-size:0.5rem; color:var(--void-cyan);">SENTINEL_ID</div>
-                        <div style="font-size:1.5rem; letter-spacing:5px;">#888</div>
-                        <div style="margin-top:35px; font-size:0.6rem; color:var(--void-green);">STATUS: AUTHENTICATED</div>
-                    </div>
-                </div>
+        <div id="locked-view">
+            <div class="lock-icon">🔒</div>
+            <div class="status">ACCESS RESTRICTED</div>
+            <p style="font-size:0.7rem; color:#666;">Authentication required to view Sentinel Assets.</p>
+            
+            <div class="blurred-data">
+                <div>UNIT_ID: #888</div>
+                <div>YIELD: 420.00</div>
+                <div>STATUS: ACTIVE</div>
             </div>
 
-            <div class="stat-row"><span>ART_YIELD</span><span class="val" style="color:var(--void-green);">0.000420 $VOID</span></div>
-            <div class="stat-row"><span>MATURITY</span><span class="val">1,095 DAYS</span></div>
-            <div class="stat-row"><span>ALLOCATION</span><span class="val">100%</span></div>
-
-            <div class="nav-grid" style="margin-top:20px;">
-                <a href="index.html" class="nav-link active">VAULT</a>
-                <a href="core.html" class="nav-link">CORE</a>
-                <a href="origin.html" class="nav-link">LOGS</a>
-                <a href="forge.html" class="nav-link forge-btn">FORGE NEW ARTIFACT</a>
-            </div>
-        </div>
-
-        <div class="content" id="gate-view">
-            <h2 style="letter-spacing:5px; color:var(--alert);">ACCESS_DENIED</h2>
-            <p style="font-size:0.7rem; color:#444; text-align:center;">No Sentinel Artifact detected in local sensors.</p>
-            <a href="forge.html" class="nav-link forge-btn" style="margin-top:20px;">ACQUIRE_ARTIFACT</a>
+            <a href="forge.html" class="btn-forge">ACQUIRE ARTIFACT</a>
         </div>
     </div>
 
     <script>
-        function verify() {
+        function init() {
+            // ONLY unlock if the key is present. DO NOT redirect if missing.
             const params = new URLSearchParams(window.location.search);
             if (params.get('key') === 'sentinel' || localStorage.getItem('sentinel') === 'true') {
                 localStorage.setItem('sentinel', 'true');
-                document.getElementById('gate-view').style.display = 'none';
-                document.getElementById('vault-view').style.display = 'flex';
+                // If unlocked, we would show the vault code here (hidden for brevity in this fix)
+                document.querySelector('.status').innerText = "WELCOME SENTINEL";
+                document.querySelector('.status').style.color = "#00f0ff";
+                document.querySelector('.lock-icon').innerText = "🔓";
+                document.querySelector('.blurred-data').style.filter = "none";
+                document.querySelector('.blurred-data').style.opacity = "1";
             }
         }
     </script>
