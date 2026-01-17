@@ -4,143 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LUXVOID // SOVEREIGN_OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --void-green: #00ff9d; --deep-bg: #050505; --glass: rgba(10, 10, 10, 0.9); }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --void-green: #00ff9d; --alert: #ff3333; --glass: rgba(12, 12, 12, 0.9); }
         
-        /* MONOLITH CONTAINER */
         html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(35px) brightness(0.6); z-index: -10; opacity: 0.8; }
         
+        /* COLORFUL BACKGROUND */
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(30px) contrast(1.2) brightness(0.7); z-index: -10; animation: pulse 8s infinite alternate; }
+        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 0.9; } }
+
         .monolith { 
             width: 100%; max-width: 420px; height: 100%; max-height: 850px;
-            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.1);
-            backdrop-filter: blur(30px); display: flex; flex-direction: column; position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(40px); display: flex; flex-direction: column; position: relative;
         }
-        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; border: 1px solid rgba(184, 115, 51, 0.3); } }
+        @media (min-width: 1024px) { .monolith { border-radius: 30px; height: 90vh; border: 1px solid var(--copper); } }
 
         /* TICKER */
-        .ticker-wrap { background: rgba(0,0,0,0.9); border-bottom: 1px solid #333; overflow: hidden; white-space: nowrap; padding: 8px 0; }
+        .ticker-wrap { background: #000; border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 8px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .ticker-move { display: inline-block; animation: ticker 20s linear infinite; }
-        .ticker-item { font-size: 0.6rem; letter-spacing: 2px; color: var(--void-cyan); margin: 0 20px; }
+        .ticker-item { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--void-cyan); margin: 0 20px; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* CONTENT AREA */
         .content { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
         
-        .header { text-align: center; margin-bottom: 30px; }
-        h1 { margin: 0; letter-spacing: 8px; font-size: 1.8rem; text-shadow: 0 0 20px var(--void-cyan); }
-        .sub-head { font-size: 0.6rem; color: var(--copper); letter-spacing: 3px; }
+        h1 { margin: 0; letter-spacing: 8px; font-size: 2rem; text-shadow: 0 0 15px var(--void-cyan); text-align: center; }
+        .sub-head { font-size: 0.7rem; color: var(--copper); letter-spacing: 4px; text-align: center; margin-bottom: 30px; font-weight: bold; }
 
-        /* STATS & SUPPLY BOX (FROM V40) */
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
-        .stat-label { font-size: 0.65rem; color: #666; letter-spacing: 1px; }
-        .stat-val { font-family: monospace; font-size: 0.8rem; }
-        .highlight { color: var(--void-green); }
+        /* DASHBOARD STATS - NOW WITH BORDERS */
+        .dashboard-grid { border: 1px solid #333; background: rgba(0,0,0,0.5); padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+        .stat-label { font-size: 0.7rem; color: #888; letter-spacing: 1px; }
+        .stat-val { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); }
+        .highlight { color: var(--void-green); text-shadow: 0 0 10px rgba(0, 255, 157, 0.4); }
 
-        .supply-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 20px 0; }
-        .bar-bg { width: 100%; height: 4px; background: #222; margin-top: 8px; border-radius: 2px; }
-        .bar-fill { height: 100%; background: var(--void-cyan); width: 12%; box-shadow: 0 0 8px var(--void-cyan); }
-        .clock { color: #ff3333; font-family: monospace; letter-spacing: 1px; }
+        /* SUPPLY BOX */
+        .supply-box { background: rgba(20, 0, 0, 0.4); padding: 15px; border: 1px solid var(--alert); border-radius: 8px; margin: 20px 0; }
+        .bar-bg { width: 100%; height: 6px; background: #222; margin-top: 8px; border-radius: 3px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--void-cyan); width: 12%; box-shadow: 0 0 10px var(--void-cyan); animation: shimmer 2s infinite linear; }
+        @keyframes shimmer { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-        /* BUTTONS & NAV GRID */
-        .btn-card { width: 100%; padding: 15px; background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent); border: 1px solid var(--void-cyan); color: var(--void-cyan); font-weight: bold; letter-spacing: 3px; cursor: pointer; margin-bottom: 10px; transition: 0.3s; }
-        .btn-card:hover { background: var(--void-cyan); color: #000; }
+        /* BUTTONS */
+        .btn-card { 
+            width: 100%; padding: 18px; 
+            background: linear-gradient(90deg, rgba(0,240,255,0.1), rgba(0,240,255,0.2)); 
+            border: 1px solid var(--void-cyan); color: var(--void-cyan); 
+            font-weight: bold; letter-spacing: 3px; cursor: pointer; margin-bottom: 15px; 
+            box-shadow: 0 0 20px rgba(0,240,255,0.1); transition: 0.3s;
+        }
+        .btn-card:hover { background: var(--void-cyan); color: #000; box-shadow: 0 0 40px var(--void-cyan); }
 
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
-        .nav-link { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #333; text-align: center; color: #666; font-size: 0.65rem; text-decoration: none; letter-spacing: 1px; transition: 0.3s; }
-        .nav-link:hover { border-color: var(--void-cyan); color: #fff; }
-        .active-nav { border-color: var(--void-cyan); color: var(--void-cyan); background: rgba(0,240,255,0.05); }
-
-        /* MODAL (HOLOGRAPHIC CARD) */
-        #id-modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
-        .card { width: 300px; height: 180px; position: relative; transform-style: preserve-3d; transition: 0.8s; cursor: pointer; background: linear-gradient(135deg, #111, #222); border: 1px solid var(--copper); border-radius: 15px; box-shadow: 0 0 30px rgba(184, 115, 51, 0.3); }
+        /* 3D HOLOGRAPHIC CARD */
+        #id-modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; flex-direction: column; justify-content: center; align-items: center; perspective: 1200px; }
+        
+        .card { 
+            width: 320px; height: 200px; position: relative; 
+            transform-style: preserve-3d; transition: transform 0.8s; cursor: pointer; 
+            border-radius: 15px; 
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.2);
+        }
         .card.flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; inset: 0; backface-visibility: hidden; padding: 20px; }
-        .card-back { transform: rotateY(180deg); background: #111; border-radius: 15px; }
+        
+        .card-face { 
+            position: absolute; inset: 0; backface-visibility: hidden; padding: 25px; 
+            background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
+            border: 2px solid var(--copper); border-radius: 15px;
+            overflow: hidden;
+        }
+        /* Holographic Shine Effect */
+        .card-face::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(115deg, transparent 30%, rgba(0, 240, 255, 0.3) 45%, transparent 60%);
+            animation: holo 6s infinite linear; pointer-events: none;
+        }
+        @keyframes holo { 0% { transform: translateX(-100%) translateY(-20%); } 100% { transform: translateX(100%) translateY(20%); } }
 
-        /* PUBLIC LOCK */
-        #gate-public { text-align: center; padding-top: 50px; }
-        .lock-icon { font-size: 3rem; color: #444; margin-bottom: 20px; }
-        .blurred { filter: blur(8px); opacity: 0.4; pointer-events: none; }
+        .card-back { transform: rotateY(180deg); background: #080808; border-color: var(--void-cyan); }
+
+        /* NAV GRID */
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; padding-top: 20px; border-top: 1px solid #333; }
+        .nav-link { padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; text-align: center; color: #888; font-size: 0.7rem; text-decoration: none; letter-spacing: 2px; transition: 0.3s; font-weight: bold; }
+        .nav-link:hover { border-color: var(--void-cyan); color: #fff; background: rgba(0,240,255,0.1); }
+        .active-nav { border-color: var(--void-cyan); color: var(--void-cyan); box-shadow: inset 0 0 15px rgba(0,240,255,0.1); }
     </style>
 </head>
 <body onload="init()">
     <div class="infinite-bg"></div>
     <div class="monolith">
-        <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU: $4.42/LB</span><span class="ticker-item">OBLIVION: ONLINE</span><span class="ticker-item">SUPPLY: 88,888</span></div></div>
+        <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU: $4.42/LB</span><span class="ticker-item">PROTOCOL: ONLINE</span><span class="ticker-item">SUPPLY: 88,888</span><span class="ticker-item">YIELD: ACTIVE</span></div></div>
 
-        <div class="content" id="gate-public">
-            <h1 style="margin-bottom:30px;">LUXVOID</h1>
-            <div class="lock-icon">🔒</div>
-            <div style="color:#ff3333; letter-spacing:3px; margin-bottom:30px;">ACCESS DENIED</div>
-            
-            <div class="blurred">
-                <div class="stat-row"><span class="stat-label">UNIT_ID</span><span class="stat-val">#XXX</span></div>
-                <div class="stat-row"><span class="stat-label">YIELD</span><span class="stat-val">0.0000</span></div>
+        <div class="content" id="vault-private">
+            <h1>LUXVOID</h1>
+            <div class="sub-head">SOVEREIGN_OS // V1.2</div>
+
+            <div class="dashboard-grid">
+                <div class="stat-row"><span class="stat-label">UNIT_ID</span><span class="stat-val highlight">#888</span></div>
+                <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-val highlight">AUTHENTICATED</span></div>
+                <div class="stat-row"><span class="stat-label">NET_YIELD</span><span class="stat-val">0.00420 $VOID</span></div>
             </div>
-
-            <a href="forge.html" class="btn-card" style="display:block; text-decoration:none; color:#000; background:var(--void-cyan);">ACQUIRE ARTIFACT</a>
-            <button onclick="attemptLogin()" style="background:none; border:1px solid #444; color:#666; padding:10px; margin-top:15px; width:100%; cursor:pointer;">SENTINEL LOGIN</button>
-        </div>
-
-        <div class="content" id="vault-private" style="display:none;">
-            <div class="header">
-                <h1>SOVEREIGN_OS</h1>
-                <div class="sub-head">SENTINEL DASHBOARD</div>
-            </div>
-
-            <div class="stat-row"><span class="stat-label">UNIT_ID</span><span class="stat-val highlight">#888</span></div>
-            <div class="stat-row"><span class="stat-label">ART_YIELD</span><span class="stat-val">0.000420 $VOID</span></div>
-            <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-val highlight">AUTHENTICATED</span></div>
 
             <div class="supply-box">
-                <div class="stat-row"><span class="stat-label">NEXT HALVING</span><span class="stat-val clock" id="clock">00d 00h 00m</span></div>
-                <div class="stat-row" style="margin-top:10px;"><span class="stat-label">SUPPLY BURN (12%)</span></div>
+                <div class="stat-row"><span class="stat-label" style="color:var(--alert)">NEXT HALVING</span><span class="stat-val" style="color:var(--alert)" id="clock">00:00:00</span></div>
+                <div class="stat-row" style="margin-top:5px;"><span class="stat-label">SUPPLY BURN (12%)</span></div>
                 <div class="bar-bg"><div class="bar-fill"></div></div>
             </div>
 
-            <button class="btn-card" onclick="openCard()">VIEW ELITE ID</button>
+            <button class="btn-card" onclick="openCard()">VIEW ELITE ID [3D]</button>
 
             <div class="nav-grid">
                 <a href="index.html" class="nav-link active-nav">VAULT</a>
                 <a href="core.html" class="nav-link">CORE LOGIC</a>
                 <a href="origin.html" class="nav-link">MANIFESTO</a>
-                <a href="forge.html" class="nav-link" style="background:var(--void-cyan); color:#000; font-weight:bold;">FORGE</a>
+                <a href="forge.html" class="nav-link" style="color:#000; background:var(--void-cyan);">FORGE</a>
             </div>
         </div>
 
         <div id="id-modal">
             <div class="card" onclick="this.classList.toggle('flipped')">
                 <div class="card-face">
-                    <img src="assets/logo.JPG" style="width:30px; border-radius:50%; border:1px solid var(--copper);">
-                    <div style="font-size:1.5rem; letter-spacing:5px; margin-top:10px;">#888</div>
-                    <div style="position:absolute; bottom:20px; font-size:0.5rem; color:var(--void-cyan);">TAP TO FLIP</div>
+                    <img src="assets/logo.JPG" style="width:40px; border-radius:50%; border:2px solid var(--copper); box-shadow: 0 0 15px var(--copper);">
+                    <div style="font-size:2rem; letter-spacing:5px; margin-top:15px; text-shadow:0 0 10px #fff;">#888</div>
+                    <div style="position:absolute; bottom:20px; font-size:0.6rem; color:var(--void-cyan); letter-spacing:2px;">[ TAP TO FLIP ]</div>
                 </div>
                 <div class="card-face card-back">
-                    <div style="color:var(--copper); font-size:0.6rem;">.999 COPPER // 1 OZ</div>
-                    <div style="margin-top:20px; font-size:0.8rem;">LV-2026-888</div>
+                    <div style="color:var(--copper); font-size:0.7rem; letter-spacing:2px; font-weight:bold;">.999 COPPER // 1 OZ</div>
+                    <div style="margin-top:20px; font-size:1rem; font-family:'Share Tech Mono';">LV-2026-888</div>
+                    <div style="position:absolute; bottom:20px; width:100%; text-align:center;">
+                        <div style="width:80%; height:30px; background:#fff; margin:0 auto;"></div>
+                    </div>
                 </div>
             </div>
-            <button onclick="closeCard()" style="margin-top:30px; background:transparent; border:none; color:#666;">[ CLOSE ]</button>
+            <button onclick="closeCard()" style="margin-top:40px; background:transparent; border:1px solid #444; color:#888; padding:10px 30px; letter-spacing:2px; cursor:pointer;">CLOSE INTERFACE</button>
         </div>
     </div>
 
     <script>
-        function init() {
-            const p = new URLSearchParams(window.location.search);
-            if (p.get('key') === 'sentinel' || localStorage.getItem('luxvoid_key') === 'true') {
-                localStorage.setItem('luxvoid_key', 'true');
-                document.getElementById('gate-public').style.display = 'none';
-                document.getElementById('vault-private').style.display = 'flex';
-                startClock();
-            }
-        }
-        function attemptLogin() {
-            if (localStorage.getItem('luxvoid_key') === 'true') init();
-            else alert("ACCESS DENIED: No Sentinel Artifact Detected.");
-        }
+        function init() { startClock(); }
         function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
         function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
         function startClock() {
