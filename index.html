@@ -6,91 +6,97 @@
     <title>LUXVOID // SOVEREIGN_OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --alert: #ff3333; --deep-bg: #050505; }
-        body { margin: 0; padding: 0; background: var(--deep-bg); color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; --glass: rgba(20, 20, 20, 0.85); }
         
-        .bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('assets/hero-poster.png') center/cover; opacity: 0.3; filter: blur(20px); z-index: -1; }
+        /* MONOLITH SCALING (PC FRIENDLY) */
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; display: flex; align-items: center; justify-content: center; }
         
-        /* TERMINAL CONTAINER */
-        .terminal { width: 90%; max-width: 400px; background: rgba(20,20,20,0.9); border: 1px solid #333; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 20px 50px #000; }
+        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.4); z-index: -10; }
         
-        h1 { margin: 0; letter-spacing: 8px; font-size: 2rem; text-shadow: 0 0 20px var(--void-cyan); }
-        .status-bar { border-top: 1px solid #444; border-bottom: 1px solid #444; padding: 10px 0; margin: 20px 0; font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; }
-        
-        /* PUBLIC VIEW (LOCKED) */
-        #view-locked { display: block; }
-        .lock-icon { font-size: 3rem; color: var(--alert); margin: 20px 0; animation: pulse 2s infinite; }
-        .btn-buy { display: block; width: 100%; padding: 15px; background: var(--void-cyan); color: #000; text-decoration: none; font-weight: bold; letter-spacing: 3px; border-radius: 10px; margin-top: 20px; }
-        .btn-login { background: transparent; border: 1px solid #444; color: #666; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer; }
+        .app-container {
+            width: 100%; max-width: 450px; height: 100%; max-height: 850px;
+            background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(30px); display: flex; flex-direction: column;
+            position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+        }
+        @media (min-width: 1024px) { .app-container { border-radius: 40px; height: 90vh; } }
 
-        /* PRIVATE VIEW (VAULT) */
-        #view-vault { display: none; text-align: left; }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
-        .highlight { color: var(--void-cyan); }
-        .btn-forge { display: block; width: 100%; padding: 15px; border: 1px solid var(--void-cyan); color: var(--void-cyan); text-align: center; text-decoration: none; margin-top: 20px; }
+        /* HEADER & TICKER */
+        .header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #222; }
+        h1 { margin: 0; font-size: 1.8rem; letter-spacing: 10px; color: #fff; text-shadow: 0 0 20px var(--void-cyan); }
+        .ticker { background: #000; color: var(--void-cyan); font-size: 0.6rem; padding: 5px; letter-spacing: 2px; overflow: hidden; white-space: nowrap; }
 
-        @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        /* SENTINEL CARD SECTION */
+        .content { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
+        
+        .card-perspective { perspective: 1000px; margin-bottom: 30px; }
+        .card { 
+            width: 320px; height: 190px; position: relative; transition: 0.8s; transform-style: preserve-3d; cursor: pointer;
+            background: linear-gradient(135deg, #111, #222); border: 1px solid var(--copper); border-radius: 20px;
+            box-shadow: 0 0 30px rgba(184, 115, 51, 0.2);
+        }
+        .card-inner { position: absolute; inset: 20px; border-left: 2px solid var(--void-cyan); padding-left: 15px; }
+        .card-id { font-size: 1.5rem; color: #fff; letter-spacing: 5px; }
+
+        /* NAVIGATION BUTTONS (THE LIBERTY) */
+        .nav-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .nav-btn { 
+            padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid #333; 
+            border-radius: 15px; text-decoration: none; color: #888; text-align: center;
+            font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--void-cyan); color: #fff; background: rgba(0, 240, 255, 0.05); }
+        .active-btn { border-color: var(--void-cyan); color: var(--void-cyan); }
+
+        .btn-forge { grid-column: span 2; background: var(--void-cyan); color: #000; font-weight: bold; border: none; }
     </style>
 </head>
-<body onload="init()">
-    <div class="bg"></div>
-    
-    <div class="terminal">
-        <h1>LUXVOID</h1>
+<body onload="checkAccess()">
+    <div class="infinite-bg"></div>
+
+    <div class="app-container">
+        <div class="ticker">/// LIVE_CU_INDEX: $4.42/LB /// OBLIVION_PROTOCOL: ACTIVE ///</div>
         
-        <div id="view-locked">
-            <div class="status-bar"><span>SYSTEM: ONLINE</span><span>ACCESS: RESTRICTED</span></div>
-            <div class="lock-icon">🔒</div>
-            <div style="color:var(--alert); letter-spacing:2px;">NO SENTINEL ARTIFACT DETECTED</div>
-            <p style="font-size:0.7rem; color:#666;">Scan your physical artifact to unlock the Vault.</p>
-            
-            <a href="forge.html" class="btn-buy">ACQUIRE ARTIFACT</a>
-            <button class="btn-login" onclick="manualLogin()">MANUAL LOGIN</button>
+        <div class="header">
+            <h1>LUXVOID</h1>
+            <div style="font-size:0.6rem; color:var(--copper); letter-spacing:3px; margin-top:5px;">SENTINEL_INTERFACE_V.1</div>
         </div>
 
-        <div id="view-vault">
-            <div class="status-bar"><span style="color:var(--void-cyan);">ID: #888</span><span>STATUS: VERIFIED</span></div>
-            
-            <div class="stat-row"><span>ART_YIELD:</span> <span class="highlight">0.00420 $VOID</span></div>
-            <div class="stat-row"><span>SUPPLY_BURN:</span> <span>12% / 100%</span></div>
-            <div class="stat-row"><span>NEXT_HALVING:</span> <span style="color:var(--alert);">347 DAYS</span></div>
-
-            <div style="margin-top:30px; border-top:1px solid #333; padding-top:20px;">
-                <div style="text-align:center; font-size:0.8rem; color:#888;">WELCOME HOME, FOREMAN.</div>
-                <a href="forge.html" class="btn-forge">ENTER THE FORGE</a>
+        <div class="content">
+            <div class="card-perspective" onclick="this.querySelector('.card').classList.toggle('flipped')">
+                <div class="card">
+                    <div class="card-inner">
+                        <div style="font-size:0.6rem; color:var(--void-cyan); margin-bottom:10px;">SENTINEL_ID_LINK</div>
+                        <div class="card-id" id="id-display">#888</div>
+                        <div style="margin-top:40px; font-size:0.6rem; color:#555;">STATUS: <span style="color:var(--void-green);">VERIFIED</span></div>
+                        <div style="font-size:0.5rem; color:#333; margin-top:5px;">OS_VERSION: NAVIGATION_001</div>
+                    </div>
+                </div>
             </div>
-            
-            <button class="btn-login" onclick="logout()">LOGOUT</button>
+
+            <div class="nav-grid">
+                <a href="index.html" class="nav-btn active-btn">VAULT_DASH</a>
+                <a href="core.html" class="nav-btn">CORE_LOGIC</a>
+                <a href="origin.html" class="nav-btn">GENESIS_LOG</a>
+                <a href="forge.html" class="nav-btn btn-forge">ENTER THE FORGE</a>
+            </div>
+        </div>
+
+        <div style="padding: 20px; text-align: center;">
+            <button onclick="logout()" style="background:none; border:none; color:#333; font-size:0.6rem; letter-spacing:2px; cursor:pointer;">[ TERMINATE_SESSION ]</button>
         </div>
     </div>
 
     <script>
-        function init() {
-            // 1. Check if URL has the Magic Key (e.g. ?key=sentinel) from NFC
+        function checkAccess() {
             const urlParams = new URLSearchParams(window.location.search);
-            const key = urlParams.get('key');
-
-            if (key === 'sentinel') {
-                localStorage.setItem('luxvoid_access', 'true'); // Save access permanently
-                unlockVault();
-            } else if (localStorage.getItem('luxvoid_access') === 'true') {
-                unlockVault();
+            if (urlParams.get('key') === 'sentinel' || localStorage.getItem('luxvoid_access') === 'true') {
+                localStorage.setItem('luxvoid_access', 'true');
+            } else {
+                window.location.href = "forge.html"; // Redirect if not a sentinel
             }
         }
-
-        function unlockVault() {
-            document.getElementById('view-locked').style.display = 'none';
-            document.getElementById('view-vault').style.display = 'block';
-        }
-
-        function manualLogin() {
-            alert("ACCESS DENIED: Please scan your NFC Artifact to verify ownership.");
-        }
-
-        function logout() {
-            localStorage.removeItem('luxvoid_access');
-            window.location.href = "index.html"; // Refresh to lock
-        }
+        function logout() { localStorage.removeItem('luxvoid_access'); window.location.href = "forge.html"; }
     </script>
 </body>
 </html>
