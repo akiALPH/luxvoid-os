@@ -6,34 +6,34 @@
     <title>LUXVOID // THE FORGE</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; --safe-green: #00ff9d; }
+        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; --safe-green: #00ff9d; --mystery: #9d00ff; }
         
-        /* LAYOUT: LOCKS EVERYTHING TO ONE SCREEN (NO SCROLLING) */
+        /* LOCK LAYOUT (KIOSK MODE) */
         html, body { 
             height: 100%; width: 100%; margin: 0; padding: 0; 
             background-color: var(--deep-bg); color: #fff; 
             font-family: 'Rajdhani', sans-serif; 
-            overflow: hidden; /* Kills scrollbars for the 'App' feel */
+            overflow: hidden; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* BACKGROUND: CENTERED & FIXED */
+        /* ATMOSPHERE */
         .infinite-bg {
             position: fixed; top: 50%; left: 50%; width: 120vw; height: 120vh;
             background: url('assets/hero-poster.png') center/cover no-repeat;
             transform: translate(-50%, -50%) scale(1.1);
-            filter: blur(40px) brightness(0.4); 
+            filter: blur(50px) brightness(0.3); 
             z-index: -20; pointer-events: none;
         }
 
-        /* HEADER: FLOATING */
+        /* BRANDING */
         .forge-header { position: absolute; top: 30px; text-align: center; z-index: 100; width: 100%; }
         .brand { font-size: 1.2rem; letter-spacing: 6px; color: #fff; text-transform: uppercase; }
         .sub-brand { font-size: 0.55rem; letter-spacing: 3px; color: var(--copper); margin-top: 5px; }
 
-        /* PRODUCT CARD: COMPACT & CENTERED */
+        /* THE CARD */
         .product-card {
-            width: 340px; /* Fixed width for kiosk feel */
+            width: 340px; 
             background: rgba(15, 15, 15, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -44,24 +44,39 @@
             position: relative;
         }
 
-        /* IMAGE AREA */
+        /* MYSTERY VISUALIZER */
         .img-stage {
             width: 100%; height: 220px;
-            background: radial-gradient(circle at center, #222 0%, #050505 100%);
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
             display: flex; justify-content: center; align-items: center;
-            position: relative; border-bottom: 1px solid #222;
+            position: relative; border-bottom: 1px solid #222; overflow: hidden;
         }
-        .product-img { width: 180px; height: 180px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); }
         
-        .stock-badge {
-            position: absolute; top: 15px; right: 15px;
-            background: rgba(0, 255, 157, 0.05); border: 1px solid rgba(0, 255, 157, 0.3);
-            color: var(--safe-green); padding: 4px 8px; font-size: 0.5rem; letter-spacing: 1px; border-radius: 12px;
+        /* Glitch Animation for "Unknown" Artifact */
+        .product-img { 
+            width: 160px; height: 160px; object-fit: contain; 
+            filter: drop-shadow(0 0 15px rgba(157, 0, 255, 0.4)) grayscale(100%) contrast(1.2);
+            animation: glitch-anim 3s infinite;
+        }
+        @keyframes glitch-anim {
+            0% { transform: scale(1); filter: grayscale(100%); opacity: 0.8; }
+            92% { transform: scale(1); filter: grayscale(100%); opacity: 0.8; }
+            93% { transform: scale(1.02) skewX(2deg); filter: grayscale(0%) sepia(100%) hue-rotate(90deg); opacity: 1; }
+            94% { transform: scale(1) skewX(-2deg); filter: invert(1); opacity: 0.5; }
+            95% { transform: scale(1); filter: grayscale(100%); opacity: 0.8; }
+            100% { transform: scale(1); filter: grayscale(100%); opacity: 0.8; }
         }
 
-        /* DETAILS AREA */
+        .entropy-badge {
+            position: absolute; top: 15px; left: 15px;
+            background: rgba(157, 0, 255, 0.1); border: 1px solid var(--mystery);
+            color: var(--mystery); padding: 4px 8px; font-size: 0.5rem; letter-spacing: 1px; border-radius: 4px;
+            text-shadow: 0 0 5px var(--mystery);
+        }
+
+        /* DETAILS */
         .details { padding: 25px; text-align: left; }
-        .product-title { font-size: 1rem; letter-spacing: 3px; margin: 0; color: #fff; }
+        .product-title { font-size: 1rem; letter-spacing: 2px; margin: 0; color: #fff; text-transform: uppercase; }
         .product-price { font-size: 1.4rem; color: var(--void-cyan); font-family: 'Inter', sans-serif; font-weight: 600; margin: 5px 0 15px 0; }
         
         .specs { display: flex; justify-content: space-between; font-size: 0.6rem; color: #888; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 15px; }
@@ -69,24 +84,26 @@
         .spec-val { color: #ccc; }
 
         .perks { margin-bottom: 20px; }
-        .perk-item { display: flex; align-items: center; font-size: 0.6rem; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; }
+        .perk-item { display: flex; align-items: center; font-size: 0.6rem; color: #aaa; margin-bottom: 8px; letter-spacing: 1px; }
         .check { color: var(--copper); margin-right: 8px; font-weight: bold; }
+        .check-gold { color: var(--void-cyan); margin-right: 8px; font-weight: bold; text-shadow: 0 0 5px var(--void-cyan); }
 
         /* BUY BUTTON */
         .btn-buy {
             display: block; width: 100%; padding: 15px;
-            background: var(--void-cyan); color: #000;
+            background: linear-gradient(90deg, var(--void-cyan), #00c3ff); 
+            color: #000;
             font-size: 0.8rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
             border: none; border-radius: 10px; cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
             transition: 0.3s;
         }
-        .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
+        .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0, 240, 255, 0.6); }
         
         .trust-row { display: flex; justify-content: center; gap: 10px; margin-top: 15px; opacity: 0.5; }
         .trust-icon { font-size: 0.5rem; border: 1px solid #666; padding: 2px 6px; border-radius: 4px; color: #888; }
 
-        /* NAVIGATION */
+        /* NAV */
         .btn-back { position: absolute; bottom: 30px; color: #444; text-decoration: none; font-size: 0.65rem; letter-spacing: 3px; transition: 0.3s; }
         .btn-back:hover { color: var(--void-cyan); }
     </style>
@@ -102,32 +119,32 @@
 
     <div class="product-card">
         <div class="img-stage">
-            <div class="stock-badge">REMAINING: 888 / 888</div>
-            <img src="assets/hero-poster.png" class="product-img" alt="Sentinel Artifact">
+            <div class="entropy-badge">ENTROPY_MODE: ACTIVE</div>
+            <img src="assets/hero-poster.png" class="product-img" alt="Mystery Artifact">
         </div>
 
         <div class="details">
-            <h1 class="product-title">SENTINEL ARTIFACT</h1>
+            <h1 class="product-title">SENTINEL ARTIFACT // BLIND DROP</h1>
             <div class="product-price">$99.00 USD</div>
             
             <div class="specs">
-                <div class="spec-item"><div>MATERIAL</div><div class="spec-val">.999 COPPER</div></div>
-                <div class="spec-item"><div>WEIGHT</div><div class="spec-val">1.00 OZ</div></div>
-                <div class="spec-item"><div>EDITION</div><div class="spec-val">GENESIS</div></div>
+                <div class="spec-item"><div>CORE</div><div class="spec-val">1oz .999 COPPER</div></div>
+                <div class="spec-item"><div>SHELL</div><div class="spec-val">RESIN DOME</div></div>
+                <div class="spec-item"><div>DESIGN</div><div class="spec-val" style="color:var(--mystery);">RANDOMIZED</div></div>
             </div>
 
             <div class="perks">
-                <div class="perk-item"><span class="check">+</span> PHYSICAL CERTIFICATE OF AUTHENTICITY</div>
-                <div class="perk-item"><span class="check">+</span> $VOID AIRDROP ALLOCATION</div>
-                <div class="perk-item"><span class="check">+</span> LIFETIME "SENTINEL" SEAT</div>
+                <div class="perk-item"><span class="check">+</span> PHYSICAL ASSET: 1-of-1 RANDOM VARIANT</div>
+                <div class="perk-item"><span class="check-gold">★</span> DIGITAL SHADOW: UNLOCK 3D NFT ANIMATION</div>
+                <div class="perk-item"><span class="check">+</span> LOYALTY REWARD: 100% $VOID ALLOCATION</div>
             </div>
 
-            <button class="btn-buy" onclick="window.open('https://stripe.com', '_blank')">SECURE CHECKOUT</button>
+            <button class="btn-buy" onclick="alert('CONNECTING TO STRIPE GATEWAY...')">INITIATE ACQUISITION</button>
             
             <div class="trust-row">
                 <span class="trust-icon">SSL SECURE</span>
-                <span class="trust-icon">STRIPE</span>
-                <span class="trust-icon">GLOBAL SHIP</span>
+                <span class="trust-icon">GLOBAL SHIPPING</span>
+                <span class="trust-icon">MAX 3 PER USER</span>
             </div>
         </div>
     </div>
