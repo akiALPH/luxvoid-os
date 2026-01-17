@@ -10,13 +10,7 @@
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; background-color: var(--deep-bg); overflow: hidden; touch-action: none; position: fixed; }
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; color: #fff; }
 
-        /* FIXED BACKGROUND */
-        .infinite-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: url('assets/hero-poster.png') center/cover no-repeat;
-            filter: blur(35px) brightness(0.6) saturate(1.2);
-            transform: scale(1.2); z-index: -20; pointer-events: none; opacity: 0.8;
-        }
+        .infinite-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(35px) brightness(0.6) saturate(1.2); transform: scale(1.2); z-index: -20; pointer-events: none; opacity: 0.8; }
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; opacity: 0.7; pointer-events: none; }
 
         .ticker-wrap { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--void-cyan); overflow: hidden; white-space: nowrap; padding: 12px 0; z-index: 100; }
@@ -24,175 +18,83 @@
         .ticker-item { display: inline-block; padding: 0 40px; font-size: 0.75rem; letter-spacing: 2px; color: var(--void-cyan); font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .gate-container { 
-            background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%);
-            backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.1); 
-            padding: 30px; border-radius: 40px; text-align: center; 
-            width: 90%; max-width: 380px; 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); z-index: 10; flex-shrink: 0; 
-            max-height: 80vh; overflow-y: auto; /* Allow scroll inside panel if needed */
-        }
+        .gate-container { background: linear-gradient(165deg, rgba(30,30,30,0.95) 0%, rgba(5,5,5,0.98) 100%); backdrop-filter: blur(45px); border: 1px solid rgba(0, 240, 255, 0.1); padding: 30px; border-radius: 40px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 240, 255, 0.02); z-index: 10; flex-shrink: 0; max-height: 80vh; overflow-y: auto; }
         .scan-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--void-cyan), transparent); margin: 20px 0; }
         h1 { font-size: 2.2rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 25px var(--void-cyan); }
 
         .btn { display: block; width: 100%; padding: 18px 0; margin: 12px 0; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease; text-decoration: none; text-align: center;}
-        .btn-ascend { background: rgba(0, 240, 255, 0.08); color: var(--void-cyan); border-color: var(--void-cyan); }
-        .btn-coa { background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), transparent); color: var(--void-green); border-color: var(--void-green); font-size: 0.8rem; margin-top: 20px; }
         .btn-forge { background: linear-gradient(90deg, var(--void-cyan), #00c3ff); color: #000; border: none; font-weight:800; box-shadow: 0 0 20px rgba(0,240,255,0.3); margin-top: 20px; }
         .btn-forge:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(0,240,255,0.6); }
-
-        .btn-forfeit { background: transparent; color: #444; font-size: 0.6rem; border: none; letter-spacing: 3px; margin-top: 15px; cursor: pointer; }
-        .btn-quick { background: rgba(0, 255, 157, 0.1); border: 1px solid var(--void-green); color: var(--void-green); font-size: 0.5rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; margin-left: 8px; }
-
-        .scan-active { animation: pulseScan 0.8s infinite alternate; color: var(--void-cyan); text-shadow: 0 0 10px var(--void-cyan); }
-        @keyframes pulseScan { 0% { opacity: 0.4; } 100% { opacity: 1; letter-spacing: 6px; } }
-
-        #dashboard { display: none; text-align: left; width: 100%; }
+        .btn-login { background: transparent; border: 1px solid #444; color: #666; font-size: 0.7rem; }
+        
+        /* BLURRED VAULT */
+        .blur-overlay { filter: blur(8px); opacity: 0.3; pointer-events: none; user-select: none; }
+        .locked-msg { color: var(--alert); font-size: 0.8rem; letter-spacing: 3px; margin: 20px 0; border: 1px solid var(--alert); padding: 10px; border-radius: 10px; background: rgba(255,0,0,0.1); display: block; }
+        
         .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; }
         .stat-label { color: #666; font-size: 0.6rem; letter-spacing: 1px; }
         .stat-value { color: #fff; font-family: monospace; font-size: 0.75rem; }
-        .highlight { color: var(--void-green); }
-
-        /* MERGED CORE LOGIC */
-        .supply-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; margin-top: 15px; border: 1px solid #333; }
-        .clock-val { color: var(--alert); font-family: monospace; font-size: 0.9rem; letter-spacing: 2px; text-align: right; }
-        .bar-bg { width: 100%; height: 4px; background: #222; margin-top: 5px; border-radius: 2px; }
-        .bar-fill { height: 100%; background: var(--void-cyan); width: 12%; box-shadow: 0 0 5px var(--void-cyan); }
-
-        /* DRAWER & FOOTER */
-        #archive-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%; background: linear-gradient(180deg, #111, #050505); z-index: 500; border-top: 1px solid var(--void-cyan); border-radius: 40px 40px 0 0; transition: bottom 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); padding: 40px 30px; box-sizing: border-box; overflow-y: auto; text-align: left; }
-        #archive-drawer.open { bottom: 0; }
-        .drawer-close { position: absolute; top: 20px; right: 30px; color: #555; font-size: 0.7rem; cursor: pointer; letter-spacing: 2px; }
-        .chapter-title { color: var(--void-cyan); font-size: 1rem; letter-spacing: 4px; margin: 30px 0 10px 0; border-bottom: 1px solid rgba(0,240,255,0.1); padding-bottom: 5px; }
-        .chapter-text { color: #888; font-size: 0.75rem; line-height: 1.6; }
-        
-        footer { position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 50; }
-        .footer-link { color: #444; font-size: 0.6rem; letter-spacing: 3px; cursor: pointer; margin: 0 15px; text-transform: uppercase; }
-
-        /* HOLOGRAPHIC ID CARD */
-        #id-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 200; flex-direction: column; justify-content: center; align-items: center; perspective: 1000px; }
-        .card-inner { width: 320px; height: 190px; position: relative; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
-        .card-inner.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; border: 1px solid var(--copper); padding: 25px; box-sizing: border-box; background: linear-gradient(135deg, #111 0%, #222 50%, #111 100%); box-shadow: 0 0 25px rgba(184, 115, 51, 0.2); overflow: hidden; }
-        .card-face::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(115deg, transparent 20%, rgba(0, 240, 255, 0.15) 45%, rgba(184, 115, 51, 0.15) 55%, transparent 80%); pointer-events: none; opacity: 0.8; mix-blend-mode: overlay; }
-        .card-back { transform: rotateY(180deg); background: #111; border-color: var(--void-cyan); }
-        .card-logo { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--copper); box-shadow: 0 5px 15px rgba(0,0,0,0.8); object-fit: cover; }
-        .glint { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.4) 45%, transparent 70%); pointer-events: none; transform: translateX(-100%); mix-blend-mode: soft-light; }
     </style>
 </head>
 <body onload="initSystem()">
 
     <div class="infinite-bg"></div>
-    <canvas id="particle-canvas"></canvas>
     <div class="ticker-wrap"><div class="ticker-move"><span class="ticker-item">LIVE_CU_INDEX: $<span id="cu-price">4.42</span>/LB</span><span class="ticker-item">OBLIVION_PROTOCOL: T-MINUS 1,460 DAYS</span><span class="ticker-item">MONOLITH_SUPPLY: 88,888 $VOID MAX</span></div></div>
 
-    <div class="gate-container" id="gate">
+    <div class="gate-container" id="gate-public">
         <h1>LUXVOID</h1>
-        <div class="tagline" style="color: #444; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px;">ELITE_ART_REWARDS</div>
+        <div class="tagline" style="color: #444; font-size: 0.65rem; letter-spacing: 5px; margin-bottom: 35px;">PUBLIC_TERMINAL // UNREGISTERED</div>
         <div class="scan-line"></div>
-        <button class="btn btn-ascend" id="claim-btn" onclick="startScan()">CLAIM_SOVEREIGNTY</button>
-        <button class="btn-forfeit" onclick="oblivion()">FORFEIT_LEGACY</button>
+        
+        <div class="locked-msg">[ ACCESS_DENIED ]<br>SENTINEL_KEY_REQUIRED</div>
+        
+        <div class="blur-overlay">
+            <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value">#XXX</span></div>
+            <div class="stat-row"><span class="stat-label">YIELD:</span> <span class="stat-value">0.000000</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value">LOCKED</span></div>
+        </div>
+
+        <a href="forge.html" class="btn btn-forge">ACQUIRE ARTIFACT</a>
+        
+        <button class="btn btn-login" onclick="attemptLogin()">SENTINEL_LOGIN</button>
     </div>
 
-    <div class="gate-container" id="vault" style="display:none;">
+    <div class="gate-container" id="vault-private" style="display:none;">
         <h1 style="font-size: 1.3rem; text-align: left; letter-spacing: 5px;">SOVEREIGN_VAULT</h1>
         <div class="scan-line"></div>
-        
-        <div id="dashboard" style="display:block;">
-            <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight" id="unit-display">#888</span></div>
-            <div class="stat-row"><span class="stat-label">ART_YIELD:</span> <div style="display:flex; align-items:center;"><span class="stat-value" id="reward-display">0.000000</span><button class="btn-quick" onclick="compound()">COMPOUND</button></div></div>
-            <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value highlight">AUTHENTICATED</span></div>
-            
-            <div class="supply-box">
-                <div class="stat-row"><span class="stat-label" style="color:var(--alert);">NEXT_HALVING:</span> <span class="clock-val" id="countdown">00:00:00:00</span></div>
-                <div class="stat-row" style="margin-top:10px;"><span class="stat-label">AVAILABLE_SUPPLY (12%)</span></div>
-                <div class="bar-bg"><div class="bar-fill"></div></div>
-            </div>
-
-            <div class="stat-row" style="margin-top:10px;"><span class="stat-label">VAULT_WEIGHT:</span> <div><span class="stat-value">1.00 OZ_CU</span> <canvas id="cuChart" style="width:40px; height:15px; display:inline-block; vertical-align:middle;"></canvas></div></div>
-        </div>
-
-        <button class="btn btn-coa" onclick="openCard()">VIEW_ELITE_ID</button>
-        <a href="forge.html" class="btn btn-forge">ENTER THE FORGE</a>
-        
-        <button class="btn-forfeit" onclick="resetSentinel()">RESET_SESSION</button>
-    </div>
-
-    <div id="archive-drawer">
-        <span class="drawer-close" onclick="toggleArchive()">[ CLOSE_DIRECTORY ]</span>
-        <div class="chapter-title">PRIVACY_PROTOCOL</div><p class="chapter-text">Zero-Knowledge interface.</p>
-        <div class="chapter-title">CHAPTER I: THE MANIFESTO</div><p class="chapter-text">GIVE ART A DIVIDEND. We reject vaporware.</p>
-        <a href="#" class="btn-forfeit" style="text-align:left; color:#888;">[ DOWNLOAD_FULL_TECHNICAL_PAPER ]</a>
-    </div>
-
-    <footer><span class="footer-link" onclick="toggleArchive()">[ ARCHIVE ]</span></footer>
-
-    <div id="id-modal">
-        <div class="card-inner" id="card-inner" onmousemove="handleGlint(event)" ontouchmove="handleTouchGlint(event)" onclick="flipCard()">
-            <div class="card-face card-front">
-                <div class="glint" id="glint"></div>
-                <img src="assets/logo.JPG" class="card-logo" alt="Luxvoid Emblem">
-                <div style="color:var(--copper); font-weight:700; letter-spacing:5px; font-size:1.1rem; margin-bottom:30px;">LUXVOID</div>
-                <div style="font-size:1.4rem; letter-spacing:6px; color:#fff;" id="card-id-display">#888</div>
-                <div style="position:absolute; bottom:20px; left:20px; font-size:0.4rem; color:var(--void-cyan);">TAP_TO_FLIP</div>
-            </div>
-            <div class="card-face card-back">
-                <div style="color:var(--void-cyan); font-size:0.7rem; letter-spacing:2px;">PRODUCTION_LEDGER</div>
-                <div style="font-size:0.6rem; color:#888; margin-top:15px;">ELEMENT</div>
-                <div style="font-size:0.8rem; color:#fff;">99.9% PURE_COPPER</div>
-                <div style="font-size:0.6rem; color:#888; margin-top:15px;">SERIAL_NUMBER</div>
-                <div id="serial-display" style="font-size:0.8rem; color:#fff;"></div>
-            </div>
-        </div>
-        <p style="margin-top:25px; color:#444; font-size:0.6rem; letter-spacing:2px; cursor:pointer;" onclick="closeCard()">CLOSE_INTERFACE</p>
+        <div class="stat-row"><span class="stat-label">UNIT_ID:</span> <span class="stat-value highlight">#888</span></div>
+        <div class="stat-row"><span class="stat-label">STATUS:</span> <span class="stat-value highlight" style="color:var(--void-green);">AUTHENTICATED</span></div>
+        <div style="margin-top:20px; font-size:0.7rem; color:#888;">WELCOME HOME, SENTINEL.</div>
+        <button class="btn btn-login" style="margin-top:20px;" onclick="logout()">LOGOUT</button>
     </div>
 
     <script>
-        let rewards = 0;
-        function toggleArchive() { document.getElementById('archive-drawer').classList.toggle('open'); }
         function initSystem() {
-            initParticles(); initCuChart(); startClock();
-            const urlParams = new URLSearchParams(window.location.search);
-            let unitID = urlParams.get('id') || "888";
-            document.getElementById('unit-display').innerText = "#" + unitID;
-            document.getElementById('card-id-display').innerText = "#" + unitID;
-            document.getElementById('serial-display').innerText = "LV-2026-" + unitID.padStart(3, '0');
-            if (localStorage.getItem('luxvoid_ascended') === 'true') { 
-                document.getElementById('gate').style.display = 'none';
-                document.getElementById('vault').style.display = 'block';
-                setInterval(() => { rewards += 0.000002; document.getElementById('reward-display').innerText = rewards.toFixed(6); }, 1000);
+            // Check if user has "bought" (simulated by localStorage)
+            if (localStorage.getItem('luxvoid_key') === 'true') {
+                showVault();
             }
             setInterval(() => { let cp = document.getElementById('cu-price'); cp.innerText = (parseFloat(cp.innerText) + (Math.random() * 0.02 - 0.01)).toFixed(2); }, 3000);
         }
-        function startClock() {
-            const dest = new Date("Dec 31, 2026 00:00:00").getTime();
-            setInterval(function() {
-                let now = new Date().getTime(); let diff = dest - now;
-                let d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                let s = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById("countdown").innerHTML = d + "d " + h + "h " + m + "m " + s + "s";
-            }, 1000);
+
+        function attemptLogin() {
+            // Simulate Login Check
+            if (localStorage.getItem('luxvoid_key') === 'true') {
+                showVault();
+            } else {
+                alert("ACCESS DENIED: No Sentinel Artifact Detected.\nPlease visit the Forge.");
+            }
         }
-        function compound() { document.getElementById('staked-val').innerText = (parseFloat(document.getElementById('staked-val').innerText || 0) + rewards).toFixed(2); rewards = 0; document.getElementById('reward-display').innerText = "0.000000"; }
-        function initCuChart() {
-            const canvas = document.getElementById('cuChart'); const ctx = canvas.getContext('2d'); canvas.width = 40; canvas.height = 15;
-            let data = [5,8,6,9,10]; setInterval(() => { data.shift(); data.push(data[data.length-1] + (Math.random()*4-2)); ctx.clearRect(0,0,40,15); ctx.beginPath(); ctx.strokeStyle = '#b87333'; ctx.lineWidth = 2; for(let i=0; i<data.length; i++) { let x = i*10; let y = 15-(data[i]-5); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); }, 500);
+
+        function showVault() {
+            document.getElementById('gate-public').style.display = 'none';
+            document.getElementById('vault-private').style.display = 'block';
         }
-        function initParticles() {
-            const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            let particles = []; for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, speed: Math.random()*0.5+0.2, size: Math.random()*1.5});
-            function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(0, 240, 255, 0.3)'; particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y < 0) p.y = canvas.height; }); requestAnimationFrame(animate); } animate();
+
+        function logout() {
+            localStorage.removeItem('luxvoid_key');
+            location.reload();
         }
-        function handleGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); glint.style.transform = `translateX(${( (e.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
-        function handleTouchGlint(e) { const glint = document.getElementById('glint'); const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches[0]; glint.style.transform = `translateX(${( (touch.clientX - rect.left) / rect.width) * 200 - 100}%)`; }
-        function startScan() { document.getElementById('claim-btn').innerText = "SCANNING..."; document.getElementById('claim-btn').classList.add('scan-active'); setTimeout(() => { localStorage.setItem('luxvoid_ascended', 'true'); location.reload(); }, 2500); }
-        function openCard() { document.getElementById('id-modal').style.display = 'flex'; }
-        function closeCard() { document.getElementById('id-modal').style.display = 'none'; }
-        function flipCard() { document.getElementById('card-inner').classList.toggle('is-flipped'); }
-        function resetSentinel() { localStorage.removeItem('luxvoid_ascended'); window.location.reload(); }
-        function oblivion() { if (confirm("FINAL WARNING: Proceed into Oblivion?")) window.location.href = "https://google.com"; }
     </script>
 </body>
 </html>
