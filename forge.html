@@ -3,54 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXVOID // THE FORGE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>LUXVOID // FORGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --deep-bg: #050505; }
-        html, body { height: 100%; width: 100%; margin: 0; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; }
-        .infinite-bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover no-repeat; filter: blur(40px) brightness(0.2); z-index: -10; }
-        
-        .monolith { 
-            width: 100%; max-width: 420px; height: 100%; max-height: 820px;
-            background: rgba(10,10,10,0.9); border: 1px solid #222; display: flex; flex-direction: column;
-        }
-        @media (min-width: 1024px) { .monolith { border-radius: 40px; height: 90vh; } }
+        body { margin: 0; background: #050505; color: #fff; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .bg { position: fixed; inset: 0; background: url('assets/hero-poster.png') center/cover; opacity: 0.15; z-index: -1; }
 
-        .content { flex: 1; padding: 30px; overflow-y: auto; text-align: center; }
-        
-        /* THE ENTROPY SILHOUETTE */
-        .artifact-box {
-            width: 100%; height: 250px; background: #000; border: 1px solid #333;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
-            position: relative; overflow: hidden;
+        .product-container {
+            width: 100%; max-width: 400px; padding: 40px;
+            background: rgba(20,20,20,0.8); border: 1px solid #333;
+            backdrop-filter: blur(20px); text-align: center;
         }
-        .silhouette {
-            width: 150px; height: 150px; background: url('assets/hero-poster.png') center/contain;
-            filter: brightness(0) drop-shadow(0 0 10px rgba(157, 0, 255, 0.4));
-            animation: pulse 3s infinite alternate;
-        }
-        @keyframes pulse { from { transform: scale(1); opacity: 0.5; } to { transform: scale(1.05); opacity: 0.8; } }
 
-        .price { font-size: 2rem; color: var(--void-cyan); margin: 20px 0; }
-        .btn-buy { width: 100%; padding: 20px; background: var(--void-cyan); color: #000; font-weight: bold; border: none; border-radius: 10px; letter-spacing: 3px; cursor: pointer; }
+        .product-title { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 5px; }
+        .product-sub { color: #888; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 30px; }
+        
+        .price { font-size: 2rem; color: #fff; font-weight: 600; margin-bottom: 30px; }
+        .price span { font-size: 1rem; color: #666; font-weight: 400; }
+
+        .btn-buy {
+            width: 100%; padding: 18px; 
+            background: #fff; color: #000; 
+            font-family: 'Rajdhani', sans-serif; font-weight: bold; letter-spacing: 3px;
+            border: none; cursor: pointer; transition: 0.3s;
+        }
+        .btn-buy:hover { background: #00f0ff; }
+        
+        .details { text-align: left; margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; font-size: 0.8rem; color: #aaa; line-height: 1.8; }
+        .row { display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
-    <div class="infinite-bg"></div>
-    <div class="monolith">
-        <div class="content">
-            <h2 style="letter-spacing:5px;">THE_FORGE</h2>
-            <div class="artifact-box">
-                <div style="position:absolute; top:10px; left:10px; font-size:0.5rem; color:#555;">MODE: ENTROPY_BLIND_DROP</div>
-                <div class="silhouette"></div>
-            </div>
-            <div style="font-size:0.75rem; color:#888; text-align:left;">
-                Physical 1oz Copper Artifact sealed in Industrial Resin. Every drop is a 1-of-1 randomized variant. [cite: 2026-01-14]
-            </div>
-            <div class="price">$99.00 USD</div>
-            <button class="btn-buy" onclick="alert('CONNECTING_TO_STRIPE...')">INITIATE ACQUISITION</button>
-            <a href="index.html" style="display:block; margin-top:20px; color:#333; font-size:0.6rem; text-decoration:none;">[ RETURN_TO_VAULT ]</a>
+    <div class="bg"></div>
+
+    <div class="product-container">
+        <div class="product-title">SENTINEL ARTIFACT</div>
+        <div class="product-sub">EDITION: ENTROPY DROP</div>
+
+        <div style="height: 200px; background: #111; margin: 20px 0; display: flex; align-items: center; justify-content: center; border: 1px solid #222;">
+            <img src="assets/hero-poster.png" style="height: 80%; opacity: 0.8;">
         </div>
+
+        <div class="price">$99.00 <span>USD</span></div>
+
+        <button class="btn-buy" onclick="alert('Stripe Gateway Connecting...')">SECURE CHECKOUT</button>
+
+        <div class="details">
+            <div class="row"><span>Material</span><span style="color:#fff">.999 Copper</span></div>
+            <div class="row"><span>Finish</span><span style="color:#fff">Industrial Resin Dome</span></div>
+            <div class="row"><span>Access</span><span style="color:#00f0ff">Sentinel Vault Key</span></div>
+        </div>
+        
+        <a href="index.html" style="display:block; margin-top:30px; color:#444; text-decoration:none; font-size:0.7rem;">RETURN TO TERMINAL</a>
     </div>
 </body>
 </html>
