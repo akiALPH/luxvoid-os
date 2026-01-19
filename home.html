@@ -28,93 +28,95 @@
             font-family: 'Exo 2', sans-serif;
             color: var(--platinum);
         }
-        
-        /* === BACKGROUND FIX (PRIORITY 1) === */
-        /* This ensures your Logo Background is visible behind everything */
-        .background-container {
-            position: fixed;
-            inset: 0;
-            z-index: 0; /* Sits above the black body, below content */
-            pointer-events: none;
-        }
-        
-        .logo-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100vw;
-            height: 100vh;
-            /* USES YOUR ASSET */
-            background: url('assets/logo.JPG') center/contain no-repeat;
-            opacity: 0.4; /* Boosted visibility */
-            filter: blur(30px) brightness(1.2); /* Reduced blur for performance */
-            animation: breathe 8s infinite alternate;
-        }
 
-        .cyber-grid {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-            background-size: 80px 80px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        /* === LOADER (CSS FORCE FADE - NO JS LOCK) === */
+        /* === 1. THE LOADER (RESTORED & FIXED) === */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            animation: forceExit 1s ease-in-out 3.5s forwards;
-            pointer-events: all;
+            transition: opacity 1s ease, visibility 1s ease;
         }
-        @keyframes forceExit { 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
 
         .loader-logo {
-            width: 220px; height: 220px;
+            width: 250px; height: 250px;
             background: url('assets/logo.JPG') center/cover;
             border-radius: 50%;
-            box-shadow: 0 0 60px var(--neon-blue);
-            animation: pulse 1s infinite alternate;
-            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 50px var(--neon-blue);
+            animation: breathe 2s infinite alternate; /* Breathing Restored */
+            border: 2px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
         }
-        .loader-text { font-family: 'Audiowide'; font-size: 2.5rem; margin-top: 20px; color: #fff; text-shadow: 0 0 20px var(--neon-blue); }
 
-        /* === HUD TICKER === */
+        .loader-text {
+            font-family: 'Audiowide'; font-size: 3rem; color: #fff; text-transform: uppercase;
+            text-shadow: 0 0 20px var(--neon-blue); letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .loader-bar {
+            width: 300px; height: 4px; background: #222; border-radius: 2px; overflow: hidden;
+        }
+
+        .loader-fill {
+            width: 0%; height: 100%; background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            /* Animates to full in 3.5s */
+            animation: loadBar 3.5s cubic-bezier(0.2, 0, 0.2, 1) forwards; 
+        }
+
+        /* === 2. BACKGROUND (NO SQUARES/GRID) === */
+        .background-container {
+            position: fixed; inset: 0; z-index: -10; pointer-events: none;
+        }
+        
+        .logo-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh;
+            background: url('assets/logo.JPG') center/contain no-repeat;
+            opacity: 0.3;
+            filter: blur(40px) brightness(1.2);
+            animation: breathe 8s infinite alternate;
+        }
+
+        .particles-container { position: absolute; inset: 0; }
+        .particle {
+            position: absolute; width: 2px; height: 2px; background: var(--neon-blue);
+            border-radius: 50%; opacity: 0;
+        }
+
+        /* === 3. HEADER & TICKER === */
         .hud-top { 
             position: fixed; top: 0; left: 0; width: 100%; 
-            background: rgba(0,0,0,0.9); border-bottom: 1px solid rgba(0,240,255,0.3);
-            padding: 10px 0; z-index: 500;
-            font-family: 'Share Tech Mono'; font-size: 0.9rem; color: var(--cyber-teal);
+            background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(0,240,255,0.2);
+            padding: 10px 0; z-index: 500; font-family: 'Share Tech Mono'; color: var(--cyber-teal); font-size: 0.9rem;
         }
         .ticker-wrap { white-space: nowrap; overflow: hidden; }
         .ticker-move { display: inline-block; animation: ticker 40s linear infinite; padding-left: 100%; }
         .ticker-item { margin-right: 50px; }
         .highlight { color: var(--luxury-gold); font-weight: bold; }
 
-        /* === HEADER === */
         .header-container {
             position: fixed; top: 50px; left: 0; right: 0; padding: 1.5rem 3rem;
             display: flex; justify-content: space-between; align-items: center; z-index: 200;
         }
         .brand-title {
-            font-family: 'Audiowide'; font-size: 3rem; color: #fff;
-            text-shadow: 0 0 30px var(--neon-blue);
+            font-family: 'Audiowide'; font-size: 2.5rem; color: #fff; text-shadow: 0 0 30px var(--neon-blue);
         }
         .network-status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
         .dot { width: 10px; height: 10px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 10px var(--matrix-green); }
 
-        /* === 3D COIN === */
+        /* === 4. THE COIN (NO RINGS) === */
         .coin-universe {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             perspective: 2000px; z-index: 100;
         }
+        
         .coin-box {
             width: 320px; height: 320px; position: relative;
             transform-style: preserve-3d;
+            /* Gyro + Breathe Animation */
             animation: spin 25s linear infinite, breathe 6s ease-in-out infinite alternate;
         }
+        
         .face {
             position: absolute; width: 100%; height: 100%; border-radius: 50%;
             backface-visibility: hidden;
@@ -123,17 +125,9 @@
             border: 3px solid rgba(184, 115, 51, 0.8);
         }
         .front { transform: rotateY(0deg); }
-        .back { transform: rotateY(180deg); }
-        
-        /* The Orbit Rings */
-        .ring {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            border: 1px solid; border-radius: 50%; opacity: 0.4;
-        }
-        .r1 { width: 400px; height: 400px; border-color: var(--neon-blue); }
-        .r2 { width: 500px; height: 500px; border-color: var(--neon-purple); }
+        .back { transform: rotateY(180deg); filter: brightness(0.7); }
 
-        /* === COMMAND DECK === */
+        /* === 5. BUTTONS === */
         .command-deck {
             position: fixed; bottom: 5rem; left: 0; right: 0; z-index: 150; padding: 0 3rem;
         }
@@ -142,7 +136,7 @@
             max-width: 1400px; margin: 0 auto;
         }
         .btn {
-            background: rgba(10, 10, 20, 0.9); /* Opaque for performance */
+            background: rgba(10, 10, 20, 0.9);
             border: 1px solid rgba(255,255,255,0.2);
             padding: 1.5rem; color: #fff; font-family: 'Rajdhani'; font-size: 1.2rem;
             cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
@@ -153,7 +147,7 @@
         .copper { border-bottom: 3px solid var(--copper); color: var(--copper); }
         .red { border-bottom: 3px solid var(--warning-red); color: var(--warning-red); }
 
-        /* === FOOTER === */
+        /* === 6. FOOTER & MODALS === */
         .footer {
             position: fixed; bottom: 1.5rem; width: 100%; text-align: center; z-index: 150;
         }
@@ -163,14 +157,12 @@
         }
         .link:hover { color: #fff; border-color: #fff; }
 
-        /* === MODALS (PERFORMANCE FIXED) === */
-        /* Removed backdrop-filter to fix the LAG */
         .modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000;
             justify-content: center; align-items: center;
         }
         .modal-box {
-            width: 90%; max-width: 800px; background: #0a0a0a; /* Solid color fixes lag */
+            width: 90%; max-width: 800px; background: #0a0a0a;
             border: 2px solid var(--neon-blue); padding: 40px;
             box-shadow: 0 0 100px rgba(0, 243, 255, 0.2);
             max-height: 80vh; overflow-y: auto;
@@ -179,9 +171,7 @@
             font-family: 'Audiowide'; font-size: 2.5rem; color: var(--neon-blue);
             border-bottom: 2px solid #333; margin-bottom: 20px; padding-bottom: 10px;
         }
-        .modal-text {
-            font-family: 'Rajdhani'; font-size: 1.2rem; line-height: 1.6; color: #ccc;
-        }
+        .modal-text { font-family: 'Rajdhani'; font-size: 1.2rem; line-height: 1.6; color: #ccc; }
         .modal-text p { margin-bottom: 20px; }
         .close-btn {
             background: var(--neon-blue); color: #000; border: none; padding: 10px 30px;
@@ -190,12 +180,12 @@
         .close-btn:hover { background: #fff; box-shadow: 0 0 20px #fff; }
 
         /* ANIMATIONS */
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        @keyframes breathe { 0% { transform: translate(-50%, -50%) scale(1); } 100% { transform: translate(-50%, -50%) scale(1.05); } }
-        @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(100px); } }
+        @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
         @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-        @keyframes logoScan { from { filter: brightness(1); } to { filter: brightness(1.5); } }
-        
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        @keyframes float { 0% { transform: translateY(0); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
+
         /* RESPONSIVE */
         @media (max-width: 800px) {
             .command-matrix { grid-template-columns: 1fr; }
@@ -210,6 +200,7 @@
     <div id="loader">
         <div class="loader-logo"></div>
         <div class="loader-text">LUXVOID_MONOLITH</div>
+        <div class="loader-bar"><div class="loader-fill"></div></div>
     </div>
 
     <div class="hud-top">
@@ -228,7 +219,7 @@
 
     <div class="background-container">
         <div class="logo-bg"></div>
-        <div class="cyber-grid"></div>
+        <div class="particles-container" id="particles"></div>
     </div>
 
     <div class="header-container">
@@ -237,8 +228,6 @@
     </div>
 
     <div class="coin-universe">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
         <div class="coin-box">
             <div class="face front"></div>
             <div class="face back"></div>
@@ -312,7 +301,7 @@
     </div>
 
     <script>
-        // AUDIO SYSTEM (Lag Fixed)
+        // AUDIO SYSTEM
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound() {
             if(ctx.state === 'suspended') ctx.resume();
@@ -326,6 +315,32 @@
             gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
             osc.start(); osc.stop(ctx.currentTime + 0.1);
         }
+
+        // PARTICLES (Stars)
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for(let i=0; i<60; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random()*100 + '%';
+                p.style.top = Math.random()*100 + '%';
+                p.style.animation = `float ${Math.random()*10+5}s linear infinite`;
+                container.appendChild(p);
+            }
+        }
+
+        // TIMER-BASED LOADER REMOVAL (FAIL-SAFE)
+        window.onload = function() {
+            createParticles();
+            // Force remove after 4 seconds
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                }
+            }, 4000);
+        };
 
         function openM(id) { playSound(); document.getElementById(id).style.display = 'flex'; }
         function closeM(id) { document.getElementById(id).style.display = 'none'; }
