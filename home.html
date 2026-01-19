@@ -27,15 +27,17 @@
             color: var(--platinum);
         }
 
-        /* === 1. LOADER (FAIL-SAFE: DIES IN 4 SECONDS) === */
+        /* =========================================
+           1. THE LOADER (FAIL-SAFE ARCHITECTURE)
+           ========================================= */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            /* The animation 'forceExit' ensures the screen vanishes */
-            animation: forceExit 1s ease-in-out 4s forwards;
+            /* CRITICAL: This animation forces the screen to vanish after 4s */
+            animation: forceVanish 1s ease-in-out 4s forwards;
             pointer-events: all;
         }
-        @keyframes forceExit { 
+        @keyframes forceVanish { 
             0% { opacity: 1; }
             99% { opacity: 0; pointer-events: none; }
             100% { opacity: 0; visibility: hidden; pointer-events: none; } 
@@ -43,7 +45,6 @@
 
         .loader-logo {
             width: 250px; height: 250px;
-            /* ASSET CHECK: logo.JPG */
             background: url('assets/logo.JPG') center/cover;
             border-radius: 50%;
             box-shadow: 0 0 60px var(--neon-blue);
@@ -62,30 +63,34 @@
             animation: fill 4s cubic-bezier(0.2, 0, 0.2, 1) forwards;
         }
 
-        /* === 2. BACKGROUND (BRIGHTER LOGO - NO GRID) === */
+        /* =========================================
+           2. THE BACKGROUND (LOGO MERGE - NO GRID)
+           ========================================= */
         .background-container {
             position: fixed; inset: 0; z-index: -10; pointer-events: none;
         }
         
         .logo-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            /* STRETCH FULL SCREEN */
+            /* Forces the logo to cover the screen */
             width: 100vw; height: 100vh;
             background: url('assets/logo.JPG') center center/cover no-repeat;
-            /* VISIBILITY BOOST: 0.6 Opacity */
-            opacity: 0.6; 
-            filter: blur(50px) brightness(1.3);
+            /* High visibility with blur for that "Atmosphere" look */
+            opacity: 0.5; 
+            filter: blur(40px) brightness(1.2);
             animation: breatheBg 10s infinite alternate;
         }
 
-        /* Particles (Stars) Only - NO CHECKERBOARD */
+        /* Just Stars. No Lines. No Squares. */
         .particles-container { position: absolute; inset: 0; }
         .particle {
             position: absolute; width: 3px; height: 3px; background: white;
             border-radius: 50%; opacity: 0; box-shadow: 0 0 5px white;
         }
 
-        /* === 3. HEADER & TICKER === */
+        /* =========================================
+           3. THE HUD (TICKER & HEADER)
+           ========================================= */
         .hud-top { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: rgba(0,0,0,0.85); border-bottom: 1px solid rgba(0,240,255,0.2);
@@ -106,7 +111,9 @@
         .network-status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
         .dot { width: 10px; height: 10px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 10px var(--matrix-green); }
 
-        /* === 4. THE COIN (NO RINGS - ROUNDED EDGES) === */
+        /* =========================================
+           4. THE COIN (ROUND - NO RINGS)
+           ========================================= */
         .stage-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             perspective: 1200px; z-index: 50;
@@ -115,25 +122,26 @@
         .coin-wrapper {
             width: 350px; height: 350px; position: relative;
             transform-style: preserve-3d;
-            /* 3D Spin + Breathe */
             animation: coinSpin 25s linear infinite, coinBreathe 6s ease-in-out infinite alternate;
         }
         
         .face {
             position: absolute; width: 100%; height: 100%;
-            /* CRITICAL: Cuts the square corners */
+            /* This cuts the corners of your square image */
             border-radius: 50%; 
             overflow: hidden;
             backface-visibility: hidden;
             background: url('assets/coin.png') center/cover;
-            /* Glow is INSIDE the rounded border, not outside the square box */
+            /* Inner shadow creates depth */
             box-shadow: 0 0 80px rgba(184, 115, 51, 0.6), inset 0 0 60px rgba(0,0,0,0.8);
             border: 4px solid rgba(184, 115, 51, 0.9);
         }
         .front { transform: rotateY(0deg); }
         .back { transform: rotateY(180deg); filter: brightness(0.7); }
 
-        /* === 5. BUTTONS (HEAVY CYBER STYLE) === */
+        /* =========================================
+           5. COMMAND DECK (BUTTONS)
+           ========================================= */
         .command-bar {
             position: fixed; bottom: 5rem; left: 0; right: 0; z-index: 150; padding: 0 3rem;
         }
@@ -142,7 +150,7 @@
             max-width: 1400px; margin: 0 auto;
         }
         .btn {
-            background: rgba(10, 10, 20, 0.9); /* Solid BG fixes lag */
+            background: rgba(10, 10, 20, 0.9); /* Solid BG prevents lag */
             border: 1px solid rgba(255,255,255,0.2);
             padding: 1.5rem; color: #fff; font-family: 'Rajdhani'; font-size: 1.2rem;
             cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
@@ -154,7 +162,9 @@
         .copper { border-bottom: 3px solid var(--copper); color: var(--copper); }
         .red { border-bottom: 3px solid var(--warning-red); color: var(--warning-red); }
 
-        /* === 6. FOOTER === */
+        /* =========================================
+           6. FOOTER & MODALS
+           ========================================= */
         .footer { position: fixed; bottom: 1.5rem; width: 100%; text-align: center; z-index: 200; }
         .link {
             display: inline-block; margin: 0 15px; color: #888; text-decoration: none;
@@ -162,7 +172,6 @@
         }
         .link:hover { color: #fff; border-color: #fff; }
 
-        /* === 7. MODALS === */
         .modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000;
             justify-content: center; align-items: center;
@@ -218,7 +227,7 @@
                 <span class="ticker-item">/// SUPPLY: <span class="gold-txt">88,888</span> (HARD CAPPED)</span>
                 <span class="ticker-item">/// METAL: <span class="gold-txt">PURE COPPER</span></span>
                 <span class="ticker-item">/// 2030 SHORTAGE: <span class="gold-txt">IMMINENT</span></span>
-                <span class="ticker-item">/// PROTOCOL: <span class="gold-txt">ACTIVE</span></span>
+                <span class="ticker-item">/// LUXVOID PROTOCOL: <span class="gold-txt">ACTIVE</span></span>
                 <span class="ticker-item">/// SYSTEM: <span class="gold-txt">ONLINE</span></span>
                 <span class="ticker-item">/// SUPPLY: <span class="gold-txt">88,888</span></span>
             </div>
@@ -230,9 +239,9 @@
         <div class="particles-container" id="particles"></div>
     </div>
 
-    <div class="header-main">
-        <div class="logo-text">LUXVOID_MONOLITH</div>
-        <div class="status-badge"><div class="dot"></div> NETWORK SECURE</div>
+    <div class="header-container">
+        <div class="brand-title">LUXVOID_MONOLITH</div>
+        <div class="network-status"><div class="dot"></div> NETWORK SECURE</div>
     </div>
 
     <div class="stage-center">
