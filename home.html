@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LUXVOID_MONOLITH</title>
-    <meta name="description" content="Digital-physical convergence. 88,888 Sentinel Artifacts. 2030 Shortage Protocol.">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;600;800&family=Exo+2:wght@300;400;600&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,17 +17,9 @@
             --platinum: #e6e6e6;
             --copper: #b87333;
             --warning-red: #ff0033;
-            --white-glow: rgba(255, 255, 255, 0.4);
         }
         
-        /* RESET & BASE */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html, body {
             height: 100%;
@@ -38,33 +29,13 @@
             color: var(--platinum);
         }
         
-        /* === HUD TICKER (RESTORED) === */
-        .hud-top { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            overflow: hidden;
-            background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0));
-            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
-            padding: 10px 0; 
-            font-family: 'Share Tech Mono', monospace; 
-            font-size: 0.85rem; 
-            color: var(--cyber-teal); 
-            z-index: 500;
-            backdrop-filter: blur(5px);
-        }
-        .ticker-wrap { white-space: nowrap; }
-        .ticker-move { display: inline-block; animation: ticker 40s linear infinite; padding-left: 100%; }
-        .ticker-item { margin-right: 50px; }
-        .ticker-highlight { color: var(--luxury-gold); font-weight: bold; }
-        
-        /* === BACKGROUND - LIVING LOGO + WHITE LIGHT + GRID === */
+        /* === BACKGROUND FIX (PRIORITY 1) === */
+        /* This ensures your Logo Background is visible behind everything */
         .background-container {
             position: fixed;
             inset: 0;
-            z-index: -100;
-            overflow: hidden;
+            z-index: 0; /* Sits above the black body, below content */
+            pointer-events: none;
         }
         
         .logo-bg {
@@ -72,420 +43,185 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(100vh, 1000px);
-            height: min(100vh, 1000px);
+            width: 100vw;
+            height: 100vh;
+            /* USES YOUR ASSET */
             background: url('assets/logo.JPG') center/contain no-repeat;
-            opacity: 0.3;
-            /* WHITE LIGHT EFFECT */
-            filter: blur(40px) brightness(1.2);
-            border-radius: 50%;
-            box-shadow: 
-                0 0 150px rgba(255, 255, 255, 0.15),
-                inset 0 0 100px rgba(0, 0, 0, 0.5);
-            animation: logoBreathing 8s ease-in-out infinite alternate;
+            opacity: 0.4; /* Boosted visibility */
+            filter: blur(30px) brightness(1.2); /* Reduced blur for performance */
+            animation: breathe 8s infinite alternate;
         }
-        
-        .logo-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 30%, rgba(0, 243, 255, 0.1) 50%, transparent 70%);
-            animation: pulseGlow 6s ease-in-out infinite alternate;
-            border-radius: 50%;
-        }
-        
+
         .cyber-grid {
             position: absolute;
             inset: 0;
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(rgba(138, 43, 226, 0.03) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(138, 43, 226, 0.03) 2px, transparent 2px);
-            background-size: 100px 100px, 100px 100px, 50px 50px, 50px 50px;
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 80px 80px;
             animation: gridMove 20s linear infinite;
         }
-        
-        .particles-container {
-            position: absolute;
-            inset: 0;
+
+        /* === LOADER (CSS FORCE FADE - NO JS LOCK) === */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            animation: forceExit 1s ease-in-out 3.5s forwards;
+            pointer-events: all;
         }
-        
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--neon-blue);
+        @keyframes forceExit { 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+        .loader-logo {
+            width: 220px; height: 220px;
+            background: url('assets/logo.JPG') center/cover;
             border-radius: 50%;
-            opacity: 0;
-            filter: blur(1px);
+            box-shadow: 0 0 60px var(--neon-blue);
+            animation: pulse 1s infinite alternate;
+            border: 2px solid rgba(255,255,255,0.2);
         }
-        
+        .loader-text { font-family: 'Audiowide'; font-size: 2.5rem; margin-top: 20px; color: #fff; text-shadow: 0 0 20px var(--neon-blue); }
+
+        /* === HUD TICKER === */
+        .hud-top { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: rgba(0,0,0,0.9); border-bottom: 1px solid rgba(0,240,255,0.3);
+            padding: 10px 0; z-index: 500;
+            font-family: 'Share Tech Mono'; font-size: 0.9rem; color: var(--cyber-teal);
+        }
+        .ticker-wrap { white-space: nowrap; overflow: hidden; }
+        .ticker-move { display: inline-block; animation: ticker 40s linear infinite; padding-left: 100%; }
+        .ticker-item { margin-right: 50px; }
+        .highlight { color: var(--luxury-gold); font-weight: bold; }
+
         /* === HEADER === */
         .header-container {
-            position: fixed;
-            top: 50px; /* Pushed down by ticker */
-            left: 0;
-            right: 0;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 200;
+            position: fixed; top: 50px; left: 0; right: 0; padding: 1.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center; z-index: 200;
         }
-        
         .brand-title {
-            font-family: 'Audiowide', cursive;
-            font-size: 3rem;
-            letter-spacing: 4px;
-            background: linear-gradient(90deg, var(--luxury-gold), var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
-            animation: titleGlow 3s ease-in-out infinite alternate;
+            font-family: 'Audiowide'; font-size: 3rem; color: #fff;
+            text-shadow: 0 0 30px var(--neon-blue);
         }
-        
-        .network-status {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            color: var(--cyber-teal);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--matrix-green);
-            border-radius: 50%;
-            animation: statusPulse 1.5s infinite;
-            box-shadow: 0 0 15px var(--matrix-green);
-        }
-        
-        /* === 3D COIN (COMPLEX) === */
-        .coin-universe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            perspective: 2000px;
-            z-index: 100;
-        }
-        
-        .coin-orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            animation: orbitRotate 60s linear infinite;
-        }
-        
-        .coin-3d {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 300px;
-            transform-style: preserve-3d;
-            /* Spin + Breathe combined */
-            animation: coinSpin 25s linear infinite, coinBreathe 6s ease-in-out infinite alternate;
-        }
-        
-        .coin-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%; /* FORCE CIRCLE */
-            backface-visibility: hidden;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 0 100px rgba(0, 243, 255, 0.4),
-                inset 0 0 60px rgba(0, 0, 0, 0.9);
-            border: 4px solid transparent;
-            background: url('assets/coin.png') center/cover no-repeat;
-        }
-        
-        .coin-front {
-            border: 4px solid var(--neon-blue);
-            transform: rotateY(0deg);
-            filter: brightness(1.2) contrast(1.1);
-        }
-        
-        .coin-back {
-            border: 4px solid var(--neon-purple);
-            transform: rotateY(180deg);
-            filter: hue-rotate(120deg) brightness(1.1);
-        }
-        
-        .coin-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, rgba(138, 43, 226, 0.15) 30%, transparent 70%);
-            filter: blur(40px);
-            animation: glowOrbit 8s ease-in-out infinite alternate;
-        }
-        
-        .energy-rings {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .energy-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            border: 2px solid;
-            border-radius: 50%;
-            animation: energyPulse 4s ease-in-out infinite;
-        }
-        
-        .energy-ring:nth-child(1) { border-color: var(--neon-blue); animation-delay: 0s; box-shadow: 0 0 40px var(--neon-blue); }
-        .energy-ring:nth-child(2) { width: 450px; height: 450px; border-color: var(--neon-purple); animation-delay: -1s; box-shadow: 0 0 40px var(--neon-purple); }
-        .energy-ring:nth-child(3) { width: 500px; height: 500px; border-color: var(--neon-pink); animation-delay: -2s; box-shadow: 0 0 40px var(--neon-pink); }
-        
-        /* === COMMAND DECK (HEAVY BUTTONS) === */
-        .command-deck {
-            position: fixed;
-            bottom: 4rem;
-            left: 0;
-            right: 0;
-            z-index: 150;
-            padding: 0 3rem;
-        }
-        
-        .command-matrix {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .cyber-button {
-            position: relative;
-            padding: 2rem 1.5rem;
-            background: rgba(20, 20, 30, 0.7);
-            backdrop-filter: blur(15px);
-            border: 2px solid transparent;
-            border-radius: 12px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--platinum);
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-align: center;
-            text-shadow: 0 0 10px currentColor;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-        
-        .cyber-button::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(138, 43, 226, 0.1), rgba(255, 0, 255, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .cyber-button:hover {
-            transform: translateY(-8px) scale(1.05);
-            color: var(--neon-blue);
-            letter-spacing: 4px;
-            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-        .cyber-button:hover::before { opacity: 1; }
-        
-        .btn-gold { border-color: rgba(255, 215, 0, 0.3); color: var(--luxury-gold); }
-        .btn-gold:hover { color: var(--luxury-gold); box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        
-        .btn-copper { border-color: rgba(184, 115, 51, 0.3); color: var(--copper); }
-        .btn-copper:hover { color: var(--copper); box-shadow: 0 15px 40px rgba(184, 115, 51, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        
-        .btn-danger { border-color: rgba(255, 0, 51, 0.3); color: var(--warning-red); }
-        .btn-danger:hover { color: var(--warning-red); box-shadow: 0 15px 40px rgba(255, 0, 51, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        
-        /* === DOCUMENTATION BAR === */
-        .doc-nexus {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            z-index: 150;
-        }
-        
-        .doc-portal {
-            font-family: 'Exo 2', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(230, 230, 230, 0.8);
-            text-decoration: none;
-            padding: 0.8rem 1.8rem;
-            background: rgba(30, 30, 45, 0.6);
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        
-        .doc-portal:hover {
-            color: var(--neon-blue);
-            border-color: var(--neon-blue);
-            background: rgba(30, 30, 45, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.3);
-        }
-        
-        /* === MODALS (COMPLEX) === */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-            animation: cyberAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .cyber-modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 900px;
-            max-height: 85vh;
-            overflow-y: auto;
-            background: linear-gradient(135deg, rgba(20, 20, 35, 0.95) 0%, rgba(10, 10, 25, 0.98) 100%);
-            border: 2px solid transparent;
-            border-radius: 20px;
-            padding: 3.5rem;
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7), 0 0 150px rgba(0, 243, 255, 0.2);
-        }
-        
-        .cyber-modal::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            padding: 3px;
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-        
-        .modal-title {
-            font-family: 'Audiowide', cursive;
-            font-size: 2.8rem;
-            background: linear-gradient(90deg, var(--neon-blue), var(--luxury-gold));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 2.5rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
-            border-bottom: 3px solid var(--neon-blue);
-            padding-bottom: 1.5rem;
-        }
-        
-        .modal-content {
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: rgba(230, 230, 230, 0.95);
-        }
-        .modal-content p { margin-bottom: 1.8rem; padding-left: 1.5rem; border-left: 3px solid var(--neon-blue); }
-        
-        .modal-close {
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-            border: none;
-            color: white;
-            padding: 1.2rem 3rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 700;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-            margin-top: 2rem;
-        }
-        .modal-close:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(0, 243, 255, 0.5); letter-spacing: 4px; }
-        
-        /* === ANIMATIONS === */
-        @keyframes logoScan { 0% { filter: brightness(1.5) contrast(1.3); box-shadow: 0 0 100px var(--neon-blue); } 100% { filter: brightness(1.8) contrast(1.5); box-shadow: 0 0 150px var(--neon-purple), 0 0 200px var(--neon-pink); } }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes progressLoad { 0% { width: 0; } 100% { width: 100%; } }
-        @keyframes logoBreathing { 0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.95); filter: brightness(1.8) contrast(1.5) blur(40px); } 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); filter: brightness(2.2) contrast(1.8) blur(45px); } }
-        @keyframes pulseGlow { 0% { opacity: 0.3; } 100% { opacity: 0.7; } }
-        @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(100px); } }
-        @keyframes titleGlow { 0% { text-shadow: 0 0 30px rgba(0, 243, 255, 0.5); } 100% { text-shadow: 0 0 50px rgba(0, 243, 255, 0.8), 0 0 70px rgba(138, 43, 226, 0.5); } }
-        @keyframes statusPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 15px var(--matrix-green); } 50% { opacity: 0.5; box-shadow: 0 0 25px var(--matrix-green); } }
-        @keyframes orbitRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes coinSpin { from { transform: translateX(-50%) rotateY(0deg); } to { transform: translateX(-50%) rotateY(360deg); } }
-        @keyframes coinBreathe { 0% { transform: translateX(-50%) rotateY(0deg) scale(1); } 100% { transform: translateX(-50%) rotateY(0deg) scale(1.08); } }
-        @keyframes glowOrbit { 0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); } }
-        @keyframes energyPulse { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
-        @keyframes cyberAppear { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); filter: blur(20px); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); } }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+        .network-status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .dot { width: 10px; height: 10px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 10px var(--matrix-green); }
 
+        /* === 3D COIN === */
+        .coin-universe {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            perspective: 2000px; z-index: 100;
+        }
+        .coin-box {
+            width: 320px; height: 320px; position: relative;
+            transform-style: preserve-3d;
+            animation: spin 25s linear infinite, breathe 6s ease-in-out infinite alternate;
+        }
+        .face {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            backface-visibility: hidden;
+            background: url('assets/coin.png') center/cover;
+            box-shadow: 0 0 80px rgba(184, 115, 51, 0.4), inset 0 0 50px rgba(0,0,0,0.8);
+            border: 3px solid rgba(184, 115, 51, 0.8);
+        }
+        .front { transform: rotateY(0deg); }
+        .back { transform: rotateY(180deg); }
+        
+        /* The Orbit Rings */
+        .ring {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            border: 1px solid; border-radius: 50%; opacity: 0.4;
+        }
+        .r1 { width: 400px; height: 400px; border-color: var(--neon-blue); }
+        .r2 { width: 500px; height: 500px; border-color: var(--neon-purple); }
+
+        /* === COMMAND DECK === */
+        .command-deck {
+            position: fixed; bottom: 5rem; left: 0; right: 0; z-index: 150; padding: 0 3rem;
+        }
+        .command-matrix {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+            max-width: 1400px; margin: 0 auto;
+        }
+        .btn {
+            background: rgba(10, 10, 20, 0.9); /* Opaque for performance */
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 1.5rem; color: #fff; font-family: 'Rajdhani'; font-size: 1.2rem;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn:hover { transform: translateY(-5px); border-color: var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue); }
+        .gold { border-bottom: 3px solid var(--luxury-gold); color: var(--luxury-gold); }
+        .copper { border-bottom: 3px solid var(--copper); color: var(--copper); }
+        .red { border-bottom: 3px solid var(--warning-red); color: var(--warning-red); }
+
+        /* === FOOTER === */
+        .footer {
+            position: fixed; bottom: 1.5rem; width: 100%; text-align: center; z-index: 150;
+        }
+        .link {
+            display: inline-block; margin: 0 15px; color: #888; text-decoration: none;
+            font-family: 'Exo 2'; border: 1px solid #333; padding: 5px 15px; background: #000;
+        }
+        .link:hover { color: #fff; border-color: #fff; }
+
+        /* === MODALS (PERFORMANCE FIXED) === */
+        /* Removed backdrop-filter to fix the LAG */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+        .modal-box {
+            width: 90%; max-width: 800px; background: #0a0a0a; /* Solid color fixes lag */
+            border: 2px solid var(--neon-blue); padding: 40px;
+            box-shadow: 0 0 100px rgba(0, 243, 255, 0.2);
+            max-height: 80vh; overflow-y: auto;
+        }
+        .modal-title {
+            font-family: 'Audiowide'; font-size: 2.5rem; color: var(--neon-blue);
+            border-bottom: 2px solid #333; margin-bottom: 20px; padding-bottom: 10px;
+        }
+        .modal-text {
+            font-family: 'Rajdhani'; font-size: 1.2rem; line-height: 1.6; color: #ccc;
+        }
+        .modal-text p { margin-bottom: 20px; }
+        .close-btn {
+            background: var(--neon-blue); color: #000; border: none; padding: 10px 30px;
+            font-family: 'Orbitron'; font-weight: bold; cursor: pointer; margin-top: 20px;
+        }
+        .close-btn:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+
+        /* ANIMATIONS */
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        @keyframes breathe { 0% { transform: translate(-50%, -50%) scale(1); } 100% { transform: translate(-50%, -50%) scale(1.05); } }
+        @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(100px); } }
+        @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+        @keyframes logoScan { from { filter: brightness(1); } to { filter: brightness(1.5); } }
+        
         /* RESPONSIVE */
-        @media (max-width: 900px) { .command-matrix { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 600px) { 
-            .command-matrix { grid-template-columns: 1fr; } 
-            .brand-title { font-size: 1.8rem; }
-            .coin-3d { width: 220px; height: 220px; }
-            .header-container { flex-direction: column; gap: 1rem; top: 60px; }
+        @media (max-width: 800px) {
+            .command-matrix { grid-template-columns: 1fr; }
+            .brand-title { font-size: 2rem; }
+            .coin-box { width: 220px; height: 220px; }
+            .header-container { flex-direction: column; top: 60px; }
         }
     </style>
 </head>
 <body>
+
+    <div id="loader">
+        <div class="loader-logo"></div>
+        <div class="loader-text">LUXVOID_MONOLITH</div>
+    </div>
+
     <div class="hud-top">
         <div class="ticker-wrap">
             <div class="ticker-move">
-                <span class="ticker-item">/// SYSTEM: <span class="ticker-highlight">ONLINE</span></span>
-                <span class="ticker-item">/// SUPPLY: <span class="ticker-highlight">88,888</span> (HARD CAPPED)</span>
-                <span class="ticker-item">/// METAL: <span class="ticker-highlight">PURE COPPER</span></span>
-                <span class="ticker-item">/// 2030 SHORTAGE: <span class="ticker-highlight">IMMINENT</span></span>
-                <span class="ticker-item">/// LUXVOID PROTOCOL: <span class="ticker-highlight">ACTIVE</span></span>
-                <span class="ticker-item">/// SYSTEM: <span class="ticker-highlight">ONLINE</span></span>
-                <span class="ticker-item">/// SUPPLY: <span class="ticker-highlight">88,888</span></span>
-                <span class="ticker-item">/// METAL: <span class="ticker-highlight">PURE COPPER</span></span>
+                <span class="ticker-item">/// SYSTEM: <span class="highlight">ONLINE</span></span>
+                <span class="ticker-item">/// SUPPLY: <span class="highlight">88,888</span> (HARD CAPPED)</span>
+                <span class="ticker-item">/// METAL: <span class="highlight">PURE COPPER</span></span>
+                <span class="ticker-item">/// 2030 SHORTAGE: <span class="highlight">IMMINENT</span></span>
+                <span class="ticker-item">/// LUXVOID PROTOCOL: <span class="highlight">ACTIVE</span></span>
+                <span class="ticker-item">/// SYSTEM: <span class="highlight">ONLINE</span></span>
+                <span class="ticker-item">/// SUPPLY: <span class="highlight">88,888</span></span>
             </div>
         </div>
     </div>
@@ -493,181 +229,110 @@
     <div class="background-container">
         <div class="logo-bg"></div>
         <div class="cyber-grid"></div>
-        <div class="particles-container" id="particles"></div>
     </div>
-    
-    <header class="header-container">
+
+    <div class="header-container">
         <div class="brand-title">LUXVOID_MONOLITH</div>
-        <div class="network-status">
-            <div class="status-dot"></div>
-            <span>NETWORK SECURE</span>
-        </div>
-    </header>
-    
-    <div class="coin-universe">
-        <div class="energy-rings">
-            <div class="energy-ring"></div>
-            <div class="energy-ring"></div>
-            <div class="energy-ring"></div>
-        </div>
-        
-        <div class="coin-orbit">
-            <div class="coin-3d" id="coin3D">
-                <div class="coin-face coin-front"></div>
-                <div class="coin-face coin-back"></div>
-            </div>
-        </div>
-        
-        <div class="coin-glow"></div>
+        <div class="network-status"><div class="dot"></div> NETWORK SECURE</div>
     </div>
-    
+
+    <div class="coin-universe">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="coin-box">
+            <div class="face front"></div>
+            <div class="face back"></div>
+        </div>
+    </div>
+
     <div class="command-deck">
         <div class="command-matrix">
-            <button class="cyber-button btn-gold" onclick="openModal('genesis')">GENESIS PROTOCOL</button>
-            <button class="cyber-button btn-copper" onclick="window.location.href='forge.html'">ACQUIRE ACCESS KEY</button>
-            <button class="cyber-button" onclick="window.location.href='index.html'">INITIALIZE OS</button>
-            <button class="cyber-button btn-danger" onclick="disconnectProtocol()">DISCONNECT</button>
+            <button class="btn gold" onclick="openM('genesis')">GENESIS PROTOCOL</button>
+            <button class="btn copper" onclick="window.location.href='forge.html'">ACQUIRE ACCESS KEY</button>
+            <button class="btn" onclick="window.location.href='index.html'">INITIALIZE OS</button>
+            <button class="btn red" onclick="disconnect()">DISCONNECT</button>
         </div>
     </div>
-    
-    <div class="doc-nexus">
-        <a href="#" class="doc-portal" onclick="openModal('manifesto')">MANIFESTO</a>
-        <a href="#" class="doc-portal" onclick="openModal('legal')">LEGAL PROTOCOLS</a>
-        <a href="#" class="doc-portal" onclick="openModal('architecture')">ARCHITECTURE</a>
+
+    <div class="footer">
+        <a href="#" class="link" onclick="openM('manifesto')">MANIFESTO</a>
+        <a href="#" class="link" onclick="openM('legal')">LEGAL PROTOCOLS</a>
+        <a href="#" class="link" onclick="openM('arch')">ARCHITECTURE</a>
     </div>
-    
-    <div id="genesis" class="modal-overlay" onclick="if(event.target === this) closeModal('genesis')">
-        <div class="cyber-modal">
+
+    <div id="genesis" class="modal">
+        <div class="modal-box">
             <div class="modal-title">GENESIS PROTOCOL</div>
-            <div class="modal-content">
+            <div class="modal-text">
                 <p>The world worships the Code, but starves for the Core. An AI chip costs $30,000 not because of the software, but because of the silicon and the copper veins that power it. The future is forged in Metal.</p>
                 <p><strong>The Charts Don't Lie.</strong> The 2030 Shortage is mathematical destiny. Silver is doubling. Copper is critical. Gold is already out of reach for the common man.</p>
                 <p>I stopped watching the suits print infinite paper to chase finite resources. I evolved. The Collector became the Visionary. The Visionary became the Architect.</p>
-                <p><strong>The Truth:</strong> Fiat currency is common. It buys the Standard. Only Conviction buys the Exceptional.</p>
-                <p style="color:var(--luxury-gold); margin-top:2rem;">// THE ARCHITECT</p>
+                <p style="color:var(--luxury-gold)">// THE ARCHITECT</p>
             </div>
-            <button class="modal-close" onclick="closeModal('genesis')">ACKNOWLEDGE</button>
+            <button class="close-btn" onclick="closeM('genesis')">ACKNOWLEDGE</button>
         </div>
     </div>
-    
-    <div id="manifesto" class="modal-overlay" onclick="if(event.target === this) closeModal('manifesto')">
-        <div class="cyber-modal">
+
+    <div id="manifesto" class="modal">
+        <div class="modal-box">
             <div class="modal-title">THE IRON DECREE</div>
-            <div class="modal-content">
+            <div class="modal-text">
                 <p><strong>I. NO MINT WITHOUT MATTER</strong><br>The digital shadow ($VOID) cannot exist without the physical body. We do not print tokens; we manufacture them.</p>
-                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the <strong>tokens</strong> run out, the door welds shut.</p>
+                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the tokens run out, the door welds shut.</p>
                 <p><strong>III. THE VEBLEN UTILITY</strong><br>Cash is for the masses. $VOID is for the Sentinels. The token buys what fiat currency cannot.</p>
-                <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The "Black Forge" opens only to those willing to burn their Artifact. The Phoenix rises only from ashes.</p>
+                <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The Phoenix rises only from ashes.</p>
             </div>
-            <button class="modal-close" onclick="closeModal('manifesto')">ACCEPT DECREE</button>
+            <button class="close-btn" onclick="closeM('manifesto')">ACCEPT DECREE</button>
         </div>
     </div>
-    
-    <div id="legal" class="modal-overlay" onclick="if(event.target === this) closeModal('legal')">
-        <div class="cyber-modal">
-            <div class="modal-title" style="color:var(--warning-red);">LEGAL PROTOCOLS</div>
-            <div class="modal-content">
-                <p><strong>1.0 GAMIFIED LOYALTY POINTS</strong><br>The $VOID token is defined strictly as a digital loyalty point used to unlock features, upgrades, and community status.</p>
+
+    <div id="legal" class="modal">
+        <div class="modal-box">
+            <div class="modal-title" style="color:var(--warning-red)">LEGAL PROTOCOLS</div>
+            <div class="modal-text">
+                <p><strong>1.0 GAMIFIED LOYALTY POINTS</strong><br>The $VOID token is defined strictly as a digital loyalty point.</p>
                 <p><strong>2.0 ART & SOUVENIR</strong><br>The "Luxvoid Sentinel Artifact" is sold strictly as a physical Art Collectible. The price covers materials, labor, and logistics.</p>
-                <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object. If the token goes to zero, you still own the physical asset.</p>
+                <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object.</p>
             </div>
-            <button class="modal-close" style="border-color:var(--warning-red); color:var(--warning-red);" onclick="closeModal('legal')">I UNDERSTAND</button>
+            <button class="close-btn" style="background:var(--warning-red)" onclick="closeM('legal')">I UNDERSTAND</button>
         </div>
     </div>
-    
-    <div id="architecture" class="modal-overlay" onclick="if(event.target === this) closeModal('architecture')">
-        <div class="cyber-modal">
+
+    <div id="arch" class="modal">
+        <div class="modal-box">
             <div class="modal-title">SYSTEM ARCHITECTURE</div>
-            <div class="modal-content">
+            <div class="modal-text">
                 <p><strong>BLOCKCHAIN:</strong> Ethereum Mainnet / L2 Integration</p>
                 <p><strong>ARTIFACTS MINTED:</strong> 14,592 / 88,888</p>
                 <p><strong>VAULT RESERVES:</strong> 98.7% Capacity</p>
                 <p><strong>NETWORK UPTIME:</strong> 99.99%</p>
-                <p><strong>SECURITY:</strong> Quantum-Resistant Encryption Standard</p>
             </div>
-            <button class="modal-close" onclick="closeModal('architecture')">CLOSE</button>
+            <button class="close-btn" onclick="closeM('arch')">CLOSE</button>
         </div>
     </div>
 
     <script>
-        // ========== AUDIO SYSTEM (FIXED LAG) ==========
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
-        
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new AudioContext();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+        // AUDIO SYSTEM (Lag Fixed)
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound() {
+            if(ctx.state === 'suspended') ctx.resume();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.setValueAtTime(600, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+            osc.start(); osc.stop(ctx.currentTime + 0.1);
         }
 
-        function playCyberSound() {
-            initAudio(); 
-            if (!audioCtx) return;
+        function openM(id) { playSound(); document.getElementById(id).style.display = 'flex'; }
+        function closeM(id) { document.getElementById(id).style.display = 'none'; }
 
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
-            
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-            
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.15);
-        }
-
-        // ========== PARTICLE GENERATOR ==========
-        document.addEventListener('DOMContentLoaded', () => {
-             createParticles();
-        });
-
-        function createParticles() {
-            const container = document.getElementById('particles');
-            if(!container) return; 
-            
-            // Create 80 particles (The Heavy Load)
-            for (let i = 0; i < 80; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                
-                const size = Math.random() * 4 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Random colors
-                const colors = ['#00f3ff', '#8a2be2', '#ff00ff', '#ffd700'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                const duration = Math.random() * 20 + 10;
-                particle.style.animation = `gridMove ${duration}s linear infinite`;
-                
-                container.appendChild(particle);
-            }
-        }
-
-        // ========== MODAL SYSTEM ==========
-        function openModal(id) {
-            playCyberSound();
-            document.getElementById(id).style.display = 'flex';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        // ========== DISCONNECT ==========
-        function disconnectProtocol() {
-            playCyberSound();
-            if(confirm("WARNING: TERMINATE SESSION? \nOpportunity Cost: Infinite.")) {
+        function disconnect() {
+            playSound();
+            if(confirm("WARNING: TERMINATE SESSION?")) {
                 document.body.style.opacity = '0';
                 setTimeout(() => { window.location.href = "https://www.google.com"; }, 1000);
             }
