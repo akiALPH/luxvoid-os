@@ -48,7 +48,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
         }
         
         .loader-logo {
@@ -145,8 +145,7 @@
             width: min(100vh, 1000px);
             height: min(100vh, 1000px);
             background: url('assets/logo.JPG') center/contain no-repeat;
-            opacity: 0.3; /* Adjusted for visibility */
-            /* The "White Light" Effect you asked for */
+            opacity: 0.3;
             filter: blur(40px) brightness(1.2);
             border-radius: 50%;
             box-shadow: 
@@ -179,10 +178,10 @@
             opacity: 0;
         }
         
-        /* === HEADER (MOVED DOWN SLIGHTLY) === */
+        /* === HEADER === */
         .header-container {
             position: fixed;
-            top: 40px; /* Moved down to make room for ticker */
+            top: 40px;
             left: 0;
             right: 0;
             padding: 1rem 3rem;
@@ -224,10 +223,10 @@
             animation: statusPulse 2s infinite;
         }
         
-        /* === 3D COIN - ANIMATED & ALIVE === */
+        /* === 3D COIN === */
         .coin-universe {
             position: absolute;
-            top: 55%; /* Centered visually */
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
@@ -236,7 +235,6 @@
             z-index: 100;
         }
         
-        /* The container for the coin - adds the breathing animation */
         .coin-3d {
             position: absolute;
             top: 0;
@@ -245,7 +243,6 @@
             width: 320px;
             height: 320px;
             transform-style: preserve-3d;
-            /* Spin + Breathe combined */
             animation: coinSpin 25s linear infinite, coinBreathe 6s ease-in-out infinite alternate;
         }
         
@@ -253,9 +250,9 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border-radius: 50%; /* FORCE CIRCLE */
+            border-radius: 50%;
             backface-visibility: hidden;
-            overflow: hidden; /* CUTS THE SQUARE CORNERS */
+            overflow: hidden;
             box-shadow: 
                 0 0 50px rgba(184, 115, 51, 0.4),
                 inset 0 0 40px rgba(0, 0, 0, 0.8);
@@ -263,16 +260,9 @@
             border: 2px solid rgba(184, 115, 51, 0.8);
         }
         
-        .coin-front {
-            transform: rotateY(0deg);
-        }
+        .coin-front { transform: rotateY(0deg); }
+        .coin-back { transform: rotateY(180deg); filter: brightness(0.8); }
         
-        .coin-back {
-            transform: rotateY(180deg);
-            filter: brightness(0.8); /* Slightly darker back */
-        }
-        
-        /* Energy Rings around the coin */
         .energy-rings {
             position: absolute;
             top: 50%;
@@ -295,7 +285,7 @@
         .energy-ring:nth-child(2) { width: 450px; height: 450px; border-color: var(--neon-purple); animation: ringPulse 4s infinite 1s; }
         .energy-ring:nth-child(3) { width: 550px; height: 550px; border-color: var(--luxury-gold); animation: ringPulse 4s infinite 2s; }
         
-        /* === COMMAND DECK - DEEPER BUTTONS === */
+        /* === COMMAND DECK === */
         .command-deck {
             position: fixed;
             bottom: 5rem;
@@ -329,7 +319,6 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            /* DEPTH EFFECT */
             box-shadow: 
                 0 4px 15px rgba(0,0,0,0.5),
                 inset 0 1px 0 rgba(255,255,255,0.1);
@@ -379,114 +368,13 @@
         
         .doc-portal:hover { color: #fff; border-color: var(--neon-blue); }
         
-        /* === MODALS (LAG FIXED) === */
+        /* === MODALS === */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
-            /* REDUCED BLUR FOR PERFORMANCE */
             backdrop-filter: blur(8px);
             align-items: center;
-            justify-content: center;
-        }
-        
-        .cyber-modal {
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            background: #0f0f12;
-            border: 1px solid var(--neon-blue);
-            padding: 3rem;
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
-            position: relative;
-        }
-        
-        .modal-title {
-            font-family: 'Audiowide', cursive;
-            font-size: 2.2rem;
-            color: var(--neon-blue);
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #333;
-            padding-bottom: 1rem;
-        }
-        
-        .modal-content {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #ccc;
-        }
-        
-        .modal-content p { margin-bottom: 1.5rem; }
-        
-        .modal-close {
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            padding: 1rem 2rem;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            margin-top: 2rem;
-            transition: all 0.3s;
-            text-transform: uppercase;
-        }
-        
-        .modal-close:hover {
-            background: var(--neon-blue);
-            color: #000;
-        }
-        
-        /* === ANIMATIONS === */
-        @keyframes logoScan {
-            0% { filter: brightness(1) blur(0px); }
-            100% { filter: brightness(1.5) blur(1px); }
-        }
-        @keyframes progressLoad { 0% { width: 0; } 100% { width: 100%; } }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-        @keyframes logoBreathing {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-            100% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
-        }
-        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
-        @keyframes coinSpin { 
-            0% { transform: translateX(-50%) rotateY(0deg); } 
-            100% { transform: translateX(-50%) rotateY(360deg); } 
-        }
-        @keyframes coinBreathe {
-            0% { transform: translateX(-50%) rotateY(0deg) scale(1); }
-            100% { transform: translateX(-50%) rotateY(0deg) scale(1.08); } /* NOTE: rotateY value is ignored here as animations combine */
-        }
-        @keyframes ringPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.6; }
-        }
-        @keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 900px) {
-            .command-matrix { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 600px) {
-            .command-matrix { grid-template-columns: 1fr; }
-            .brand-title { font-size: 1.8rem; }
-            .coin-3d { width: 220px; height: 220px; }
-            .header-container { flex-direction: column; gap: 1rem; top: 40px; }
-        }
-    </style>
-</head>
-<body>
-    <div id="loader">
-        <div class="loader-logo"></div>
-        <div class="loader-text">LUXVOID_MONOLITH</div>
-        <div class="loader-subtext">INITIALIZING</div>
-        <div class="loader-progress"></div>
-    </div>
-    
-    <div class="hud-top">
-        <div class="ticker-wrap">
-            <div class="ticker-move">
-                <span class="ticker-item">/// SYSTEM: <span class="ticker-highlight">ONLINE</span></span>
-                <span class="ticker-item">/// SUPPLY: <span class="ticker-highlight
+            justify
