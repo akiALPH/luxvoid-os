@@ -22,172 +22,185 @@
         html, body {
             height: 100%;
             overflow: hidden;
-            background: #000; /* Fallback */
+            background: #000;
             font-family: 'Exo 2', sans-serif;
             color: var(--platinum);
         }
 
-        /* === 1. VISIBLE BACKGROUND (FIXED) === */
-        .background-layer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            /* DIRECTLY DISPLAYING YOUR LOGO - NO BLURRY MASK */
-            background: url('assets/logo.JPG') no-repeat center center;
-            background-size: cover;
-            /* Opacity set to 0.7 so it is CLEARLY visible but doesn't break text */
-            opacity: 0.7; 
-            animation: deepBreathe 8s ease-in-out infinite alternate;
+        /* === 1. BACKGROUND (SAFETY NET INSTALLED) === */
+        .background-container {
+            position: fixed; inset: 0; z-index: -10; pointer-events: none;
+            /* SAFETY GRADIENT: If image fails, this shows instead of black */
+            background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
+        }
+        
+        .logo-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh;
+            /* PATH: assets/logo.JPG */
+            background: url('assets/logo.JPG') center center/cover no-repeat;
+            opacity: 0.6; /* High visibility */
+            filter: blur(40px) brightness(1.2); /* Merging effect */
+            animation: breatheBg 8s infinite alternate;
         }
 
-        /* A subtle overlay to make text readable, but keeps logo visible */
-        .vignette {
-            position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle, transparent 40%, #000 100%);
+        .particles-container { position: absolute; inset: 0; }
+        .particle {
+            position: absolute; width: 3px; height: 3px; background: white;
+            border-radius: 50%; opacity: 0; box-shadow: 0 0 5px white;
         }
 
-        /* === 2. LOADER (FAIL-SAFE) === */
+        /* === 2. LOADER (ALIGNED & FAIL-SAFE) === */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            animation: dissolve 1s ease-in-out 3.5s forwards;
+            /* Force exit after 4s */
+            animation: forceExit 1s ease-in-out 4s forwards;
             pointer-events: all;
         }
-        @keyframes dissolve { 
-            0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } 
+        @keyframes forceExit { 
+            0% { opacity: 1; }
+            99% { opacity: 0; pointer-events: none; }
+            100% { opacity: 0; visibility: hidden; pointer-events: none; } 
         }
 
-        .loader-content { text-align: center; }
-        .loader-text {
-            font-family: 'Audiowide'; font-size: 3rem; color: var(--neon-blue);
-            text-shadow: 0 0 30px var(--neon-blue); margin-bottom: 20px;
+        .loader-logo {
+            width: 250px; height: 250px;
+            background: url('assets/logo.JPG') center/cover;
+            border-radius: 50%;
+            box-shadow: 0 0 60px var(--neon-blue);
+            animation: pulse 2s infinite alternate;
+            border: 2px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px;
         }
-        .loading-bar { width: 300px; height: 4px; background: #333; border-radius: 2px; }
-        .loading-fill {
-            width: 0%; height: 100%; background: #fff;
-            box-shadow: 0 0 20px #fff;
-            animation: fill 3.5s forwards;
+        .loader-text {
+            font-family: 'Audiowide'; font-size: 2.5rem; color: #fff; letter-spacing: 4px;
+            text-shadow: 0 0 20px var(--neon-blue); margin-bottom: 20px; text-align: center;
+        }
+        .loader-bar-container { width: 300px; height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+        .loader-bar-fill {
+            width: 0%; height: 100%; background: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+            animation: fillBar 4s cubic-bezier(0.2, 0, 0.2, 1) forwards;
         }
 
         /* === 3. HEADER & TICKER === */
-        .hud-top {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 0; z-index: 500; font-family: 'Share Tech Mono'; color: var(--cyber-teal);
+        .hud-top { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: rgba(0,0,0,0.85); border-bottom: 1px solid rgba(0,240,255,0.2);
+            padding: 10px 0; z-index: 500; font-family: 'Share Tech Mono'; color: var(--cyber-teal);
         }
         .ticker-wrap { white-space: nowrap; overflow: hidden; }
         .ticker-move { display: inline-block; animation: ticker 40s linear infinite; padding-left: 100%; }
         .ticker-item { margin-right: 50px; font-size: 0.9rem; }
         .gold-txt { color: var(--luxury-gold); font-weight: bold; }
 
-        .header {
-            position: fixed; top: 50px; left: 0; right: 0; padding: 0 40px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+        .header-container {
+            position: fixed; top: 60px; left: 0; right: 0; padding: 0 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 200;
         }
-        .brand { font-family: 'Audiowide'; font-size: 3rem; color: #fff; text-shadow: 0 0 30px var(--neon-blue); }
-        .status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        .dot { width: 12px; height: 12px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 15px var(--matrix-green); }
+        .brand-title {
+            font-family: 'Audiowide'; font-size: 3rem; color: #fff; text-shadow: 0 0 30px var(--neon-blue);
+        }
+        .network-status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        .dot { width: 10px; height: 10px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 10px var(--matrix-green); }
 
-        /* === 4. THE FREE FLOW COIN (NO RINGS/BORDERS) === */
-        .stage {
+        /* === 4. THE COIN (LASER CUT CIRCLE) === */
+        .stage-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            perspective: 1000px; z-index: 50;
+            perspective: 1200px; z-index: 50;
         }
         
-        /* This is the container for the coin image */
-        .coin-float {
-            width: 380px; height: 380px;
-            /* 3D GYRO ANIMATION + FLOAT */
-            animation: threeDSpin 20s linear infinite, float 6s ease-in-out infinite alternate;
+        .coin-wrapper {
+            width: 380px; height: 380px; position: relative;
             transform-style: preserve-3d;
+            animation: coinSpin 25s linear infinite, coinBreathe 6s ease-in-out infinite alternate;
         }
-
-        /* The Coin Image Itself - NO BORDERS, NO BOX */
+        
+        /* THIS IS THE FIX: clip-path forces it round, overflow hidden cuts corners */
         .coin-img {
             width: 100%; height: 100%;
-            /* This ensures the image looks 3D */
-            object-fit: contain; 
-            /* Light reflection effect */
-            filter: drop-shadow(0 0 40px rgba(184, 115, 51, 0.4));
+            border-radius: 50%; 
+            clip-path: circle(49%); /* CUTS CORNERS 100% */
+            object-fit: cover;
+            filter: drop-shadow(0 0 50px rgba(184, 115, 51, 0.5));
         }
 
-        /* === 5. BUTTONS (GLOWING) === */
-        .deck {
+        /* === 5. BUTTONS === */
+        .command-bar {
             position: fixed; bottom: 5rem; left: 0; right: 0; z-index: 150; padding: 0 3rem;
         }
-        .matrix {
+        .command-matrix {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
             max-width: 1400px; margin: 0 auto;
         }
         .btn {
-            background: rgba(0, 0, 0, 0.8); border: 1px solid #444;
+            background: rgba(10, 10, 20, 0.9);
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 1.5rem; color: #fff; font-family: 'Rajdhani'; font-size: 1.2rem;
             cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .btn:hover { transform: translateY(-5px); border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
-        .gold { border-bottom: 2px solid var(--luxury-gold); color: var(--luxury-gold); }
-        .copper { border-bottom: 2px solid var(--copper); color: var(--copper); }
-        .red { border-bottom: 2px solid var(--warning-red); color: var(--warning-red); }
+        .btn:hover { transform: translateY(-5px); border-color: var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue); }
+        .gold { border-bottom: 3px solid var(--luxury-gold); color: var(--luxury-gold); }
+        .copper { border-bottom: 3px solid var(--copper); color: var(--copper); }
+        .red { border-bottom: 3px solid var(--warning-red); color: var(--warning-red); }
 
-        /* === 6. FOOTER === */
+        /* === 6. FOOTER & MODALS === */
         .footer { position: fixed; bottom: 1.5rem; width: 100%; text-align: center; z-index: 200; }
         .link {
             display: inline-block; margin: 0 15px; color: #888; text-decoration: none;
-            font-family: 'Exo 2'; padding: 5px 15px; font-size: 0.9rem; text-transform: uppercase;
+            font-family: 'Exo 2'; border: 1px solid #333; padding: 5px 15px; background: #000;
         }
-        .link:hover { color: #fff; text-shadow: 0 0 10px #fff; }
+        .link:hover { color: #fff; border-color: #fff; }
 
-        /* === 7. MODALS === */
         .modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000;
             justify-content: center; align-items: center;
         }
-        .box {
-            width: 85%; max-width: 800px; background: #050505; 
+        .modal-box {
+            width: 85%; max-width: 800px; background: #080808; 
             border: 1px solid var(--neon-blue); padding: 40px;
-            box-shadow: 0 0 100px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 80px rgba(0, 243, 255, 0.15);
             max-height: 85vh; overflow-y: auto;
         }
-        .box h2 {
+        .modal-title {
             font-family: 'Audiowide'; font-size: 2.2rem; color: var(--neon-blue);
             border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 15px;
         }
-        .box p { font-family: 'Rajdhani'; font-size: 1.2rem; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
-        .close {
+        .modal-text { font-family: 'Rajdhani'; font-size: 1.2rem; line-height: 1.6; color: #ccc; }
+        .modal-text p { margin-bottom: 20px; }
+        .close-btn {
             background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
             padding: 10px 30px; cursor: pointer; font-family: 'Orbitron'; margin-top: 10px;
         }
-        .close:hover { background: var(--neon-blue); color: #000; }
+        .close-btn:hover { background: var(--neon-blue); color: #000; }
 
         /* ANIMATIONS */
-        @keyframes deepBreathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
-        @keyframes fill { from { width: 0%; } to { width: 100%; } }
+        @keyframes pulse { from { box-shadow: 0 0 20px var(--neon-blue); } to { box-shadow: 0 0 60px var(--neon-blue); } }
+        @keyframes fillBar { from { width: 0%; } to { width: 100%; } }
+        @keyframes breatheBg { from { transform: translate(-50%,-50%) scale(1); } to { transform: translate(-50%,-50%) scale(1.1); } }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        /* Complex 3D Gyro Spin */
-        @keyframes threeDSpin { 
-            0% { transform: rotateY(0deg) rotateX(10deg); } 
-            50% { transform: rotateY(180deg) rotateX(-10deg); } 
-            100% { transform: rotateY(360deg) rotateX(10deg); } 
-        }
-        @keyframes float { 0% { margin-top: 0px; } 100% { margin-top: -20px; } }
+        @keyframes coinSpin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+        @keyframes coinBreathe { from { scale: 1; } to { scale: 1.05; } }
+        @keyframes float { 0% { transform: translateY(0); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
 
         /* RESPONSIVE */
         @media (max-width: 800px) {
-            .matrix { grid-template-columns: 1fr; }
-            .brand { font-size: 2rem; }
-            .coin-float { width: 250px; height: 250px; }
-            .header { flex-direction: column; top: 60px; gap: 10px; }
+            .command-matrix { grid-template-columns: 1fr; }
+            .brand-title { font-size: 2rem; }
+            .coin-wrapper { width: 250px; height: 250px; }
+            .header-container { flex-direction: column; top: 60px; gap: 10px; }
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-content">
-            <div class="loader-text">LUXVOID_MONOLITH</div>
-            <div class="loading-bar"><div class="loading-fill"></div></div>
-        </div>
+        <div class="loader-logo"></div>
+        <div class="loader-text">LUXVOID_MONOLITH</div>
+        <div class="loader-bar-container"><div class="loader-bar-fill"></div></div>
     </div>
 
     <div class="hud-top">
@@ -204,23 +217,25 @@
         </div>
     </div>
 
-    <div class="background-layer"></div>
-    <div class="vignette"></div>
-
-    <div class="header">
-        <div class="brand">LUXVOID_MONOLITH</div>
-        <div class="status"><div class="dot"></div> NETWORK SECURE</div>
+    <div class="background-container">
+        <div class="logo-bg"></div>
+        <div class="particles-container" id="particles"></div>
     </div>
 
-    <div class="stage">
-        <div class="coin-float">
+    <div class="header-container">
+        <div class="brand-title">LUXVOID_MONOLITH</div>
+        <div class="network-status"><div class="dot"></div> NETWORK SECURE</div>
+    </div>
+
+    <div class="stage-center">
+        <div class="coin-wrapper">
             <img src="assets/coin.png" class="coin-img" alt="Artifact">
         </div>
     </div>
 
-    <div class="deck">
-        <div class="matrix">
-            <button class="btn gold" onclick="openM('genesis')">GENESIS PROTOCOL</button>
+    <div class="command-bar">
+        <div class="command-matrix">
+            <button class="btn gold" onclick="openM('genesis')">MONOLITH ORIGIN</button>
             <button class="btn copper" onclick="window.location.href='forge.html'">ACQUIRE ACCESS KEY</button>
             <button class="btn" onclick="window.location.href='index.html'">INITIALIZE OS</button>
             <button class="btn red" onclick="disconnect()">DISCONNECT</button>
@@ -234,80 +249,32 @@
     </div>
 
     <div id="genesis" class="modal">
-        <div class="box">
-            <h2>GENESIS PROTOCOL</h2>
-            <p>The world worships the Code, but starves for the Core. An AI chip costs $30,000 not because of the software, but because of the silicon and the copper veins that power it. The future is forged in Metal.</p>
-            <p><strong>The Charts Don't Lie.</strong> The 2030 Shortage is mathematical destiny. Silver is doubling. Copper is critical. Gold is already out of reach for the common man.</p>
-            <p>I stopped watching the suits print infinite paper to chase finite resources. I evolved. The Collector became the Visionary. The Visionary became the Architect.</p>
-            <p><strong>The Truth:</strong> Fiat currency is common. It buys the Standard. Only Conviction buys the Exceptional.</p>
-            <p style="color:var(--luxury-gold)">// THE ARCHITECT</p>
-            <button class="close" onclick="closeM('genesis')">ACKNOWLEDGE</button>
+        <div class="modal-box">
+            <div class="modal-title">GENESIS PROTOCOL</div>
+            <div class="modal-text">
+                <p>The world worships the Code, but starves for the Core. An AI chip costs $30,000 not because of the software, but because of the silicon and the copper veins that power it. The future is forged in Metal.</p>
+                <p><strong>The Charts Don't Lie.</strong> The 2030 Shortage is mathematical destiny. Silver is doubling. Copper is critical. Gold is already out of reach for the common man.</p>
+                <p>I stopped watching the suits print infinite paper to chase finite resources. I evolved. The Collector became the Visionary. The Visionary became the Architect.</p>
+                <p><strong>The Truth:</strong> Fiat currency is common. It buys the Standard. Only Conviction buys the Exceptional.</p>
+                <p style="color:var(--luxury-gold)">// THE ARCHITECT</p>
+            </div>
+            <button class="close-btn" onclick="closeM('genesis')">ACKNOWLEDGE</button>
         </div>
     </div>
 
     <div id="manifesto" class="modal">
-        <div class="box">
-            <h2>THE IRON DECREE</h2>
-            <p><strong>I. NO MINT WITHOUT MATTER</strong><br>The digital shadow ($VOID) cannot exist without the physical body. We do not print tokens; we manufacture them.</p>
-            <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the tokens run out, the door welds shut.</p>
-            <p><strong>III. THE VEBLEN UTILITY</strong><br>Cash is for the masses. $VOID is for the Sentinels. The token buys what fiat currency cannot.</p>
-            <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The Phoenix rises only from ashes.</p>
-            <button class="close" onclick="closeM('manifesto')">ACCEPT DECREE</button>
+        <div class="modal-box">
+            <div class="modal-title">THE IRON DECREE</div>
+            <div class="modal-text">
+                <p><strong>I. NO MINT WITHOUT MATTER</strong><br>The digital shadow ($VOID) cannot exist without the physical body. We do not print tokens; we manufacture them.</p>
+                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the tokens run out, the door welds shut.</p>
+                <p><strong>III. THE VEBLEN UTILITY</strong><br>Cash is for the masses. $VOID is for the Sentinels. The token buys what fiat currency cannot.</p>
+                <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The Phoenix rises only from ashes.</p>
+            </div>
+            <button class="close-btn" onclick="closeM('manifesto')">ACCEPT DECREE</button>
         </div>
     </div>
 
     <div id="legal" class="modal">
-        <div class="box">
-            <h2 style="color:var(--warning-red)">LEGAL PROTOCOLS</h2>
-            <p><strong>1.0 GAMIFIED LOYALTY POINTS</strong><br>The $VOID token is defined strictly as a digital loyalty point.</p>
-            <p><strong>2.0 ART & SOUVENIR</strong><br>The "Luxvoid Sentinel Artifact" is sold strictly as a physical Art Collectible. The price covers materials, labor, and logistics.</p>
-            <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object. If the token goes to zero, you still own the physical asset.</p>
-            <button class="close" style="border-color:var(--warning-red); color:var(--warning-red)" onclick="closeM('legal')">I UNDERSTAND</button>
-        </div>
-    </div>
-
-    <div id="arch" class="modal">
-        <div class="box">
-            <h2>SYSTEM ARCHITECTURE</h2>
-            <p><strong>BLOCKCHAIN:</strong> Ethereum Mainnet / L2 Integration</p>
-            <p><strong>ARTIFACTS MINTED:</strong> 14,592 / 88,888</p>
-            <p><strong>VAULT RESERVES:</strong> 98.7% Capacity</p>
-            <p><strong>NETWORK UPTIME:</strong> 99.99%</p>
-            <button class="close" onclick="closeM('arch')">CLOSE</button>
-        </div>
-    </div>
-
-    <script>
-        // AUDIO SYSTEM (No Lag)
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound() {
-            if(ctx.state === 'suspended') ctx.resume();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(600, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-            osc.start(); osc.stop(ctx.currentTime + 0.1);
-        }
-
-        // FAIL-SAFE LOADER REMOVAL
-        window.onload = function() {
-            // Nothing to wait for - Animation handles it
-        };
-
-        function openM(id) { playSound(); document.getElementById(id).style.display = 'flex'; }
-        function closeM(id) { document.getElementById(id).style.display = 'none'; }
-
-        function disconnect() {
-            playSound();
-            if(confirm("WARNING: TERMINATE SESSION?")) {
-                document.body.style.opacity = '0';
-                setTimeout(() => { window.location.href = "https://www.google.com"; }, 1000);
-            }
-        }
-    </script>
-</body>
-</html>
+        <div class="modal-box">
+            <div class="modal-title" style
