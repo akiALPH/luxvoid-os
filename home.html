@@ -6,143 +6,163 @@
     <title>LUXVOID // GATEWAY</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --void-cyan: #00f0ff; --copper: #b87333; --alert: #ff3333; --glass: rgba(10, 10, 10, 0.7); }
+        :root { 
+            --void-cyan: #00f0ff; 
+            --copper: #b87333; 
+            --alert: #ff3333; 
+            --glass: rgba(10, 10, 10, 0.85); 
+            --grid-color: rgba(0, 240, 255, 0.05);
+        }
         body { margin: 0; background: #000; height: 100vh; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-        /* LOADER SCREEN */
+        /* --- 1. DYNAMIC LOADER (SCANNER EFFECT) --- */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            animation: fadeOut 1s ease-in-out 3s forwards; pointer-events: none;
+            animation: curtainUp 0.8s ease-in-out 3.5s forwards;
         }
-        .loader-text { font-size: 1.5rem; letter-spacing: 5px; color: var(--void-cyan); animation: pulse 0.5s infinite alternate; }
-        .loader-bar { width: 200px; height: 3px; background: #222; margin-top: 15px; overflow: hidden; border-radius: 2px; }
-        .loader-fill { width: 0%; height: 100%; background: var(--void-cyan); animation: load 2.5s ease-in-out forwards; box-shadow: 0 0 20px var(--void-cyan); }
+        .scan-grid {
+            position: absolute; inset: 0; 
+            background: linear-gradient(to bottom, transparent 50%, var(--void-cyan) 50%, transparent 51%);
+            background-size: 100% 4px;
+            animation: scan 3s linear forwards; opacity: 0.2; pointer-events: none;
+        }
+        .loader-text { font-size: 2rem; letter-spacing: 8px; color: var(--void-cyan); animation: pulse 0.2s infinite alternate; font-weight: bold; }
+        .loader-bar { width: 300px; height: 6px; background: #222; margin-top: 20px; border-radius: 4px; overflow: hidden; }
+        .loader-fill { width: 0%; height: 100%; background: var(--void-cyan); animation: load 3s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 0 30px var(--void-cyan); }
+        
         @keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
-        @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        @keyframes curtainUp { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); visibility: hidden; } }
+        @keyframes scan { 0% { background-position: 0 -100vh; } 100% { background-position: 0 100vh; } }
 
-        /* BACKGROUND - USES YOUR ASSET: logo.JPG */
+        /* --- 2. BACKGROUNDS (Center Aligned for Mobile) --- */
+        .bg-layer { position: fixed; inset: 0; z-index: -10; }
         .bg-pulse { 
-            position: fixed; inset: -20%; 
-            background: url('assets/logo.JPG') center/cover no-repeat; 
-            filter: blur(50px) brightness(0.4) contrast(1.3); 
-            z-index: -10; animation: breathe 8s infinite alternate; opacity: 0.7;
+            /* USES YOUR ASSET: logo.JPG */
+            background: url('assets/logo.JPG') center center/cover no-repeat; 
+            filter: blur(60px) brightness(0.6) contrast(1.2); 
+            opacity: 0.6; animation: breathe 8s infinite alternate;
+        }
+        .bg-grid {
+            /* THE "OLD VIBE" HEXAGON OVERLAY */
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
         }
         .bg-stars {
-            position: fixed; inset: 0; z-index: -5;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat; background-size: 200px 200px;
-            animation: space 60s linear infinite; opacity: 0.3;
+            background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 300px 300px;
+            animation: space 80s linear infinite; opacity: 0.4;
         }
-        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-        @keyframes space { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
+        @keyframes breathe { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.7; } }
+        @keyframes space { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
 
-        /* MOVING TICKER */
+        /* --- 3. HUD & TYPOGRAPHY --- */
         .hud-top { 
             position: absolute; top: 0; left: 0; width: 100%; overflow: hidden;
-            background: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
-            padding: 12px 0; border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-            font-family: 'Share Tech Mono'; font-size: 0.8rem; color: var(--void-cyan); text-shadow: 0 0 5px var(--void-cyan);
+            background: rgba(0,0,0,0.8); border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+            padding: 15px 0; font-family: 'Share Tech Mono'; font-size: 1rem; color: var(--void-cyan); 
+            z-index: 100; backdrop-filter: blur(5px);
         }
         .ticker-wrap { white-space: nowrap; }
-        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; padding-left: 100%; }
-        .ticker-item { padding: 0 30px; }
+        .ticker-move { display: inline-block; animation: ticker 30s linear infinite; padding-left: 100%; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* MAIN STAGE & GYRO COIN */
+        /* --- 4. MAIN STAGE & CIRCLE COIN FIX --- */
         .main-stage {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            perspective: 1000px; z-index: 1;
+            perspective: 1200px; z-index: 1; padding-bottom: 40px;
         }
         .coin-wrapper {
-            width: 280px; height: 280px; 
+            width: 300px; height: 300px; 
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s ease-out; filter: drop-shadow(0 0 30px rgba(184, 115, 51, 0.3));
+            /* FORCE CIRCLE SHAPE */
+            border-radius: 50%; 
+            overflow: hidden;
+            border: 4px solid rgba(184, 115, 51, 0.6);
+            box-shadow: 0 0 80px rgba(184, 115, 51, 0.3), inset 0 0 50px rgba(0,0,0,0.8);
+            transition: transform 0.1s ease-out; background: #000;
         }
-        /* USES YOUR ASSET: coin.png */
-        .coin-img { width: 220px; height: auto; } 
+        .coin-img { 
+            width: 110%; height: 110%; object-fit: cover; /* Zooms in slightly to hide edges */
+        } 
 
-        /* COMMAND BUTTONS */
-        .command-deck { margin-top: 60px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 20px; }
+        /* --- 5. GIANT BUTTONS --- */
+        .command-deck { margin-top: 50px; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 20px; }
         .btn-cmd {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border: 1px solid var(--void-cyan); color: #fff;
-            padding: 22px; font-family: 'Rajdhani'; font-weight: bold; font-size: 1.1rem; letter-spacing: 4px;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 2px solid var(--void-cyan); color: #fff;
+            padding: 25px; font-family: 'Rajdhani'; font-weight: 700; font-size: 1.4rem; letter-spacing: 4px;
             cursor: pointer; transition: 0.3s all; position: relative; overflow: hidden;
-            text-align: center; box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            text-align: center; box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+            text-transform: uppercase;
+            clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
         }
-        .btn-cmd:hover { background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 50px var(--void-cyan); letter-spacing: 6px; }
+        .btn-cmd:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 60px var(--void-cyan); letter-spacing: 6px; }
         
-        /* The Shop Button (Copper Color) */
-        .btn-forge { border-color: var(--copper); color: var(--copper); box-shadow: 0 0 20px rgba(184, 115, 51, 0.1); }
-        .btn-forge:hover { background: rgba(184, 115, 51, 0.15); box-shadow: 0 0 50px var(--copper); color: #fff; }
+        .btn-forge { border-color: var(--copper); color: var(--copper); box-shadow: 0 0 30px rgba(184, 115, 51, 0.2); }
+        .btn-forge:hover { background: rgba(184, 115, 51, 0.25); box-shadow: 0 0 70px var(--copper); color: #fff; }
 
-        /* The Disconnect Button */
         .btn-disconnect { 
-            background: transparent; border: 1px solid #333; font-size: 0.8rem; padding: 15px; opacity: 0.6; box-shadow: none; clip-path: none;
+            background: transparent; border: 1px solid #444; font-size: 1rem; padding: 18px; opacity: 0.7; box-shadow: none; clip-path: none;
         }
-        .btn-disconnect:hover { border-color: var(--alert); color: var(--alert); box-shadow: 0 0 20px var(--alert); opacity: 1; letter-spacing: 4px; }
+        .btn-disconnect:hover { border-color: var(--alert); color: var(--alert); box-shadow: 0 0 30px var(--alert); opacity: 1; letter-spacing: 5px; }
 
-        /* FOOTER */
+        /* --- 6. FOOTER --- */
         .footer { 
-            position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 20px; z-index: 10;
+            position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 30px; z-index: 10;
         }
         .doc-btn {
-            background: rgba(0,0,0,0.5); border: 1px solid #444; padding: 10px 20px;
-            font-family: 'Share Tech Mono'; font-size: 0.7rem; color: #888; letter-spacing: 2px; cursor: pointer; transition: 0.3s;
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.8); border: 1px solid #555; padding: 12px 25px;
+            font-family: 'Share Tech Mono'; font-size: 0.9rem; color: #aaa; letter-spacing: 3px; cursor: pointer; transition: 0.3s;
         }
-        .doc-btn:hover { border-color: #fff; color: #fff; box-shadow: 0 0 15px #fff; }
+        .doc-btn:hover { border-color: #fff; color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.5); }
 
-        /* POP-UP MODALS */
+        /* --- 7. MODALS (BIGGER TEXT) --- */
         .modal-overlay { 
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; 
-            justify-content: center; align-items: center; backdrop-filter: blur(20px);
+            justify-content: center; align-items: center; backdrop-filter: blur(30px);
         }
         .modal-content { 
-            width: 85%; max-width: 550px; max-height: 85vh; overflow-y: auto;
-            background: rgba(15, 15, 15, 0.95); border: 1px solid var(--void-cyan); 
-            padding: 40px; box-shadow: 0 0 80px rgba(0, 240, 255, 0.15);
+            width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto;
+            background: #111; border: 2px solid var(--void-cyan); 
+            padding: 40px; box-shadow: 0 0 100px rgba(0, 240, 255, 0.2);
         }
-        .modal-title { font-size: 1.8rem; color: var(--copper); border-bottom: 2px solid #333; margin-bottom: 25px; padding-bottom: 15px; letter-spacing: 4px; text-transform: uppercase; }
-        .text-body { font-size: 1rem; line-height: 1.7; color: #ccc; font-family: 'Rajdhani'; }
+        .modal-title { font-size: 2.2rem; font-weight: 800; color: var(--copper); border-bottom: 3px solid #333; margin-bottom: 30px; padding-bottom: 15px; letter-spacing: 5px; text-transform: uppercase; }
+        .text-body { font-size: 1.25rem; line-height: 1.8; color: #ddd; font-family: 'Rajdhani'; }
+        .text-body p { margin-bottom: 25px; }
         .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid var(--copper); }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: var(--void-cyan); border-radius: 3px; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--void-cyan); border-radius: 4px; }
     </style>
 </head>
 <body>
     <div id="loader">
+        <div class="scan-grid"></div>
         <div class="loader-text">LOADING_MONOLITH</div>
         <div class="loader-bar"><div class="loader-fill"></div></div>
     </div>
     
-    <div class="bg-pulse"></div>
-    <div class="bg-stars"></div>
-
-    <div class="hud-top">
+    <div class="bg-layer bg-pulse"></div> <div class="bg-layer bg-grid"></div>  <div class="bg-layer bg-stars"></div> <div class="hud-top">
         <div class="ticker-wrap">
             <div class="ticker-move">
-                <span class="ticker-item">/// SUPPLY: 88,888 (HARD CAPPED) /// NO PRINTING /// PURE METAL /// STATUS: ONLINE ///</span>
+                <span>/// SUPPLY: 88,888 (HARD CAPPED) /// NO PRINTING /// PURE METAL /// STATUS: ONLINE /// 2030 SHORTAGE IMMINENT ///</span>
             </div>
         </div>
     </div>
 
     <div class="main-stage" id="stage">
         <div class="coin-wrapper" id="gyroCoin">
-            <img src="assets/coin.png" class="coin-img" alt="Copper Artifact"> 
+            <img src="assets/coin.png" class="coin-img" alt="Artifact"> 
         </div>
 
         <div class="command-deck">
             <button class="btn-cmd" onclick="openModal('genesis')">GENESIS_101</button>
             <button class="btn-cmd btn-forge" onclick="window.location.href='forge.html'">ACQUIRE_ACCESS_KEY</button>
             <button class="btn-cmd" onclick="window.location.href='index.html'">INITIALIZE_OS [OWNER]</button>
-            <button class="btn-cmd btn-disconnect" onclick="alert('WARNING: RETURN TO FIAT MATRIX? OPPORTUNITY COST: INFINITE.')">DISCONNECT</button>
+            <button class="btn-cmd btn-disconnect" onclick="disconnectProtocol()">DISCONNECT</button>
         </div>
     </div>
 
@@ -155,14 +175,14 @@
         <div class="modal-content">
             <div class="modal-title">ZERO_HOUR</div>
             <div class="text-body">
-                <p>They told me to build an App. They told me "Physical Assets are dead."</p>
-                <p>I sat in the dark. While the suits and bankers buy Ferraris with printed money, they own nothing. They are ghosts trading ghosts.</p>
-                <p>I looked at the Copper. I looked at the Resin. <span class="highlight">Heavy. Real. Industrial.</span></p>
-                <p>I realized the truth: <strong>Money buys the Object. The Token buys the Rank.</strong></p>
+                <p>The world worships the Code, but starves for the Core. An AI chip costs $30,000 not because of the software, but because of the silicon and the copper veins that power it. The future is forged in Metal.</p>
+                <p><strong>The Charts Don't Lie.</strong> The 2030 Shortage is mathematical destiny. Silver is doubling. Copper is critical. <span class="highlight">Gold is already out of reach for the common man.</span></p>
+                <p>I stopped watching the suits print infinite paper to chase finite resources. I evolved. The Collector became the Visionary. The Visionary became the Architect. I realized that value isn't something you trade; it's something you <strong>hold</strong>.</p>
+                <p><strong>The Truth:</strong> Fiat currency is common. It buys the Standard. Only Conviction buys the Exceptional.</p>
                 <p>So I rejected the VC money. I built the Forge. Luxvoid is not a startup. It is a rebellion against the vapor.</p>
-                <p style="color:var(--copper); margin-top:20px; font-weight:bold;">// THE ARCHITECT</p>
+                <p style="color:var(--copper); margin-top:30px; font-weight:bold; font-size:1.4rem;">// THE ARCHITECT</p>
             </div>
-            <button class="btn-cmd" style="margin-top:30px; padding: 15px;" onclick="closeModal('genesis')">ACKNOWLEDGE</button>
+            <button class="btn-cmd" style="margin-top:20px;" onclick="closeModal('genesis')">ACKNOWLEDGE</button>
         </div>
     </div>
 
@@ -171,11 +191,11 @@
             <div class="modal-title">THE IRON DECREE</div>
             <div class="text-body">
                 <p><strong>I. NO MINT WITHOUT MATTER</strong><br>The digital shadow ($VOID) cannot exist without the physical body. We do not print tokens; we manufacture them.</p>
-                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the Copper runs out, the door welds shut.</p>
+                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the <strong>tokens</strong> run out, the door welds shut.</p>
                 <p><strong>III. THE VEBLEN UTILITY</strong><br>Cash is for the masses. $VOID is for the Sentinels. The token buys what fiat currency cannot.</p>
                 <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The "Black Forge" opens only to those willing to burn their Artifact. The Phoenix rises only from ashes.</p>
             </div>
-            <button class="btn-cmd" style="margin-top:30px; padding: 15px;" onclick="closeModal('manifesto')">CLOSE</button>
+            <button class="btn-cmd" style="margin-top:20px;" onclick="closeModal('manifesto')">CLOSE</button>
         </div>
     </div>
 
@@ -184,25 +204,28 @@
             <div class="modal-title" style="color:var(--alert); border-color:var(--alert);">SOUVENIR CLASSIFICATION</div>
             <div class="text-body">
                 <p><strong>1.0 GAMIFIED LOYALTY POINTS</strong><br>The $VOID token is defined strictly as a digital loyalty point used to unlock features, upgrades, and community status. It has no monetary yield or dividend.</p>
-                <p><strong>2.0 ART & SOUVENIR</strong><br>The "Luxvoid Sentinel Artifact" is sold strictly as a physical Art Collectible. The $99 price covers materials, labor, and logistics.</p>
-                <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object. If the token goes to zero, you still own the Copper. That is your only guarantee.</p>
+                <p><strong>2.0 ART & SOUVENIR</strong><br>The "Luxvoid Sentinel Artifact" is sold strictly as a physical Art Collectible. The price covers materials, labor, and logistics.</p>
+                <p><strong>3.0 TOTAL LIABILITY RELEASE</strong><br>By entering this ecosystem, you acknowledge you are buying a physical object. If the token goes to zero, you still own the physical asset. That is your only guarantee.</p>
             </div>
-            <button class="btn-cmd" style="margin-top:30px; padding: 15px; border-color:var(--alert); color:var(--alert);" onclick="closeModal('legal')">I AGREE</button>
+            <button class="btn-cmd" style="margin-top:20px; border-color:var(--alert); color:var(--alert);" onclick="closeModal('legal')">I AGREE</button>
         </div>
     </div>
 
     <script>
-        // --- MODAL LOGIC ---
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
-        // --- 3D MOUSE TILT LOGIC ---
+        // DISCONNECT LOGIC
+        function disconnectProtocol() {
+            if(confirm("WARNING: RETURN TO FIAT MATRIX? OPPORTUNITY COST: INFINITE.")) {
+                window.location.href = "https://www.google.com";
+            }
+        }
+
+        // 3D TILT LOGIC
         document.addEventListener('mousemove', (e) => {
-            // Calculate tilt based on screen center
-            let x = (window.innerWidth / 2 - e.clientX) / 25;
-            let y = (window.innerHeight / 2 - e.clientY) / 25;
-            
-            // Apply tilt to the coin
+            let x = (window.innerWidth / 2 - e.clientX) / 30;
+            let y = (window.innerHeight / 2 - e.clientY) / 30;
             document.getElementById('gyroCoin').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
     </script>
