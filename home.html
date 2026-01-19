@@ -27,34 +27,27 @@
             color: var(--platinum);
         }
 
-        /* === 1. BACKGROUND (SAFETY NET INSTALLED) === */
+        /* === 1. BACKGROUND (SAFETY NET + IMAGE) === */
         .background-container {
             position: fixed; inset: 0; z-index: -10; pointer-events: none;
-            /* SAFETY GRADIENT: If image fails, this shows instead of black */
-            background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
+            /* SAFETY GRADIENT: If logo.JPG fails, this gradient shows instead of black */
+            background: radial-gradient(circle at center, #050510 0%, #000 100%);
         }
         
         .logo-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 100vw; height: 100vh;
-            /* PATH: assets/logo.JPG */
+            /* PATH MUST BE EXACT: assets/logo.JPG */
             background: url('assets/logo.JPG') center center/cover no-repeat;
-            opacity: 0.6; /* High visibility */
-            filter: blur(40px) brightness(1.2); /* Merging effect */
-            animation: breatheBg 8s infinite alternate;
+            opacity: 0.6; 
+            filter: blur(30px) brightness(1.2);
+            animation: breatheBg 10s infinite alternate;
         }
 
-        .particles-container { position: absolute; inset: 0; }
-        .particle {
-            position: absolute; width: 3px; height: 3px; background: white;
-            border-radius: 50%; opacity: 0; box-shadow: 0 0 5px white;
-        }
-
-        /* === 2. LOADER (ALIGNED & FAIL-SAFE) === */
+        /* === 2. LOADER (AUTO-DESTRUCT IN 4s) === */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            /* Force exit after 4s */
             animation: forceExit 1s ease-in-out 4s forwards;
             pointer-events: all;
         }
@@ -105,7 +98,7 @@
         .network-status { font-family: 'Rajdhani'; color: var(--matrix-green); font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
         .dot { width: 10px; height: 10px; background: var(--matrix-green); border-radius: 50%; box-shadow: 0 0 10px var(--matrix-green); }
 
-        /* === 4. THE COIN (LASER CUT CIRCLE) === */
+        /* === 4. THE COIN (FORCED ROUND - CORNERS CUT) === */
         .stage-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             perspective: 1200px; z-index: 50;
@@ -117,16 +110,16 @@
             animation: coinSpin 25s linear infinite, coinBreathe 6s ease-in-out infinite alternate;
         }
         
-        /* THIS IS THE FIX: clip-path forces it round, overflow hidden cuts corners */
+        /* CLIP-PATH IS THE KEY: Forces square image into circle */
         .coin-img {
             width: 100%; height: 100%;
             border-radius: 50%; 
-            clip-path: circle(49%); /* CUTS CORNERS 100% */
+            clip-path: circle(48%); /* 48% ensures edges are cleanly cut */
             object-fit: cover;
             filter: drop-shadow(0 0 50px rgba(184, 115, 51, 0.5));
         }
 
-        /* === 5. BUTTONS === */
+        /* === 5. BUTTONS (HEAVY STYLE) === */
         .command-bar {
             position: fixed; bottom: 5rem; left: 0; right: 0; z-index: 150; padding: 0 3rem;
         }
@@ -256,25 +249,4 @@
                 <p><strong>The Charts Don't Lie.</strong> The 2030 Shortage is mathematical destiny. Silver is doubling. Copper is critical. Gold is already out of reach for the common man.</p>
                 <p>I stopped watching the suits print infinite paper to chase finite resources. I evolved. The Collector became the Visionary. The Visionary became the Architect.</p>
                 <p><strong>The Truth:</strong> Fiat currency is common. It buys the Standard. Only Conviction buys the Exceptional.</p>
-                <p style="color:var(--luxury-gold)">// THE ARCHITECT</p>
-            </div>
-            <button class="close-btn" onclick="closeM('genesis')">ACKNOWLEDGE</button>
-        </div>
-    </div>
-
-    <div id="manifesto" class="modal">
-        <div class="modal-box">
-            <div class="modal-title">THE IRON DECREE</div>
-            <div class="modal-text">
-                <p><strong>I. NO MINT WITHOUT MATTER</strong><br>The digital shadow ($VOID) cannot exist without the physical body. We do not print tokens; we manufacture them.</p>
-                <p><strong>II. MERITOCRACY</strong><br>We reject the "Infinite Inflation" model. There are only 88,888 slots. Once the tokens run out, the door welds shut.</p>
-                <p><strong>III. THE VEBLEN UTILITY</strong><br>Cash is for the masses. $VOID is for the Sentinels. The token buys what fiat currency cannot.</p>
-                <p><strong>IV. THE PHOENIX RITUAL</strong><br>To ascend, one must destroy. The Phoenix rises only from ashes.</p>
-            </div>
-            <button class="close-btn" onclick="closeM('manifesto')">ACCEPT DECREE</button>
-        </div>
-    </div>
-
-    <div id="legal" class="modal">
-        <div class="modal-box">
-            <div class="modal-title" style
+                <p
